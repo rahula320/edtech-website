@@ -1,8 +1,14 @@
 # EdTech Website - Full Stack Application
 
+![EdTech Platform](https://img.shields.io/badge/EdTech-Platform-blue)
+![License](https://img.shields.io/badge/license-ISC-green)
+![React](https://img.shields.io/badge/React-18.2.0-61DAFB)
+![Node.js](https://img.shields.io/badge/Node.js-Express-339933)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248)
+
 This is a full-stack application for an educational technology platform, split into client and server components for easier development and deployment.
 
-## Features
+## 🚀 Features
 
 - Modern and responsive design
 - Interactive UI elements
@@ -10,8 +16,11 @@ This is a full-stack application for an educational technology platform, split i
 - Mobile-friendly layout
 - Contact form with validation
 - Parallax effects
+- User authentication system
+- Course browsing and management
+- RESTful API architecture
 
-## Project Structure
+## 📁 Project Structure
 
 The project is organized into two main directories:
 
@@ -20,20 +29,29 @@ The project is organized into two main directories:
 
 This separation makes it easier to deploy the application to various hosting platforms that might have different requirements for frontend and backend hosting.
 
-## Development Setup
+## 🛠️ Development Setup
 
-1. **Setup the server:**
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/rk2319/edtech-website.git
+   cd edtech-website
    ```
+
+2. **Run the clean installation script:**
+   ```bash
+   ./clean-install.sh
+   ```
+
+3. **Setup the server:**
+   ```bash
    cd server
-   npm install
    cp .env.example .env  # Create and configure your .env file
    npm run dev
    ```
 
-2. **Setup the client:**
-   ```
+4. **Setup the client:**
+   ```bash
    cd client
-   npm install
    npm start
    ```
 
@@ -42,20 +60,20 @@ During development:
 - The frontend development server runs on port 3000
 - The client proxies API requests to the backend
 
-## Production Deployment Options
+## 🚀 Production Deployment Options
 
 ### Option 1: Unified Deployment
 
 Deploy both frontend and backend to a single server:
 
 1. Build the client:
-   ```
+   ```bash
    cd client
    npm run build
    ```
 
 2. Start the server in production mode:
-   ```
+   ```bash
    cd server
    NODE_ENV=production npm start
    ```
@@ -67,21 +85,28 @@ The server will serve the static client files and handle API requests.
 Deploy the client and server independently:
 
 1. **Client:** Deploy the built React app to a static hosting service like Netlify, Vercel, or GitHub Pages.
-   ```
+   ```bash
    cd client
    npm run build
    # Deploy the build folder to your chosen provider
    ```
 
 2. **Server:** Deploy the Node.js server to a service like Heroku, Railway, or Digital Ocean.
-   ```
+   ```bash
    cd server
    # Deploy to your chosen provider
    ```
 
    Make sure to update the client's API endpoints to point to your deployed server URL.
 
-## Environment Variables
+### Option 3: Docker Deployment
+
+For containerized deployment:
+```bash
+docker-compose up -d
+```
+
+## ⚙️ Environment Variables
 
 ### Server Environment Variables
 
@@ -105,14 +130,24 @@ Create a `.env` file in the client directory for production build configuration:
 REACT_APP_API_URL=https://your-api-server-url.com
 ```
 
-## Technologies Used
+## 💻 Technologies Used
 
 - **Frontend:** React, React Router, CSS
 - **Backend:** Node.js, Express
 - **Database:** MongoDB
 - **Authentication:** Passport.js
 - **Icons:** Font Awesome
+- **Containerization:** Docker, Docker Compose
+- **Deployment:** Shell scripts for automation
 
-## License
+## 📄 License
 
-ISC 
+ISC
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+
+## 📧 Contact
+
+For questions or feedback, reach out to the project maintainer. 
