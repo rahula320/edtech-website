@@ -5,7 +5,9 @@ import Home from './pages/Home';
 import Courses from './pages/Courses';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import ProgramDetail from './pages/ProgramDetail';
 import './App.css';
+import { programsData } from './data/programsData';
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/programs/:programId" element={<ProgramDetail programsData={programsData} />} />
         </Routes>
       </main>
     </div>

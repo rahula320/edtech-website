@@ -14,6 +14,60 @@ function Navbar() {
     setProgramsDropdownOpen(!programsDropdownOpen);
   };
 
+  // Programs categorized by domains
+  const programCategories = [
+    {
+      title: "Technology & Data",
+      icon: "fas fa-laptop-code",
+      programs: [
+        { name: "Data Science", icon: "fas fa-chart-bar", path: "/programs/data-science" },
+        { name: "Artificial Intelligence", icon: "fas fa-robot", path: "/programs/artificial-intelligence" },
+        { name: "Machine Learning with Python", icon: "fas fa-brain", path: "/programs/machine-learning" }
+      ]
+    },
+    {
+      title: "Engineering & Computing",
+      icon: "fas fa-microchip",
+      programs: [
+        { name: "Cloud Computing", icon: "fas fa-cloud", path: "/programs/cloud-computing" },
+        { name: "Web Development", icon: "fas fa-code", path: "/programs/web-development" },
+        { name: "Embedded Systems", icon: "fas fa-microchip", path: "/programs/embedded-systems" },
+        { name: "Internet of Things", icon: "fas fa-network-wired", path: "/programs/iot" }
+      ]
+    },
+    {
+      title: "Design & Creativity",
+      icon: "fas fa-pencil-ruler",
+      programs: [
+        { name: "AutoCAD Designing", icon: "fas fa-drafting-compass", path: "/programs/autocad" },
+        { name: "Construction Planning", icon: "fas fa-hard-hat", path: "/programs/construction" }
+      ]
+    },
+    {
+      title: "Business & Finance",
+      icon: "fas fa-briefcase",
+      programs: [
+        { name: "International Business Management", icon: "fas fa-globe", path: "/programs/business-management" },
+        { name: "Stock Market & Cryptocurrency", icon: "fas fa-chart-line", path: "/programs/stock-market" }
+      ]
+    },
+    {
+      title: "Security & Protection",
+      icon: "fas fa-shield-alt",
+      programs: [
+        { name: "Cyber Security", icon: "fas fa-shield-alt", path: "/programs/cyber-security" }
+      ]
+    }
+  ];
+
+  // Program featured item
+  const featuredProgram = {
+    title: "Internship Program",
+    icon: "fas fa-user-graduate",
+    path: "/programs/internship",
+    description: "Gain hands-on experience with industry experts"
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">
@@ -31,20 +85,40 @@ function Navbar() {
           </button>
           
           {programsDropdownOpen && (
-            <div className="dropdown-menu">
-              <Link to="/programs/data-science"><i className="fas fa-chart-bar"></i> Data Science</Link>
-              <Link to="/programs/artificial-intelligence"><i className="fas fa-robot"></i> Artificial Intelligence</Link>
-              <Link to="/programs/cloud-computing"><i className="fas fa-cloud"></i> Cloud Computing</Link>
-              <Link to="/programs/web-development"><i className="fas fa-code"></i> Web Development</Link>
-              <Link to="/programs/cyber-security"><i className="fas fa-shield-alt"></i> Cyber Security</Link>
-              <Link to="/programs/iot"><i className="fas fa-network-wired"></i> Internet of Things</Link>
-              <Link to="/programs/machine-learning"><i className="fas fa-brain"></i> Machine Learning with Python</Link>
-              <Link to="/programs/autocad"><i className="fas fa-drafting-compass"></i> AutoCAD Designing</Link>
-              <Link to="/programs/embedded-systems"><i className="fas fa-microchip"></i> Embedded Systems</Link>
-              <Link to="/programs/business-management"><i className="fas fa-globe"></i> International Business Management</Link>
-              <Link to="/programs/stock-market"><i className="fas fa-chart-line"></i> Stock Market & Cryptocurrency</Link>
-              <Link to="/programs/construction"><i className="fas fa-hard-hat"></i> Construction Planning</Link>
-              <Link to="/programs/internship"><i className="fas fa-user-graduate"></i> Internship Program</Link>
+            <div className="mega-dropdown">
+              <div className="mega-dropdown-content">
+                <div className="mega-dropdown-grid">
+                  {programCategories.map((category, idx) => (
+                    <div className="dropdown-category" key={idx}>
+                      <h4 className="category-title">
+                        <i className={category.icon}></i> {category.title}
+                      </h4>
+                      <ul className="category-programs">
+                        {category.programs.map((program, progIdx) => (
+                          <li key={progIdx}>
+                            <Link to={program.path} onClick={() => setProgramsDropdownOpen(false)}>
+                              <i className={program.icon}></i> {program.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="featured-program">
+                  <h4>Featured Program</h4>
+                  <Link to={featuredProgram.path} onClick={() => setProgramsDropdownOpen(false)} className="featured-program-link">
+                    <div className="featured-program-icon">
+                      <i className={featuredProgram.icon}></i>
+                    </div>
+                    <div className="featured-program-info">
+                      <h5>{featuredProgram.title}</h5>
+                      <p>{featuredProgram.description}</p>
+                    </div>
+                  </Link>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -81,45 +155,35 @@ function Navbar() {
               
               {programsDropdownOpen && (
                 <div className="mobile-dropdown-menu">
-                  <Link to="/programs/data-science" onClick={toggleMobileMenu}>
-                    <i className="fas fa-chart-bar"></i> Data Science
-                  </Link>
-                  <Link to="/programs/artificial-intelligence" onClick={toggleMobileMenu}>
-                    <i className="fas fa-robot"></i> Artificial Intelligence
-                  </Link>
-                  <Link to="/programs/cloud-computing" onClick={toggleMobileMenu}>
-                    <i className="fas fa-cloud"></i> Cloud Computing
-                  </Link>
-                  <Link to="/programs/web-development" onClick={toggleMobileMenu}>
-                    <i className="fas fa-code"></i> Web Development
-                  </Link>
-                  <Link to="/programs/cyber-security" onClick={toggleMobileMenu}>
-                    <i className="fas fa-shield-alt"></i> Cyber Security
-                  </Link>
-                  <Link to="/programs/iot" onClick={toggleMobileMenu}>
-                    <i className="fas fa-network-wired"></i> Internet of Things
-                  </Link>
-                  <Link to="/programs/machine-learning" onClick={toggleMobileMenu}>
-                    <i className="fas fa-brain"></i> Machine Learning with Python
-                  </Link>
-                  <Link to="/programs/autocad" onClick={toggleMobileMenu}>
-                    <i className="fas fa-drafting-compass"></i> AutoCAD Designing
-                  </Link>
-                  <Link to="/programs/embedded-systems" onClick={toggleMobileMenu}>
-                    <i className="fas fa-microchip"></i> Embedded Systems
-                  </Link>
-                  <Link to="/programs/business-management" onClick={toggleMobileMenu}>
-                    <i className="fas fa-globe"></i> International Business Management
-                  </Link>
-                  <Link to="/programs/stock-market" onClick={toggleMobileMenu}>
-                    <i className="fas fa-chart-line"></i> Stock Market & Cryptocurrency
-                  </Link>
-                  <Link to="/programs/construction" onClick={toggleMobileMenu}>
-                    <i className="fas fa-hard-hat"></i> Construction Planning
-                  </Link>
-                  <Link to="/programs/internship" onClick={toggleMobileMenu}>
-                    <i className="fas fa-user-graduate"></i> Internship Program
-                  </Link>
+                  {programCategories.map((category, idx) => (
+                    <div className="mobile-category" key={idx}>
+                      <h5 className="mobile-category-title">
+                        <i className={category.icon}></i> {category.title}
+                      </h5>
+                      {category.programs.map((program, progIdx) => (
+                        <Link 
+                          key={progIdx} 
+                          to={program.path} 
+                          onClick={toggleMobileMenu}
+                          className="mobile-program-link"
+                        >
+                          <i className={program.icon}></i> {program.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
+                  <div className="mobile-featured">
+                    <h5 className="mobile-category-title">
+                      <i className="fas fa-star"></i> Featured
+                    </h5>
+                    <Link 
+                      to={featuredProgram.path} 
+                      onClick={toggleMobileMenu}
+                      className="mobile-program-link featured"
+                    >
+                      <i className={featuredProgram.icon}></i> {featuredProgram.title}
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
