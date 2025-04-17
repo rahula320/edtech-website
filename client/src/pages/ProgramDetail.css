@@ -62,7 +62,7 @@
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: white;
   padding: 5rem 0;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   position: relative;
   overflow: hidden;
 }
@@ -189,10 +189,16 @@
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 3rem;
   position: sticky;
-  top: 80px;
+  top: 60px;
   background-color: white;
-  z-index: 90;
+  z-index: 99;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+}
+
+.program-nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .program-tabs {
@@ -213,6 +219,27 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.nav-enroll-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-enroll-button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .tab-button i {
@@ -829,31 +856,76 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
   color: var(--text-color);
   font-size: 0.95rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.plan-features li:hover {
+  transform: translateX(5px);
+  background-color: rgba(var(--primary-rgb), 0.05);
 }
 
 .feature-text {
   line-height: 1.5;
+  flex: 1;
 }
 
-.feature-icon {
-  font-weight: bold;
-  font-size: 1.2rem;
+/* Feature status styling - updated to match Home page */
+.feature-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.feature-icon.check {
-  color: var(--success-color);
+.feature-status.included {
+  background-color: #2563eb;
+  color: white;
 }
 
-.enroll-cta {
-  margin-top: 2rem;
+.feature-status.excluded {
+  background-color: #ef4444;
+  color: white;
 }
 
-.enroll-cta .cta-button {
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
+.feature-status i {
+  font-size: 0.8rem;
+}
+
+/* Animations and hover effects for feature items */
+.plan-features li {
+  transition: transform 0.2s ease;
+}
+
+.plan-features li:hover {
+  transform: translateX(5px);
+  background-color: rgba(var(--primary-rgb), 0.05);
+}
+
+/* Pricing plan features improvement */
+.plan-features li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.feature-text {
+  line-height: 1.5;
+  flex: 1;
+  padding-right: 1rem;
 }
 
 /* Related Programs */
@@ -978,10 +1050,23 @@
     font-size: 2rem;
   }
   
+  .program-nav-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+  }
+  
   .program-tabs {
     justify-content: flex-start;
     overflow-x: auto;
     padding-bottom: 0.5rem;
+  }
+  
+  .nav-enroll-button {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
   }
   
   .tab-button {

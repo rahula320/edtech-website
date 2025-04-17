@@ -97,30 +97,35 @@ function ProgramDetail({ programsData }) {
       {/* Program Navigation */}
       <section className="program-nav">
         <div className="container">
-          <div className="program-tabs">
-            <button 
-              className={`tab-button ${selectedTab === 'overview' ? 'active' : ''}`}
-              onClick={() => setSelectedTab('overview')}
-            >
-              <i className="fas fa-info-circle"></i> Overview
-            </button>
-            <button 
-              className={`tab-button ${selectedTab === 'curriculum' ? 'active' : ''}`}
-              onClick={() => setSelectedTab('curriculum')}
-            >
-              <i className="fas fa-book"></i> Curriculum
-            </button>
-            <button 
-              className={`tab-button ${selectedTab === 'instructors' ? 'active' : ''}`}
-              onClick={() => setSelectedTab('instructors')}
-            >
-              <i className="fas fa-chalkboard-teacher"></i> Instructors
-            </button>
-            <button 
-              className={`tab-button ${selectedTab === 'faq' ? 'active' : ''}`}
-              onClick={() => setSelectedTab('faq')}
-            >
-              <i className="fas fa-question-circle"></i> FAQs
+          <div className="program-nav-container">
+            <div className="program-tabs">
+              <button 
+                className={`tab-button ${selectedTab === 'overview' ? 'active' : ''}`}
+                onClick={() => setSelectedTab('overview')}
+              >
+                <i className="fas fa-info-circle"></i> Overview
+              </button>
+              <button 
+                className={`tab-button ${selectedTab === 'curriculum' ? 'active' : ''}`}
+                onClick={() => setSelectedTab('curriculum')}
+              >
+                <i className="fas fa-book"></i> Curriculum
+              </button>
+              <button 
+                className={`tab-button ${selectedTab === 'instructors' ? 'active' : ''}`}
+                onClick={() => setSelectedTab('instructors')}
+              >
+                <i className="fas fa-chalkboard-teacher"></i> Instructors
+              </button>
+              <button 
+                className={`tab-button ${selectedTab === 'faq' ? 'active' : ''}`}
+                onClick={() => setSelectedTab('faq')}
+              >
+                <i className="fas fa-question-circle"></i> FAQs
+              </button>
+            </div>
+            <button className="nav-enroll-button">
+              <i className="fas fa-graduation-cap"></i> Enroll Now
             </button>
           </div>
         </div>
@@ -339,7 +344,7 @@ function ProgramDetail({ programsData }) {
       </section>
 
       {/* Pricing Plans */}
-      <section className="pricing-plans section-animate">
+      <section className="pricing-plans">
         <div className="container">
           <h2>Choose Your Pricing Plan</h2>
           <p className="pricing-intro">Choose from our flexible plans to suit your learning needs and budget</p>
@@ -347,10 +352,10 @@ function ProgramDetail({ programsData }) {
           <div className="pricing-cards">
             <div className={`pricing-card ${selectedPricingPlan === 'advanced' ? 'selected' : ''}`}>
               <div className="plan-tag">Best Value</div>
-              <h3>🚀 Advanced Program</h3>
+              <h3>🎓 Advanced Program</h3>
               <div className="price">
-                <span className="original-price">₹{program.pricing && program.pricing.advanced ? program.pricing.advanced.originalPrice : "49,999"}</span>
-                <span className="current-price">₹{program.pricing && program.pricing.advanced ? program.pricing.advanced.currentPrice : "39,999"}</span>
+                <span className="original-price">₹12,999</span>
+                <span className="current-price">₹8,999</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
               <button 
@@ -361,36 +366,32 @@ function ProgramDetail({ programsData }) {
               </button>
               <ul className="plan-features">
                 <li>
-                  <span className="feature-text">🎥 Recorded Lectures (Core + Bonus Advanced Modules)</span>
-                  <span className="feature-icon check">✓</span>
-                </li>
-                <li>
                   <span className="feature-text">💡 Real-Time Projects (Industry Capstone Projects)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
                   <span className="feature-text">🕒 Live Sessions (Extended sessions + Guest Experts)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
                   <span className="feature-text">❓ One-on-One Doubt Sessions (Priority access)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">📜 Certifications (Co-branded with industry partners)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-text">🏆 Certifications (Co-branded with industry partners)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">👨‍💼 Mentor Support (Dedicated mentor)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-text">🏅 Mentor Support (Dedicated mentor)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🎯 Placement Guidance (Exclusive referrals + 1:1 coaching)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-text">🚀 Placement Guidance (Exclusive referrals + 1:1 coaching)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🧪 Interview Assistance (Mock interviews with HR)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-text">🤝 Interview Assistance (Mock interviews with HR)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
               </ul>
             </div>
@@ -398,8 +399,8 @@ function ProgramDetail({ programsData }) {
             <div className={`pricing-card ${selectedPricingPlan === 'mentor' ? 'selected' : ''}`}>
               <h3>👨‍🏫 Mentor-Led Plan</h3>
               <div className="price">
-                <span className="original-price">₹{program.pricing && program.pricing.mentor ? program.pricing.mentor.originalPrice : "29,999"}</span>
-                <span className="current-price">₹{program.pricing && program.pricing.mentor ? program.pricing.mentor.currentPrice : "24,999"}</span>
+                <span className="original-price">₹7,499</span>
+                <span className="current-price">₹4,999</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
               <button 
@@ -410,45 +411,41 @@ function ProgramDetail({ programsData }) {
               </button>
               <ul className="plan-features">
                 <li>
-                  <span className="feature-text">🎥 Recorded Lectures</span>
-                  <span className="feature-icon check">✓</span>
-                </li>
-                <li>
                   <span className="feature-text">💡 Real-Time Projects (Guided with mentor feedback)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
                   <span className="feature-text">🕒 Live Sessions - 24hrs+</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
                   <span className="feature-text">❓ One-on-One Doubt Sessions</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">📜 Certifications (Industry Certified)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-text">🏆 Certifications (Industry Certified)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">👨‍💼 Mentor Support</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-text">🏅 Mentor Support</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🎯 Placement Guidance (Resume & Mock Interviews)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-text">🚀 Placement Guidance (Resume & Mock Interviews)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🧪 Interview Assistance</span>
-                  <span className="feature-icon">✗</span>
+                  <span className="feature-text">🤝 Interview Assistance</span>
+                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
                 </li>
               </ul>
             </div>
             
             <div className={`pricing-card ${selectedPricingPlan === 'self' ? 'selected' : ''}`}>
-              <h3>🧭 Self-Paced Plan</h3>
+              <h3>⏱️ Self-Paced Plan</h3>
               <div className="price">
-                <span className="original-price">₹{program.pricing && program.pricing.self ? program.pricing.self.originalPrice : "19,999"}</span>
-                <span className="current-price">₹{program.pricing && program.pricing.self ? program.pricing.self.currentPrice : "14,999"}</span>
+                <span className="original-price">₹4,999</span>
+                <span className="current-price">₹3,499</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
               <button 
@@ -459,49 +456,41 @@ function ProgramDetail({ programsData }) {
               </button>
               <ul className="plan-features">
                 <li>
-                  <span className="feature-text">🎥 Recorded Lectures</span>
-                  <span className="feature-icon check">✓</span>
-                </li>
-                <li>
                   <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
                   <span className="feature-text">🕒 Live Sessions - 16hrs+</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
                   <span className="feature-text">❓ One-on-One Doubt Sessions</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">📜 Certifications (Mentor Certified)</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-text">🏆 Certifications (Mentor Certified)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">👨‍💼 Mentor Support</span>
-                  <span className="feature-icon check">✓</span>
+                  <span className="feature-text">🏅 Mentor Support</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🎯 Placement Guidance</span>
-                  <span className="feature-icon">✗</span>
+                  <span className="feature-text">🚀 Placement Guidance</span>
+                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🧪 Interview Assistance</span>
-                  <span className="feature-icon">✗</span>
+                  <span className="feature-text">🤝 Interview Assistance</span>
+                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
                 </li>
               </ul>
             </div>
-          </div>
-          
-          <div className="enroll-cta">
-            <button className="cta-button primary">Enroll Now in {program.title}</button>
           </div>
         </div>
       </section>
 
       {/* Related Programs */}
-      <section className="related-programs section-animate">
+      <section className="related-programs">
         <div className="container">
           <h2>Related Programs</h2>
           <div className="programs-grid">

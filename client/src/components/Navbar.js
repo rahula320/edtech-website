@@ -1,61 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [programsDropdownOpen, setProgramsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const timeoutRef = useRef(null);
 
+  // Handle hover events for desktop dropdown
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setProgramsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setProgramsDropdownOpen(false);
+    }, 300); // Small delay to prevent accidental closes
+  };
+
+  // Toggle for mobile menu
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  // Toggle for mobile dropdown (remains click-based)
   const toggleProgramsDropdown = () => {
     setProgramsDropdownOpen(!programsDropdownOpen);
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setProgramsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   // Programs categorized by domains
   const programCategories = [
     {
-      title: "Technology & Data",
+      title: "Computer Science",
       icon: "fas fa-laptop-code",
       programs: [
-        { name: "Data Science", icon: "fas fa-chart-bar", path: "/programs/data-science" },
+        { name: "Data Science & Analytics", icon: "fas fa-chart-bar", path: "/programs/data-science" },
         { name: "Artificial Intelligence", icon: "fas fa-robot", path: "/programs/artificial-intelligence" },
-        { name: "Machine Learning with Python", icon: "fas fa-brain", path: "/programs/machine-learning" }
-      ]
-    },
-    {
-      title: "Engineering & Computing",
-      icon: "fas fa-microchip",
-      programs: [
+        { name: "Machine Learning with Python", icon: "fas fa-brain", path: "/programs/machine-learning" },
         { name: "Cloud Computing", icon: "fas fa-cloud", path: "/programs/cloud-computing" },
         { name: "Web Development", icon: "fas fa-code", path: "/programs/web-development" },
+        { name: "Cyber Security", icon: "fas fa-shield-alt", path: "/programs/cyber-security" },
+        { name: "DevOps", icon: "fas fa-cogs", path: "/programs/devops" },
+        { name: "Android Development", icon: "fas fa-mobile-alt", path: "/programs/android-development" },
+        { name: "iOS Development", icon: "fab fa-apple", path: "/programs/ios-development" }
+      ]
+    },
+    {
+      title: "Electronics",
+      icon: "fas fa-microchip",
+      programs: [
         { name: "Embedded Systems", icon: "fas fa-microchip", path: "/programs/embedded-systems" },
-        { name: "Internet of Things", icon: "fas fa-network-wired", path: "/programs/iot" }
+        { name: "Internet of Things (IoT)", icon: "fas fa-network-wired", path: "/programs/iot" }
       ]
     },
     {
-      title: "Design & Creativity",
-      icon: "fas fa-pencil-ruler",
+      title: "Civil/Mechanical",
+      icon: "fas fa-drafting-compass",
       programs: [
-        { name: "AutoCAD Designing", icon: "fas fa-drafting-compass", path: "/programs/autocad" },
-        { name: "Construction Planning", icon: "fas fa-hard-hat", path: "/programs/construction" }
-      ]
-    },
-    {
-      title: "Business & Finance",
-      icon: "fas fa-briefcase",
-      programs: [
-        { name: "International Business Management", icon: "fas fa-globe", path: "/programs/business-management" },
-        { name: "Stock Market & Cryptocurrency", icon: "fas fa-chart-line", path: "/programs/stock-market" }
-      ]
-    },
-    {
-      title: "Security & Protection",
-      icon: "fas fa-shield-alt",
-      programs: [
-        { name: "Cyber Security", icon: "fas fa-shield-alt", path: "/programs/cyber-security" }
+        { name: "AutoCAD Designing", icon: "fas fa-drafting-compass", path: "/programs/autocad" }
       ]
     }
   ];
@@ -79,58 +108,57 @@ function Navbar() {
       <div className="navbar-links">
         <Link to="/"><i className="fas fa-home"></i> Home</Link>
         
-        <div className="dropdown-container">
-          <button className="dropdown-toggle" onClick={toggleProgramsDropdown}>
-            <i className="fas fa-laptop-code"></i> Programs <i className="fas fa-chevron-down"></i>
-          </button>
+        <div 
+          className="dropdown-container" 
+          ref={dropdownRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className={`dropdown-toggle ${programsDropdownOpen ? 'active' : ''}`}>
+            <i className="fas fa-laptop-code"></i> Programs <i className={`fas fa-chevron-down arrow ${programsDropdownOpen ? 'rotated' : ''}`}></i>
+          </div>
           
-          {programsDropdownOpen && (
-            <div className="mega-dropdown">
-              <div className="mega-dropdown-content">
-                <div className="mega-dropdown-grid">
-                  {programCategories.map((category, idx) => (
-                    <div className="dropdown-category" key={idx}>
-                      <h4 className="category-title">
-                        <i className={category.icon}></i> {category.title}
-                      </h4>
-                      <ul className="category-programs">
-                        {category.programs.map((program, progIdx) => (
-                          <li key={progIdx}>
-                            <Link to={program.path} onClick={() => setProgramsDropdownOpen(false)}>
-                              <i className={program.icon}></i> {program.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="featured-program">
-                  <h4>Featured Program</h4>
-                  <Link to={featuredProgram.path} onClick={() => setProgramsDropdownOpen(false)} className="featured-program-link">
-                    <div className="featured-program-icon">
-                      <i className={featuredProgram.icon}></i>
-                    </div>
-                    <div className="featured-program-info">
-                      <h5>{featuredProgram.title}</h5>
-                      <p>{featuredProgram.description}</p>
-                    </div>
-                  </Link>
-                </div>
+          <div className={`mega-dropdown ${programsDropdownOpen ? 'open' : ''}`}>
+            <div className="mega-dropdown-content">
+              <div className="mega-dropdown-grid">
+                {programCategories.map((category, idx) => (
+                  <div className="dropdown-category" key={idx}>
+                    <h4 className="category-title">
+                      <i className={category.icon}></i> {category.title}
+                    </h4>
+                    <ul className="category-programs">
+                      {category.programs.map((program, progIdx) => (
+                        <li key={progIdx}>
+                          <Link to={program.path} className="program-link">
+                            <i className={program.icon}></i> {program.name}
+                            <span className="hover-indicator"></span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="featured-program">
+                <h4>Featured Program</h4>
+                <Link to={featuredProgram.path} className="featured-program-link">
+                  <div className="featured-program-icon">
+                    <i className={featuredProgram.icon}></i>
+                  </div>
+                  <div className="featured-program-info">
+                    <h5>{featuredProgram.title}</h5>
+                    <p>{featuredProgram.description}</p>
+                  </div>
+                </Link>
               </div>
             </div>
-          )}
+          </div>
         </div>
         
         <Link to="/about"><i className="fas fa-info-circle"></i> About</Link>
         <Link to="/support"><i className="fas fa-headset"></i> Support</Link>
         <Link to="/contact"><i className="fas fa-envelope"></i> Contact</Link>
-      </div>
-      
-      <div className="navbar-auth">
-        <Link to="/login" className="login-btn"><i className="fas fa-sign-in-alt"></i> Login</Link>
-        <Link to="/register" className="register-btn"><i className="fas fa-user-plus"></i> Register</Link>
       </div>
       
       <button className="menu-button" onClick={toggleMobileMenu}>
@@ -191,15 +219,6 @@ function Navbar() {
             <Link to="/about" onClick={toggleMobileMenu}><i className="fas fa-info-circle"></i> About</Link>
             <Link to="/support" onClick={toggleMobileMenu}><i className="fas fa-headset"></i> Support</Link>
             <Link to="/contact" onClick={toggleMobileMenu}><i className="fas fa-envelope"></i> Contact</Link>
-          </div>
-          
-          <div className="navbar-mobile-auth">
-            <Link to="/login" className="login-btn" onClick={toggleMobileMenu}>
-              <i className="fas fa-sign-in-alt"></i> Login
-            </Link>
-            <Link to="/register" className="register-btn" onClick={toggleMobileMenu}>
-              <i className="fas fa-user-plus"></i> Register
-            </Link>
           </div>
         </div>
       )}
