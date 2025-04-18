@@ -1,85 +1,136 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Careers.css';
 
 function Careers() {
-  // Sample job listings
-  const jobListings = [
-    {
-      id: 1,
-      title: "Senior Data Science Instructor",
-      department: "Data Science",
-      location: "Remote / Mumbai",
-      type: "Full-time",
-      description: "We're looking for an experienced Data Science professional to join our instructor team. The ideal candidate will have industry experience and a passion for teaching.",
-      requirements: [
-        "5+ years of experience in Data Science or related field",
-        "Proven experience with Python, R, and machine learning frameworks",
-        "Previous teaching or mentoring experience",
-        "Excellent communication and presentation skills",
-        "Masters or PhD in Computer Science, Statistics, or related field"
-      ]
-    },
-    {
-      id: 2,
-      title: "Web Development Mentor",
-      department: "Web Development",
-      location: "Remote / Bangalore",
-      type: "Part-time",
-      description: "Join our mentorship team to guide students through their web development journey. You'll provide code reviews, feedback, and 1:1 mentoring sessions.",
-      requirements: [
-        "3+ years of professional web development experience",
-        "Strong knowledge of modern JavaScript, React, and Node.js",
-        "Experience mentoring junior developers",
-        "Excellent communication and interpersonal skills",
-        "Patience and enthusiasm for helping others learn"
-      ]
-    },
-    {
-      id: 3,
-      title: "Curriculum Developer - Cloud Computing",
-      department: "Curriculum",
-      location: "Remote",
-      type: "Full-time",
-      description: "Help us develop comprehensive and industry-relevant cloud computing curriculum. You'll work with our instructional design team to create engaging learning experiences.",
-      requirements: [
-        "4+ years of experience with major cloud platforms (AWS, Azure, GCP)",
-        "Experience with DevOps, Infrastructure as Code, and containerization",
-        "Understanding of instructional design principles",
-        "Clear technical writing skills",
-        "Cloud certifications (AWS, Azure, or GCP) preferred"
-      ]
-    },
-    {
-      id: 4,
-      title: "Student Success Manager",
-      department: "Student Support",
-      location: "Delhi",
-      type: "Full-time",
-      description: "Ensure our students have a successful learning journey by providing guidance, monitoring progress, and implementing retention strategies.",
-      requirements: [
-        "2+ years in education, customer success, or related field",
-        "Strong interpersonal and communication skills",
-        "Data-driven approach to problem-solving",
-        "Ability to work with diverse student populations",
-        "Background in technical education is a plus"
-      ]
-    },
-    {
-      id: 5,
-      title: "Marketing Specialist - Education",
-      department: "Marketing",
-      location: "Mumbai / Bangalore",
-      type: "Full-time",
-      description: "Join our marketing team to help reach and engage prospective students. You'll develop and execute campaigns that showcase our educational programs.",
-      requirements: [
-        "3+ years of marketing experience, preferably in education",
-        "Experience with digital marketing, content creation, and social media",
-        "Data analytics skills to measure campaign effectiveness",
-        "Creative thinking and excellent writing abilities",
-        "Understanding of the education technology landscape"
-      ]
-    }
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    designation: '',
+    experience: '',
+    domains: []
+  });
+  
+  // Popup state
+  const [showPopup, setShowPopup] = useState(false);
+  
+  // Form errors
+  const [errors, setErrors] = useState({});
+
+  // Domain options
+  const domainOptions = [
+    { id: 'data-science', label: 'Data Science & Analytics' },
+    { id: 'web-dev', label: 'Web Development' },
+    { id: 'mobile-dev', label: 'Mobile App Development' },
+    { id: 'cloud', label: 'Cloud Computing' },
+    { id: 'ai-ml', label: 'AI & Machine Learning' },
+    { id: 'cyber-security', label: 'Cyber Security' },
+    { id: 'devops', label: 'DevOps' },
+    { id: 'iot', label: 'Internet of Things' },
+    { id: 'blockchain', label: 'Blockchain' }
   ];
+
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+    
+    // Clear error for this field
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: undefined
+      });
+    }
+  };
+
+  // Handle domain checkbox changes
+  const handleDomainChange = (e) => {
+    const { value, checked } = e.target;
+    
+    if (checked) {
+      setFormData({
+        ...formData,
+        domains: [...formData.domains, value]
+      });
+    } else {
+      setFormData({
+        ...formData,
+        domains: formData.domains.filter(domain => domain !== value)
+      });
+    }
+    
+    // Clear domain error if at least one is selected
+    if (errors.domains && checked) {
+      setErrors({
+        ...errors,
+        domains: undefined
+      });
+    }
+  };
+
+  // Validate form
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!/^\d{10}$/.test(formData.phone.replace(/[^0-9]/g, ''))) {
+      newErrors.phone = 'Phone number is invalid';
+    }
+    
+    if (!formData.company.trim()) newErrors.company = 'Company name is required';
+    if (!formData.designation.trim()) newErrors.designation = 'Designation is required';
+    if (formData.domains.length === 0) newErrors.domains = 'Please select at least one domain';
+    
+    return newErrors;
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const formErrors = validateForm();
+    
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
+    
+    // Show success popup
+    setShowPopup(true);
+    
+    // Reset form after 2 seconds
+    setTimeout(() => {
+      setShowPopup(false);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        designation: '',
+        experience: '',
+        domains: []
+      });
+    }, 3000);
+  };
+
+  // Close popup
+  const closePopup = () => {
+    setShowPopup(false);
+  };
 
   return (
     <div className="careers-page">
@@ -118,56 +169,122 @@ function Careers() {
         </div>
       </section>
 
-      <section className="open-positions">
+      <section className="mentor-application">
         <div className="container">
-          <h2>Open Positions</h2>
-          <div className="job-filters">
-            <select className="filter-select">
-              <option value="">All Departments</option>
-              <option value="Data Science">Data Science</option>
-              <option value="Web Development">Web Development</option>
-              <option value="Curriculum">Curriculum</option>
-              <option value="Student Support">Student Support</option>
-              <option value="Marketing">Marketing</option>
-            </select>
-            <select className="filter-select">
-              <option value="">All Locations</option>
-              <option value="Remote">Remote</option>
-              <option value="Mumbai">Mumbai</option>
-              <option value="Bangalore">Bangalore</option>
-              <option value="Delhi">Delhi</option>
-            </select>
-            <select className="filter-select">
-              <option value="">All Types</option>
-              <option value="Full-time">Full-time</option>
-              <option value="Part-time">Part-time</option>
-              <option value="Contract">Contract</option>
-            </select>
+          <div className="section-header">
+            <h2>Join Us as a Mentor</h2>
+            <p>Share your expertise and help shape the next generation of tech professionals. Apply to become a mentor in your area of expertise.</p>
           </div>
-
-          <div className="job-listings">
-            {jobListings.map(job => (
-              <div className="job-card" key={job.id}>
-                <div className="job-header">
-                  <h3>{job.title}</h3>
-                  <span className="job-type">{job.type}</span>
+          
+          <div className="application-form-container">
+            <form className="mentor-form" onSubmit={handleSubmit}>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="name">Full Name *</label>
+                  <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className={errors.name ? 'error' : ''}
+                  />
+                  {errors.name && <span className="error-message">{errors.name}</span>}
                 </div>
-                <div className="job-meta">
-                  <span><i className="fas fa-building"></i> {job.department}</span>
-                  <span><i className="fas fa-map-marker-alt"></i> {job.location}</span>
+                
+                <div className="form-group">
+                  <label htmlFor="email">Email Address *</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className={errors.email ? 'error' : ''}
+                  />
+                  {errors.email && <span className="error-message">{errors.email}</span>}
                 </div>
-                <p className="job-description">{job.description}</p>
-                <div className="job-requirements">
-                  <h4>Requirements:</h4>
-                  <ul>
-                    {job.requirements.map((req, index) => (
-                      <li key={index}>{req}</li>
-                    ))}
-                  </ul>
-                </div>
-                <button className="apply-button">Apply Now</button>
               </div>
-            ))}
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="phone">Phone Number *</label>
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className={errors.phone ? 'error' : ''}
+                  />
+                  {errors.phone && <span className="error-message">{errors.phone}</span>}
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="company">Company Name *</label>
+                  <input 
+                    type="text" 
+                    id="company" 
+                    name="company"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    className={errors.company ? 'error' : ''}
+                  />
+                  {errors.company && <span className="error-message">{errors.company}</span>}
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="designation">Current Designation *</label>
+                  <input 
+                    type="text" 
+                    id="designation" 
+                    name="designation"
+                    value={formData.designation}
+                    onChange={handleInputChange}
+                    className={errors.designation ? 'error' : ''}
+                  />
+                  {errors.designation && <span className="error-message">{errors.designation}</span>}
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="experience">Years of Experience</label>
+                  <input 
+                    type="number" 
+                    id="experience" 
+                    name="experience"
+                    min="0"
+                    value={formData.experience}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group domains-group">
+                <label>Select Domain(s) *</label>
+                <p className="domains-hint">Select at least one domain where you'd like to mentor students</p>
+                
+                <div className="domains-grid">
+                  {domainOptions.map(domain => (
+                    <div className="domain-checkbox" key={domain.id}>
+                      <input 
+                        type="checkbox" 
+                        id={domain.id} 
+                        name="domains" 
+                        value={domain.id}
+                        checked={formData.domains.includes(domain.id)}
+                        onChange={handleDomainChange}
+                      />
+                      <label htmlFor={domain.id}>{domain.label}</label>
+                    </div>
+                  ))}
+                </div>
+                {errors.domains && <span className="error-message domains-error">{errors.domains}</span>}
+              </div>
+              
+              <button type="submit" className="apply-button">Apply Now</button>
+            </form>
           </div>
         </div>
       </section>
@@ -179,6 +296,20 @@ function Careers() {
           <button className="cta-button">Submit Your Resume</button>
         </div>
       </section>
+      
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <div className="popup-header">
+              <h3><i className="fas fa-check-circle"></i> Application Submitted</h3>
+              <button className="close-popup" onClick={closePopup}><i className="fas fa-times"></i></button>
+            </div>
+            <div className="popup-content">
+              <p>Thank you for your interest in becoming a mentor! Your application has been submitted to our HR department. We will review your information and get back to you soon.</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
