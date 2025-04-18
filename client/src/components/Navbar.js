@@ -157,8 +157,8 @@ function Navbar() {
         </div>
         
         <Link to="/about"><i className="fas fa-info-circle"></i> About</Link>
-        <Link to="/support"><i className="fas fa-headset"></i> Support</Link>
-        <Link to="/contact"><i className="fas fa-envelope"></i> Contact</Link>
+        <Link to="/careers"><i className="fas fa-briefcase"></i> Careers</Link>
+        <Link to="/portal"><i className="fas fa-user-graduate"></i> Student Portal</Link>
       </div>
       
       <button className="menu-button" onClick={toggleMobileMenu}>
@@ -217,8 +217,8 @@ function Navbar() {
             </div>
             
             <Link to="/about" onClick={toggleMobileMenu}><i className="fas fa-info-circle"></i> About</Link>
-            <Link to="/support" onClick={toggleMobileMenu}><i className="fas fa-headset"></i> Support</Link>
-            <Link to="/contact" onClick={toggleMobileMenu}><i className="fas fa-envelope"></i> Contact</Link>
+            <Link to="/careers" onClick={toggleMobileMenu}><i className="fas fa-briefcase"></i> Careers</Link>
+            <Link to="/portal" onClick={toggleMobileMenu}><i className="fas fa-user-graduate"></i> Student Portal</Link>
           </div>
         </div>
       )}
