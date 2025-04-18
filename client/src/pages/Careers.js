@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Careers.css';
 
 function Careers() {
@@ -13,24 +13,45 @@ function Careers() {
     domains: []
   });
   
+  // Dropdown state
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  
   // Popup state
   const [showPopup, setShowPopup] = useState(false);
   
   // Form errors
   const [errors, setErrors] = useState({});
 
-  // Domain options
+  // Domain options - updated to match all programs
   const domainOptions = [
     { id: 'data-science', label: 'Data Science & Analytics' },
-    { id: 'web-dev', label: 'Web Development' },
-    { id: 'mobile-dev', label: 'Mobile App Development' },
-    { id: 'cloud', label: 'Cloud Computing' },
-    { id: 'ai-ml', label: 'AI & Machine Learning' },
+    { id: 'artificial-intelligence', label: 'Artificial Intelligence' },
+    { id: 'machine-learning', label: 'Machine Learning with Python' },
+    { id: 'cloud-computing', label: 'Cloud Computing' },
+    { id: 'web-development', label: 'Web Development' },
     { id: 'cyber-security', label: 'Cyber Security' },
     { id: 'devops', label: 'DevOps' },
-    { id: 'iot', label: 'Internet of Things' },
-    { id: 'blockchain', label: 'Blockchain' }
+    { id: 'android-development', label: 'Android Development' },
+    { id: 'ios-development', label: 'iOS Development' },
+    { id: 'embedded-systems', label: 'Embedded Systems' },
+    { id: 'iot', label: 'Internet of Things (IoT)' },
+    { id: 'autocad', label: 'AutoCAD Designing' }
   ];
+
+  // Handle click outside dropdown
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -49,28 +70,42 @@ function Careers() {
     }
   };
 
-  // Handle domain checkbox changes
-  const handleDomainChange = (e) => {
-    const { value, checked } = e.target;
-    
-    if (checked) {
+  // Toggle domain selection
+  const toggleDomain = (domainId) => {
+    if (formData.domains.includes(domainId)) {
       setFormData({
         ...formData,
-        domains: [...formData.domains, value]
+        domains: formData.domains.filter(d => d !== domainId)
       });
     } else {
       setFormData({
         ...formData,
-        domains: formData.domains.filter(domain => domain !== value)
+        domains: [...formData.domains, domainId]
       });
+      
+      // Clear domain error if at least one is selected
+      if (errors.domains) {
+        setErrors({
+          ...errors,
+          domains: undefined
+        });
+      }
     }
-    
-    // Clear domain error if at least one is selected
-    if (errors.domains && checked) {
-      setErrors({
-        ...errors,
-        domains: undefined
-      });
+  };
+
+  // Toggle dropdown
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  // Get selected domains text
+  const getSelectedDomainsText = () => {
+    if (formData.domains.length === 0) {
+      return 'Select domains (at least one)';
+    } else if (formData.domains.length === 1) {
+      return domainOptions.find(d => d.id === formData.domains[0]).label;
+    } else {
+      return `${formData.domains.length} domains selected`;
     }
   };
 
@@ -112,7 +147,7 @@ function Careers() {
     // Show success popup
     setShowPopup(true);
     
-    // Reset form after 2 seconds
+    // Reset form after 3 seconds
     setTimeout(() => {
       setShowPopup(false);
       setFormData({
@@ -188,6 +223,7 @@ function Careers() {
                     value={formData.name}
                     onChange={handleInputChange}
                     className={errors.name ? 'error' : ''}
+                    placeholder="Enter your full name"
                   />
                   {errors.name && <span className="error-message">{errors.name}</span>}
                 </div>
@@ -201,6 +237,7 @@ function Careers() {
                     value={formData.email}
                     onChange={handleInputChange}
                     className={errors.email ? 'error' : ''}
+                    placeholder="Enter your email address"
                   />
                   {errors.email && <span className="error-message">{errors.email}</span>}
                 </div>
@@ -216,6 +253,7 @@ function Careers() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     className={errors.phone ? 'error' : ''}
+                    placeholder="Enter your phone number"
                   />
                   {errors.phone && <span className="error-message">{errors.phone}</span>}
                 </div>
@@ -229,6 +267,7 @@ function Careers() {
                     value={formData.company}
                     onChange={handleInputChange}
                     className={errors.company ? 'error' : ''}
+                    placeholder="Enter your company name"
                   />
                   {errors.company && <span className="error-message">{errors.company}</span>}
                 </div>
@@ -244,6 +283,7 @@ function Careers() {
                     value={formData.designation}
                     onChange={handleInputChange}
                     className={errors.designation ? 'error' : ''}
+                    placeholder="Enter your current job title"
                   />
                   {errors.designation && <span className="error-message">{errors.designation}</span>}
                 </div>
@@ -257,6 +297,7 @@ function Careers() {
                     min="0"
                     value={formData.experience}
                     onChange={handleInputChange}
+                    placeholder="Optional"
                   />
                 </div>
               </div>
@@ -265,20 +306,33 @@ function Careers() {
                 <label>Select Domain(s) *</label>
                 <p className="domains-hint">Select at least one domain where you'd like to mentor students</p>
                 
-                <div className="domains-grid">
-                  {domainOptions.map(domain => (
-                    <div className="domain-checkbox" key={domain.id}>
-                      <input 
-                        type="checkbox" 
-                        id={domain.id} 
-                        name="domains" 
-                        value={domain.id}
-                        checked={formData.domains.includes(domain.id)}
-                        onChange={handleDomainChange}
-                      />
-                      <label htmlFor={domain.id}>{domain.label}</label>
+                <div className="domains-dropdown-container" ref={dropdownRef}>
+                  <div 
+                    className={`domains-dropdown-header ${errors.domains ? 'error' : ''}`}
+                    onClick={toggleDropdown}
+                  >
+                    <span>{getSelectedDomainsText()}</span>
+                    <i className={`fas fa-chevron-${isDropdownOpen ? 'up' : 'down'}`}></i>
+                  </div>
+                  
+                  {isDropdownOpen && (
+                    <div className="domains-dropdown-list">
+                      {domainOptions.map(domain => (
+                        <div 
+                          key={domain.id} 
+                          className={`domain-option ${formData.domains.includes(domain.id) ? 'selected' : ''}`}
+                          onClick={() => toggleDomain(domain.id)}
+                        >
+                          {formData.domains.includes(domain.id) ? (
+                            <i className="fas fa-check-square"></i>
+                          ) : (
+                            <i className="far fa-square"></i>
+                          )}
+                          <span>{domain.label}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
                 {errors.domains && <span className="error-message domains-error">{errors.domains}</span>}
               </div>
