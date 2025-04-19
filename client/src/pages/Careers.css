@@ -730,4 +730,262 @@
   background-color: #d44133;
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(231, 77, 61, 0.3);
+}
+
+/* Add styles for Business Development Associate Application */
+.bda-application {
+  padding: 5rem 0;
+  background-color: #fff;
+  border-top: 1px solid #eaeef2;
+}
+
+.bda-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+/* Textarea styles */
+.form-group textarea {
+  padding: 0.9rem 1.2rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  width: 100%;
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+}
+
+.form-group textarea:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* File input styles */
+.file-input {
+  padding: 0.9rem 1.2rem;
+  border: 1.5px dashed #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  width: 100%;
+  cursor: pointer;
+}
+
+.file-input:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.file-input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.file-format {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: normal;
+}
+
+.file-selected {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #f0f9ff;
+  border-radius: 6px;
+  color: #0369a1;
+  font-size: 0.9rem;
+}
+
+.file-selected i {
+  font-size: 1.1rem;
+  color: #0ea5e9;
+}
+
+/* Skills section is similar to domains */
+.skills-group {
+  margin-top: 1rem;
+}
+
+/* Add more spacing between sections */
+.bda-application .section-header {
+  margin-bottom: 3.5rem;
+}
+
+/* Make the bda form container stand out with a different accent color */
+.bda-application .application-form-container::before {
+  background: linear-gradient(to right, #0ea5e9, #38bdf8, #7dd3fc);
+}
+
+/* Override the existing application-form-container styles for the BDA section */
+.bda-application .application-form-container {
+  background-color: white;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+}
+
+/* Make responsive */
+@media (max-width: 768px) {
+  .bda-application {
+    padding: 4rem 0;
+  }
+  
+  .file-input {
+    font-size: 0.9rem;
+  }
+  
+  .form-group textarea {
+    min-height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bda-application {
+    padding: 3rem 0;
+  }
+  
+  .form-group textarea {
+    padding: 0.8rem 1rem;
+  }
+  
+  .file-selected {
+    font-size: 0.8rem;
+  }
+}
+
+/* Enhanced resume upload section */
+.resume-upload {
+  margin-top: 1rem;
+}
+
+.file-format-note {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.resume-upload-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 2rem;
+  background-color: #f8fafc;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.resume-upload-container:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.resume-upload-container input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.resume-upload-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.resume-upload-icon i {
+  font-size: 2.5rem;
+  color: #0ea5e9;
+}
+
+.resume-upload-icon span {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.file-selected {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1.25rem;
+  background-color: #f0f9ff;
+  border-radius: 8px;
+  color: #0369a1;
+  font-size: 0.95rem;
+  border-left: 3px solid #0ea5e9;
+}
+
+.file-selected i {
+  font-size: 1.25rem;
+  color: #0ea5e9;
+}
+
+.file-selected .filename {
+  font-weight: 500;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-selected .filesize {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+/* Error state for resume upload */
+.resume-upload-container.error {
+  border-color: #e11d48;
+  background-color: #fff5f5;
+}
+
+/* Make responsive */
+@media (max-width: 768px) {
+  .resume-upload-container {
+    padding: 1.5rem;
+  }
+  
+  .resume-upload-icon i {
+    font-size: 2rem;
+  }
+  
+  .resume-upload-icon span {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .resume-upload-container {
+    padding: 1.25rem;
+  }
+  
+  .file-selected {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .file-selected i {
+    font-size: 1.1rem;
+  }
 } 

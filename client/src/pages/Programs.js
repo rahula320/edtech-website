@@ -165,7 +165,7 @@ const Programs = () => {
               visiblePrograms.map((program, index) => (
                 <div key={index} className="program-card">
                   <div className="program-image">
-                    <img src={program.image} alt={program.title} />
+                    <img src={program.image} alt={program.title} loading="lazy" />
                     <div className="program-tag">{program.category}</div>
                   </div>
                   <div className="program-content">
@@ -197,6 +197,15 @@ const Programs = () => {
               <div className="no-results">
                 <h3>No programs found</h3>
                 <p>Try adjusting your search criteria or browse all programs.</p>
+                <button 
+                  className="reset-search-button"
+                  onClick={() => {
+                    setSearchTerm('');
+                    setActiveCategory('all');
+                  }}
+                >
+                  <i className="fas fa-sync-alt"></i> Reset Filters
+                </button>
               </div>
             )}
           </div>
@@ -247,14 +256,38 @@ const Programs = () => {
         </div>
       </section>
 
+      {/* Stats Section */}
+      <section className="stats-section">
+        <div className="container">
+          <div className="stats-grid">
+            <div className="stat-item">
+              <div className="stat-number">5000+</div>
+              <div className="stat-label">Successful Students</div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-number">50+</div>
+              <div className="stat-label">Professional Programs</div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-number">100+</div>
+              <div className="stat-label">Industry Experts</div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-number">92%</div>
+              <div className="stat-label">Employment Rate</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="cta-section">
         <div className="container">
           <div className="cta-content">
-            <h2>Ready to Advance Your Career?</h2>
-            <p>Join thousands of students who have transformed their careers through our programs. Register now and take the first step toward your future in tech.</p>
+            <h2>Ready to Start Your Learning Journey?</h2>
+            <p>Join thousands of students who have already taken the step toward a brighter future.</p>
             <Link to="/register" className="cta-button">
-              Register Now <i className="fas fa-graduation-cap"></i>
+              Get Started Today <i className="fas fa-arrow-right"></i>
             </Link>
           </div>
         </div>

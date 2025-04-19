@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './Careers.css';
 
 function Careers() {
-  // Form state
+  // Form state for mentor application
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,17 +13,33 @@ function Careers() {
     domains: []
   });
   
+  // Form state for business development associate application
+  const [bdaFormData, setBdaFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    education: '',
+    experience: '',
+    skills: [],
+    portfolio: '',
+    coverletter: '',
+    resume: null
+  });
+  
   // Input focus states
   const [focusedInput, setFocusedInput] = useState(null);
   
   // Popup state
   const [showPopup, setShowPopup] = useState(false);
+  const [showBdaPopup, setShowBdaPopup] = useState(false);
   
   // Form errors
   const [errors, setErrors] = useState({});
+  const [bdaErrors, setBdaErrors] = useState({});
 
   // Form submission status
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isBdaSubmitting, setIsBdaSubmitting] = useState(false);
 
   // Domain options - updated to match all programs
   const domainOptions = [
@@ -51,7 +67,7 @@ function Careers() {
     setFocusedInput(null);
   };
 
-  // Handle input changes
+  // Handle input changes for mentor form
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -65,6 +81,53 @@ function Careers() {
         ...errors,
         [name]: undefined
       });
+    }
+  };
+  
+  // Handle input changes for BDA form
+  const handleBdaInputChange = (e) => {
+    const { name, value } = e.target;
+    setBdaFormData({
+      ...bdaFormData,
+      [name]: value
+    });
+    
+    // Clear error for this field
+    if (bdaErrors[name]) {
+      setBdaErrors({
+        ...bdaErrors,
+        [name]: undefined
+      });
+    }
+  };
+  
+  // Handle file input change for BDA form
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    
+    if (files && files[0]) {
+      // Validate file type (PDF only)
+      const fileType = files[0].type;
+      if (fileType !== 'application/pdf') {
+        setBdaErrors({
+          ...bdaErrors,
+          resume: 'Only PDF files are accepted'
+        });
+        return;
+      }
+      
+      setBdaFormData({
+        ...bdaFormData,
+        [name]: files[0]
+      });
+      
+      // Clear error for this field
+      if (bdaErrors[name]) {
+        setBdaErrors({
+          ...bdaErrors,
+          [name]: undefined
+        });
+      }
     }
   };
 
@@ -96,7 +159,7 @@ function Careers() {
     return formData[name] && formData[name].trim() !== '';
   };
 
-  // Validate form
+  // Validate mentor form
   const validateForm = () => {
     const newErrors = {};
     
@@ -119,8 +182,31 @@ function Careers() {
     
     return newErrors;
   };
+  
+  // Validate BDA form
+  const validateBdaForm = () => {
+    const newErrors = {};
+    
+    if (!bdaFormData.fullName.trim()) newErrors.fullName = 'Full name is required';
+    if (!bdaFormData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(bdaFormData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    
+    if (!bdaFormData.phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!/^\d{10}$/.test(bdaFormData.phone.replace(/[^0-9]/g, ''))) {
+      newErrors.phone = 'Phone number is invalid';
+    }
+    
+    if (!bdaFormData.education.trim()) newErrors.education = 'Education details are required';
+    if (!bdaFormData.resume) newErrors.resume = 'Resume is required';
+    
+    return newErrors;
+  };
 
-  // Handle form submission
+  // Handle mentor form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -166,10 +252,54 @@ function Careers() {
       }, 3000);
     }, 800);
   };
+  
+  // Handle BDA form submission
+  const handleBdaSubmit = (e) => {
+    e.preventDefault();
+    
+    const formErrors = validateBdaForm();
+    
+    if (Object.keys(formErrors).length > 0) {
+      setBdaErrors(formErrors);
+      return;
+    }
+    
+    // Set submitting state
+    setIsBdaSubmitting(true);
+    
+    // Simulate API call with timeout
+    setTimeout(() => {
+      // In a real app, this would be a FormData object to handle file uploads
+      // and an actual API call to the backend
+      
+      // Show success popup
+      setShowBdaPopup(true);
+      setIsBdaSubmitting(false);
+      
+      // Reset form after popup is closed
+      setTimeout(() => {
+        setShowBdaPopup(false);
+        setBdaFormData({
+          fullName: '',
+          email: '',
+          phone: '',
+          education: '',
+          experience: '',
+          portfolio: '',
+          resume: null
+        });
+      }, 3000);
+    }, 800);
+  };
 
   // Close popup
   const closePopup = () => {
     setShowPopup(false);
+  };
+  
+  // Close BDA popup
+  const closeBdaPopup = () => {
+    setShowBdaPopup(false);
   };
 
   return (
@@ -379,6 +509,175 @@ function Careers() {
           </div>
         </div>
       </section>
+      
+      {/* Business Development Associate Application */}
+      <section className="bda-application">
+        <div className="container">
+          <div className="section-header">
+            <h2>Apply for Business Development Associate</h2>
+            <p>Join our business development team and help us grow by connecting with potential clients, partners, and industry stakeholders. We're looking for motivated individuals with excellent communication skills.</p>
+          </div>
+          
+          <div className="application-form-container">
+            <form className="bda-form" onSubmit={handleBdaSubmit}>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="fullName">
+                    Full Name <span className="required-star">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    id="fullName" 
+                    name="fullName" 
+                    value={bdaFormData.fullName}
+                    onChange={handleBdaInputChange}
+                    onFocus={() => handleFocus('fullName')}
+                    onBlur={handleBlur}
+                    className={bdaErrors.fullName ? 'error' : ''}
+                    placeholder="Enter your full name"
+                  />
+                  {bdaErrors.fullName && <span className="error-message">{bdaErrors.fullName}</span>}
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="bdaEmail">
+                    Email Address <span className="required-star">*</span>
+                  </label>
+                  <input 
+                    type="email" 
+                    id="bdaEmail" 
+                    name="email"
+                    value={bdaFormData.email}
+                    onChange={handleBdaInputChange}
+                    onFocus={() => handleFocus('bdaEmail')}
+                    onBlur={handleBlur}
+                    className={bdaErrors.email ? 'error' : ''}
+                    placeholder="Enter your email address"
+                  />
+                  {bdaErrors.email && <span className="error-message">{bdaErrors.email}</span>}
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="bdaPhone">
+                    Phone Number <span className="required-star">*</span>
+                  </label>
+                  <input 
+                    type="tel" 
+                    id="bdaPhone" 
+                    name="phone"
+                    value={bdaFormData.phone}
+                    onChange={handleBdaInputChange}
+                    onFocus={() => handleFocus('bdaPhone')}
+                    onBlur={handleBlur}
+                    className={bdaErrors.phone ? 'error' : ''}
+                    placeholder="Enter your phone number"
+                  />
+                  {bdaErrors.phone && <span className="error-message">{bdaErrors.phone}</span>}
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="education">
+                    Education <span className="required-star">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    id="education" 
+                    name="education"
+                    value={bdaFormData.education}
+                    onChange={handleBdaInputChange}
+                    onFocus={() => handleFocus('education')}
+                    onBlur={handleBlur}
+                    className={bdaErrors.education ? 'error' : ''}
+                    placeholder="E.g., MBA in Marketing from XYZ University"
+                  />
+                  {bdaErrors.education && <span className="error-message">{bdaErrors.education}</span>}
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="bdaExperience">
+                    Years of Experience in Business Development
+                  </label>
+                  <input 
+                    type="number" 
+                    id="bdaExperience" 
+                    name="experience"
+                    min="0"
+                    value={bdaFormData.experience}
+                    onChange={handleBdaInputChange}
+                    onFocus={() => handleFocus('bdaExperience')}
+                    onBlur={handleBlur}
+                    placeholder="Optional"
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="portfolio">
+                    LinkedIn Profile
+                  </label>
+                  <input 
+                    type="url" 
+                    id="portfolio" 
+                    name="portfolio"
+                    value={bdaFormData.portfolio}
+                    onChange={handleBdaInputChange}
+                    onFocus={() => handleFocus('portfolio')}
+                    onBlur={handleBlur}
+                    placeholder="https://linkedin.com/in/yourprofile"
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group resume-upload">
+                <label htmlFor="resume">
+                  Upload Resume <span className="required-star">*</span>
+                </label>
+                <p className="file-format-note">Please upload your resume in PDF format only. Maximum file size: 5MB</p>
+                
+                <div className="resume-upload-container">
+                  <input 
+                    type="file" 
+                    id="resume" 
+                    name="resume"
+                    onChange={handleFileChange}
+                    accept="application/pdf"
+                    className={`file-input ${bdaErrors.resume ? 'error' : ''}`}
+                  />
+                  <div className="resume-upload-icon">
+                    <i className="fas fa-file-pdf"></i>
+                    <span>Upload PDF</span>
+                  </div>
+                </div>
+                
+                {bdaErrors.resume && <span className="error-message">{bdaErrors.resume}</span>}
+                
+                {bdaFormData.resume && (
+                  <div className="file-selected">
+                    <i className="fas fa-file-pdf"></i> 
+                    <span className="filename">{bdaFormData.resume.name}</span>
+                    <span className="filesize">({(bdaFormData.resume.size / (1024 * 1024)).toFixed(2)} MB)</span>
+                  </div>
+                )}
+              </div>
+              
+              <button 
+                type="submit" 
+                className="apply-button" 
+                disabled={isBdaSubmitting}
+              >
+                {isBdaSubmitting ? (
+                  <><i className="fas fa-spinner fa-spin"></i> Submitting...</>
+                ) : (
+                  'Submit Application'
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
 
       <section className="careers-cta">
         <div className="container">
@@ -397,6 +696,20 @@ function Careers() {
             </div>
             <div className="popup-content">
               <p>Thank you for your interest in becoming a mentor! Your application has been submitted to our HR department. We will review your information and get back to you soon.</p>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {showBdaPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <div className="popup-header">
+              <h3><i className="fas fa-check-circle"></i> Application Submitted</h3>
+              <button className="close-popup" onClick={closeBdaPopup}><i className="fas fa-times"></i></button>
+            </div>
+            <div className="popup-content">
+              <p>Thank you for applying to the Business Development Associate position! We've received your application and will review it shortly. Our recruitment team will contact you regarding the next steps.</p>
             </div>
           </div>
         </div>
