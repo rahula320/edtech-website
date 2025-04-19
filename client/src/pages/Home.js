@@ -23,6 +23,20 @@ const getProgramId = (title) => {
 };
 
 function Home() {
+  // Add window size tracking state
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const isMobile = windowWidth <= 768;
+  
+  // Update window width on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Add scroll reveal effect
   useEffect(() => {
     const animateOnScroll = () => {
@@ -82,27 +96,40 @@ function Home() {
   // Custom carousel state and logic
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlides = 4;
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   
   const nextSlide = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
     setCurrentSlide(current => (current === totalSlides - 1 ? 0 : current + 1));
-  }, [totalSlides]);
+    setTimeout(() => setIsTransitioning(false), 500); // Match this with transition duration
+  }, [isTransitioning, totalSlides]);
   
   const prevSlide = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
     setCurrentSlide(current => (current === 0 ? totalSlides - 1 : current - 1));
-  }, [totalSlides]);
+    setTimeout(() => setIsTransitioning(false), 500); // Match this with transition duration
+  }, [isTransitioning, totalSlides]);
   
   const goToSlide = useCallback((slideIndex) => {
+    if (isTransitioning || slideIndex === currentSlide) return;
+    setIsTransitioning(true);
     setCurrentSlide(slideIndex);
-  }, []);
+    setTimeout(() => setIsTransitioning(false), 500); // Match this with transition duration
+  }, [currentSlide, isTransitioning]);
   
-  // Autoplay effect
+  // Autoplay effect with pause on interaction
   useEffect(() => {
+    if (isPaused) return;
+    
     const interval = setInterval(() => {
       nextSlide();
     }, 5000);
     
     return () => clearInterval(interval);
-  }, [nextSlide]);
+  }, [nextSlide, isPaused]);
 
   // Mobile menu state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -112,27 +139,66 @@ function Home() {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Touch interaction for program carousel
+  // Touch interaction for carousel
   const carouselRef = useRef(null);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
   const [hoveredCard, setHoveredCard] = useState(null);
 
-  // Handle touch start
   const handleTouchStart = (e) => {
     setTouchStart(e.targetTouches[0].clientX);
     setIsPaused(true);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!touchStart) return;
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
     
-    // For manual scroll
-    if (carouselRef.current) {
-      setStartX(e.targetTouches[0].clientX);
-      setScrollLeft(carouselRef.current.scrollLeft);
-      setIsDragging(true);
+    const distance = touchStart - touchEnd;
+    const isSignificantSwipe = Math.abs(distance) > 50; // Minimum distance for a swipe
+    
+    if (isSignificantSwipe) {
+      if (distance > 0) {
+        nextSlide(); // Swipe left -> next slide
+      } else {
+        prevSlide(); // Swipe right -> previous slide
+      }
     }
+    
+    // Resume autoplay after interaction
+    setTimeout(() => {
+      setIsPaused(false);
+    }, 2000);
+    
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (e.key === 'ArrowRight') {
+        nextSlide();
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nextSlide, prevSlide]);
+  
+  // Handle pause on hover
+  const handleCarouselHover = () => {
+    setIsPaused(true);
+  };
+  
+  const handleCarouselLeave = () => {
+    setIsPaused(false);
   };
 
   // Handle card hover
@@ -145,31 +211,6 @@ function Home() {
   const handleCardLeave = () => {
     setIsPaused(false);
     setHoveredCard(null);
-  };
-
-  // Handle touch move
-  const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-    
-    // For manual scroll
-    if (!isDragging || !carouselRef.current) return;
-    const x = e.targetTouches[0].clientX;
-    const distance = startX - x;
-    carouselRef.current.scrollLeft = scrollLeft + distance;
-  };
-
-  // Handle touch end
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    
-    // Resume animation after touch interaction
-    setTimeout(() => {
-      setIsPaused(false);
-    }, 1500);
-    
-    setTouchStart(null);
-    setTouchEnd(null);
-    setIsDragging(false);
   };
 
   // All programs data organized by categories
@@ -423,34 +464,23 @@ function Home() {
       </div>
 
       <section className="hero-carousel">
-        <div className="carousel-container">
+        <div 
+          className={`carousel-container desktop-carousel-override ${isMobile ? 'force-mobile' : ''}`}
+          onMouseEnter={handleCarouselHover}
+          onMouseLeave={handleCarouselLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <div className="carousel-slides" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
             {slides.map((slide, index) => (
-              <div key={index} className={`carousel-slide ${slide.className}`}>
+              <div key={index} className={`carousel-slide ${slide.className}`} aria-hidden={currentSlide !== index}>
                 <div className="hero-content flex-row flex-row-to-column">
                   <div className="hero-text">
                     <h1>{slide.title}</h1>
                     <p>{slide.description}</p>
                     <div className="hero-buttons button-container">
-                      {(slide.primaryButton === "View Programs" || 
-                        slide.secondaryButton === "View Programs" ||
-                        slide.primaryButton === "Explore Programs") ? (
-                        <>
-                          {slide.primaryButton === "View Programs" || slide.primaryButton === "Explore Programs" ? 
-                            <Link to="/courses" className="cta-button primary">{slide.primaryButton}</Link> : 
-                            <button className="cta-button primary">{slide.primaryButton}</button>
-                          }
-                          {slide.secondaryButton === "View Programs" ? 
-                            <Link to="/courses" className="cta-button secondary">{slide.secondaryButton}</Link> : 
-                            <button className="cta-button secondary">{slide.secondaryButton}</button>
-                          }
-                        </>
-                      ) : (
-                        <>
-                          <button className="cta-button primary">{slide.primaryButton}</button>
-                          <button className="cta-button secondary">{slide.secondaryButton}</button>
-                        </>
-                      )}
+                      <Link to="/programs" className="cta-button primary">Explore Programs</Link>
                     </div>
                     <div className="hero-stats">
                       {slide.stats.map((stat, statIndex) => (
@@ -465,7 +495,7 @@ function Home() {
                     <img 
                       src={slide.image} 
                       alt={slide.imageAlt}
-                      loading="lazy"
+                      loading={index === 0 ? "eager" : "lazy"}
                       width="400"
                       height="300"
                     />
@@ -475,10 +505,20 @@ function Home() {
             ))}
           </div>
           
-          <button className="carousel-arrow prev" onClick={prevSlide} aria-label="Previous slide">
+          <button 
+            className="carousel-arrow prev" 
+            onClick={prevSlide} 
+            aria-label="Previous slide"
+            disabled={isTransitioning}
+          >
             <i className="fas fa-chevron-left"></i>
           </button>
-          <button className="carousel-arrow next" onClick={nextSlide} aria-label="Next slide">
+          <button 
+            className="carousel-arrow next" 
+            onClick={nextSlide} 
+            aria-label="Next slide"
+            disabled={isTransitioning}
+          >
             <i className="fas fa-chevron-right"></i>
           </button>
           
@@ -489,6 +529,7 @@ function Home() {
                 className={`carousel-dot ${index === currentSlide ? 'active' : ''}`}
                 onClick={() => goToSlide(index)}
                 aria-label={`Go to slide ${index + 1}`}
+                aria-current={index === currentSlide ? "true" : "false"}
               ></button>
             ))}
           </div>
@@ -933,8 +974,20 @@ function Home() {
                 </div>
               </div>
             </div>
+            <div className="story-card">
+              <div className="story-image">
+                <img src="https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="Student portrait" />
+              </div>
+              <div className="story-content">
+                <h3><i className="fas fa-quote-left"></i> Found my path through guided learning</h3>
+                <p>The structured curriculum and mentorship gave me direction when I was feeling lost. Now I'm confident in my skills and career trajectory.</p>
+                <div className="student-info">
+                  <span className="student-name">Sarah Johnson</span>
+                  <span className="student-role">Frontend Developer</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <button className="view-all-button">View All Success Stories</button>
         </div>
       </section>
       
@@ -950,6 +1003,87 @@ function Home() {
           </div>
         </div>
       </section>
+
+      <footer className="edtech-footer">
+        <div className="footer-content">
+          <div className="footer-top">
+            <div className="footer-logo-section">
+              <div className="footer-logo">
+                <Link to="/">
+                  <img src="https://via.placeholder.com/180x60" alt="TechEdu Logo" />
+                </Link>
+              </div>
+              <p className="footer-tagline">Transforming lives through technology education</p>
+              <div className="footer-social">
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i className="fab fa-youtube"></i></a>
+              </div>
+            </div>
+            
+            <div className="footer-links">
+              <div className="footer-column">
+                <h3>Programs</h3>
+                <ul>
+                  <li><Link to="/programs">All Courses</Link></li>
+                  <li><Link to={`/programs/${getProgramId('Data Science & Analytics')}`}>Data Science</Link></li>
+                  <li><Link to={`/programs/${getProgramId('Artificial Intelligence')}`}>Artificial Intelligence</Link></li>
+                  <li><Link to={`/programs/${getProgramId('Web Development')}`}>Web Development</Link></li>
+                  <li><Link to={`/programs/${getProgramId('Machine Learning with Python')}`}>Machine Learning</Link></li>
+                  <li><Link to={`/programs/${getProgramId('Cyber Security')}`}>Cyber Security</Link></li>
+                </ul>
+              </div>
+              
+              <div className="footer-column">
+                <h3>Company</h3>
+                <ul>
+                  <li><Link to="/about">About Us</Link></li>
+                  <li><Link to="/careers">Careers</Link></li>
+                  <li><Link to="/portal">Student Portal</Link></li>
+                  <li><Link to="/programs">Our Programs</Link></li>
+                </ul>
+              </div>
+              
+              <div className="footer-column">
+                <h3>Support</h3>
+                <ul>
+                  <li><Link to="/portal">Student Login</Link></li>
+                  <li><Link to="/about">FAQs</Link></li>
+                  <li><a href="mailto:support@techedu.com">Contact Support</a></li>
+                </ul>
+              </div>
+              
+              <div className="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                  <li><Link to="/">Home</Link></li>
+                  <li><Link to="/programs">Programs</Link></li>
+                  <li><Link to="/about">About</Link></li>
+                  <li><Link to="/careers">Careers</Link></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div className="footer-bottom">
+            <div className="footer-bottom-left">
+              <p>&copy; {new Date().getFullYear()} TechEdu. All rights reserved.</p>
+            </div>
+            <div className="footer-bottom-right">
+              <div className="footer-app-links">
+                <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer" className="app-link">
+                  <img src="https://via.placeholder.com/120x40" alt="App Store" />
+                </a>
+                <a href="https://play.google.com" target="_blank" rel="noopener noreferrer" className="app-link">
+                  <img src="https://via.placeholder.com/120x40" alt="Google Play" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -13,15 +13,17 @@ function Careers() {
     domains: []
   });
   
-  // Dropdown state
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  // Input focus states
+  const [focusedInput, setFocusedInput] = useState(null);
   
   // Popup state
   const [showPopup, setShowPopup] = useState(false);
   
   // Form errors
   const [errors, setErrors] = useState({});
+
+  // Form submission status
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Domain options - updated to match all programs
   const domainOptions = [
@@ -39,19 +41,15 @@ function Careers() {
     { id: 'autocad', label: 'AutoCAD Designing' }
   ];
 
-  // Handle click outside dropdown
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-    }
-    
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  // Handle input focus
+  const handleFocus = (name) => {
+    setFocusedInput(name);
+  };
+
+  // Handle input blur
+  const handleBlur = () => {
+    setFocusedInput(null);
+  };
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -93,20 +91,9 @@ function Careers() {
     }
   };
 
-  // Toggle dropdown
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  // Get selected domains text
-  const getSelectedDomainsText = () => {
-    if (formData.domains.length === 0) {
-      return 'Select domains (at least one)';
-    } else if (formData.domains.length === 1) {
-      return domainOptions.find(d => d.id === formData.domains[0]).label;
-    } else {
-      return `${formData.domains.length} domains selected`;
-    }
+  // Check if input has value
+  const hasValue = (name) => {
+    return formData[name] && formData[name].trim() !== '';
   };
 
   // Validate form
@@ -144,22 +131,40 @@ function Careers() {
       return;
     }
     
-    // Show success popup
-    setShowPopup(true);
+    // Set submitting state
+    setIsSubmitting(true);
     
-    // Reset form after 3 seconds
+    // Create application object with timestamp
+    const application = {
+      ...formData,
+      timestamp: new Date().getTime()
+    };
+    
+    // Simulate API call with timeout
     setTimeout(() => {
-      setShowPopup(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        company: '',
-        designation: '',
-        experience: '',
-        domains: []
-      });
-    }, 3000);
+      // Save to localStorage (in a real app, this would be an API call)
+      const existingApplications = JSON.parse(localStorage.getItem('mentorApplications') || '[]');
+      existingApplications.push(application);
+      localStorage.setItem('mentorApplications', JSON.stringify(existingApplications));
+      
+      // Show success popup
+      setShowPopup(true);
+      setIsSubmitting(false);
+      
+      // Reset form after popup is closed
+      setTimeout(() => {
+        setShowPopup(false);
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          company: '',
+          designation: '',
+          experience: '',
+          domains: []
+        });
+      }, 3000);
+    }, 800);
   };
 
   // Close popup
@@ -215,13 +220,17 @@ function Careers() {
             <form className="mentor-form" onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="name">Full Name *</label>
+                  <label htmlFor="name">
+                    Full Name <span className="required-star">*</span>
+                  </label>
                   <input 
                     type="text" 
                     id="name" 
                     name="name" 
                     value={formData.name}
                     onChange={handleInputChange}
+                    onFocus={() => handleFocus('name')}
+                    onBlur={handleBlur}
                     className={errors.name ? 'error' : ''}
                     placeholder="Enter your full name"
                   />
@@ -229,13 +238,17 @@ function Careers() {
                 </div>
                 
                 <div className="form-group">
-                  <label htmlFor="email">Email Address *</label>
+                  <label htmlFor="email">
+                    Email Address <span className="required-star">*</span>
+                  </label>
                   <input 
                     type="email" 
                     id="email" 
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onFocus={() => handleFocus('email')}
+                    onBlur={handleBlur}
                     className={errors.email ? 'error' : ''}
                     placeholder="Enter your email address"
                   />
@@ -245,13 +258,17 @@ function Careers() {
               
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="phone">Phone Number *</label>
+                  <label htmlFor="phone">
+                    Phone Number <span className="required-star">*</span>
+                  </label>
                   <input 
                     type="tel" 
                     id="phone" 
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
+                    onFocus={() => handleFocus('phone')}
+                    onBlur={handleBlur}
                     className={errors.phone ? 'error' : ''}
                     placeholder="Enter your phone number"
                   />
@@ -259,13 +276,17 @@ function Careers() {
                 </div>
                 
                 <div className="form-group">
-                  <label htmlFor="company">Company Name *</label>
+                  <label htmlFor="company">
+                    Company Name <span className="required-star">*</span>
+                  </label>
                   <input 
                     type="text" 
                     id="company" 
                     name="company"
                     value={formData.company}
                     onChange={handleInputChange}
+                    onFocus={() => handleFocus('company')}
+                    onBlur={handleBlur}
                     className={errors.company ? 'error' : ''}
                     placeholder="Enter your company name"
                   />
@@ -275,13 +296,17 @@ function Careers() {
               
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="designation">Current Designation *</label>
+                  <label htmlFor="designation">
+                    Current Designation <span className="required-star">*</span>
+                  </label>
                   <input 
                     type="text" 
                     id="designation" 
                     name="designation"
                     value={formData.designation}
                     onChange={handleInputChange}
+                    onFocus={() => handleFocus('designation')}
+                    onBlur={handleBlur}
                     className={errors.designation ? 'error' : ''}
                     placeholder="Enter your current job title"
                   />
@@ -289,7 +314,9 @@ function Careers() {
                 </div>
                 
                 <div className="form-group">
-                  <label htmlFor="experience">Years of Experience</label>
+                  <label htmlFor="experience">
+                    Years of Experience
+                  </label>
                   <input 
                     type="number" 
                     id="experience" 
@@ -297,47 +324,57 @@ function Careers() {
                     min="0"
                     value={formData.experience}
                     onChange={handleInputChange}
+                    onFocus={() => handleFocus('experience')}
+                    onBlur={handleBlur}
                     placeholder="Optional"
                   />
                 </div>
               </div>
               
               <div className="form-group domains-group">
-                <label>Select Domain(s) *</label>
+                <label>
+                  Select Domain(s) <span className="required-star">*</span>
+                </label>
                 <p className="domains-hint">Select at least one domain where you'd like to mentor students</p>
                 
-                <div className="domains-dropdown-container" ref={dropdownRef}>
-                  <div 
-                    className={`domains-dropdown-header ${errors.domains ? 'error' : ''}`}
-                    onClick={toggleDropdown}
-                  >
-                    <span>{getSelectedDomainsText()}</span>
-                    <i className={`fas fa-chevron-${isDropdownOpen ? 'up' : 'down'}`}></i>
-                  </div>
-                  
-                  {isDropdownOpen && (
-                    <div className="domains-dropdown-list">
-                      {domainOptions.map(domain => (
-                        <div 
-                          key={domain.id} 
-                          className={`domain-option ${formData.domains.includes(domain.id) ? 'selected' : ''}`}
-                          onClick={() => toggleDomain(domain.id)}
-                        >
-                          {formData.domains.includes(domain.id) ? (
-                            <i className="fas fa-check-square"></i>
-                          ) : (
-                            <i className="far fa-square"></i>
-                          )}
-                          <span>{domain.label}</span>
-                        </div>
-                      ))}
+                <div className={`domains-grid ${errors.domains ? 'error' : ''}`}>
+                  {domainOptions.map(domain => (
+                    <div 
+                      key={domain.id} 
+                      className={`domain-option ${formData.domains.includes(domain.id) ? 'selected' : ''}`}
+                      onClick={() => toggleDomain(domain.id)}
+                    >
+                      <div className="checkbox-container">
+                        {formData.domains.includes(domain.id) ? (
+                          <i className="fas fa-check-square"></i>
+                        ) : (
+                          <i className="far fa-square"></i>
+                        )}
+                      </div>
+                      <span>{domain.label}</span>
                     </div>
-                  )}
+                  ))}
                 </div>
                 {errors.domains && <span className="error-message domains-error">{errors.domains}</span>}
+                
+                {formData.domains.length > 0 && (
+                  <div className="selected-domains-count">
+                    <span>{formData.domains.length} domain{formData.domains.length !== 1 ? 's' : ''} selected</span>
+                  </div>
+                )}
               </div>
               
-              <button type="submit" className="apply-button">Apply Now</button>
+              <button 
+                type="submit" 
+                className="apply-button" 
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <><i className="fas fa-spinner fa-spin"></i> Submitting...</>
+                ) : (
+                  'Apply Now'
+                )}
+              </button>
             </form>
           </div>
         </div>
