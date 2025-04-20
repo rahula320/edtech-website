@@ -988,4 +988,355 @@
   .file-selected i {
     font-size: 1.1rem;
   }
+}
+
+/* Career Options Section */
+.careers-options {
+  padding: 5rem 0;
+  background-color: #f9fafc;
+}
+
+.career-options-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.career-option-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.career-option-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(to right, #2563eb, #3b82f6, #60a5fa);
+  z-index: 1;
+}
+
+.career-option-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.option-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.option-icon i {
+  font-size: 2.2rem;
+  color: #2563eb;
+}
+
+.career-option-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #1a2b49;
+}
+
+.career-option-card p {
+  color: #4a5568;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.option-apply-button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.option-apply-button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* Form Modal Styles */
+.form-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.form-modal {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalSlideIn 0.4s ease;
+  position: relative;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.form-modal-header h3 {
+  font-size: 1.5rem;
+  color: #1a2b49;
+  margin: 0;
+  font-weight: 600;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.close-modal:hover {
+  background-color: #f1f5f9;
+  color: #1e293b;
+}
+
+.form-modal-content {
+  padding: 2rem;
+}
+
+/* Make the forms inside the modal look the same as before */
+.form-modal .mentor-form,
+.form-modal .bda-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .career-options-container {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+  
+  .form-modal {
+    max-width: 90%;
+  }
+  
+  .form-modal-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-modal {
+    max-width: 95%;
+    max-height: 95vh;
+  }
+  
+  .form-modal-header {
+    padding: 1rem 1.5rem;
+  }
+  
+  .form-modal-content {
+    padding: 1rem;
+  }
+  
+  .option-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .option-icon i {
+    font-size: 1.8rem;
+  }
+}
+
+/* Confirmation Popup Styles */
+.confirmation-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10000; /* Higher than form modal */
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  pointer-events: none;
+}
+
+.confirmation-popup {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  overflow: hidden;
+  animation: slideDown 0.5s ease-out forwards;
+  transform-origin: top center;
+  pointer-events: auto;
+  border-left: 6px solid #10b981;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.confirmation-popup .popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.3rem 1.5rem;
+  background-color: #ecfdf5;
+  border-bottom: 1px solid #d1fae5;
+}
+
+.confirmation-popup .popup-header h3 {
+  font-size: 1.2rem;
+  color: #047857;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.confirmation-popup .popup-header h3 i {
+  color: #10b981;
+  font-size: 1.3rem;
+}
+
+.confirmation-popup .popup-content {
+  padding: 1.5rem;
+}
+
+.confirmation-popup .popup-content p {
+  margin: 0;
+  color: #334155;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.confirmation-popup .close-popup {
+  background: none;
+  border: none;
+  color: #047857;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmation-popup .close-popup:hover {
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+@media (max-width: 768px) {
+  .confirmation-popup-overlay {
+    padding: 1.5rem;
+  }
+  
+  .confirmation-popup {
+    width: 95%;
+  }
+  
+  .confirmation-popup .popup-header {
+    padding: 1rem 1.3rem;
+  }
+  
+  .confirmation-popup .popup-content {
+    padding: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .confirmation-popup-overlay {
+    padding: 1rem;
+  }
+  
+  .confirmation-popup .popup-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .confirmation-popup .popup-content p {
+    font-size: 0.9rem;
+  }
 } 

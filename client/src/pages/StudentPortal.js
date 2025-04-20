@@ -2,35 +2,26 @@ import React, { useState } from 'react';
 import './StudentPortal.css';
 
 function StudentPortal() {
-  const [activeTab, setActiveTab] = useState('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const [loginError, setLoginError] = useState('');
   const [showMockData, setShowMockData] = useState(false);
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setLoginError('');
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (email === 'demo@example.com' && password === 'password') {
-      setLoginError('');
-      setShowMockData(true);
-    } else {
-      setLoginError('Invalid credentials. Use demo@example.com / password to access demo mode.');
-    }
-  };
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-    setActiveTab('login');
-    setEmail('');
-    setPassword('');
-    setName('');
-    alert('Registration successful! Please log in with your credentials.');
+    setIsLoading(true);
+    
+    // Simulate API call delay
+    setTimeout(() => {
+      if (email === 'demo@example.com' && password === 'password') {
+        setLoginError('');
+        setShowMockData(true);
+      } else {
+        setLoginError('Invalid credentials. Use demo@example.com / password to access demo mode.');
+      }
+      setIsLoading(false);
+    }, 800);
   };
 
   const handleLogout = () => {
@@ -297,124 +288,72 @@ function StudentPortal() {
     <div className="student-portal">
       <div className="portal-container">
         <div className="portal-header">
-          <h1><i className="fas fa-graduation-cap"></i> Student Portal</h1>
-          <p>Access your courses, assignments, and track your progress</p>
+          <h1>🎓 Student Portal</h1>
+          <p>Access your courses, assignments, and track your learning progress</p>
         </div>
         
         <div className="auth-container">
           <div className="auth-tabs">
-            <button 
-              className={activeTab === 'login' ? 'active' : ''} 
-              onClick={() => handleTabChange('login')}
-            >
-              Login
-            </button>
-            <button 
-              className={activeTab === 'register' ? 'active' : ''} 
-              onClick={() => handleTabChange('register')}
-            >
-              Register
-            </button>
+            <h2>Sign In</h2>
+            <p>Enter your credentials to access your student dashboard</p>
           </div>
           
-          {activeTab === 'login' ? (
-            <div className="auth-form">
-              <form onSubmit={handleLogin}>
-                {loginError && <div className="auth-error">{loginError}</div>}
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <div className="input-icon-wrapper">
-                    <i className="fas fa-envelope"></i>
-                    <input 
-                      type="email" 
-                      id="email" 
-                      placeholder="Enter your email" 
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
+          <div className="auth-form">
+            <form onSubmit={handleLogin}>
+              {loginError && <div className="auth-error">{loginError}</div>}
+              
+              <div className="form-group">
+                <label htmlFor="email">User ID (Email)</label>
+                <div className="input-icon-wrapper">
+                  <span>✉️</span>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    placeholder="Enter your email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    autoFocus
+                  />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <div className="input-icon-wrapper">
-                    <i className="fas fa-lock"></i>
-                    <input 
-                      type="password" 
-                      id="password" 
-                      placeholder="Enter your password" 
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="form-options">
-                  <div className="remember-me">
-                    <input type="checkbox" id="remember" />
-                    <label htmlFor="remember">Remember me</label>
-                  </div>
-                  <a href="#" className="forgot-password">Forgot password?</a>
-                </div>
-                <button type="submit" className="auth-button">Log In</button>
-              </form>
-              <div className="demo-credentials">
-                <p>For demo: use <strong>demo@example.com</strong> / <strong>password</strong></p>
               </div>
+              
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <div className="input-icon-wrapper">
+                  <span>🔒</span>
+                  <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="Enter your password" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="form-options">
+                <div className="remember-me">
+                  <input type="checkbox" id="remember" />
+                  <label htmlFor="remember">Remember me</label>
+                </div>
+                <a href="#" className="forgot-password">Forgot password?</a>
+              </div>
+              
+              <button 
+                type="submit" 
+                className={`auth-button ${isLoading ? 'loading' : ''}`}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Signing in...' : 'Sign In'}
+              </button>
+            </form>
+            
+            <div className="demo-credentials">
+              <p>For demo access: <strong>demo@example.com</strong> / <strong>password</strong></p>
             </div>
-          ) : (
-            <div className="auth-form">
-              <form onSubmit={handleRegister}>
-                <div className="form-group">
-                  <label htmlFor="name">Full Name</label>
-                  <div className="input-icon-wrapper">
-                    <i className="fas fa-user"></i>
-                    <input 
-                      type="text" 
-                      id="name" 
-                      placeholder="Enter your full name" 
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="reg-email">Email</label>
-                  <div className="input-icon-wrapper">
-                    <i className="fas fa-envelope"></i>
-                    <input 
-                      type="email" 
-                      id="reg-email" 
-                      placeholder="Enter your email" 
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="reg-password">Password</label>
-                  <div className="input-icon-wrapper">
-                    <i className="fas fa-lock"></i>
-                    <input 
-                      type="password" 
-                      id="reg-password" 
-                      placeholder="Create a password" 
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="terms-agreement">
-                  <input type="checkbox" id="terms" required />
-                  <label htmlFor="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
-                </div>
-                <button type="submit" className="auth-button">Register</button>
-              </form>
-            </div>
-          )}
+          </div>
         </div>
         
         <div className="portal-features">
@@ -422,29 +361,29 @@ function StudentPortal() {
             <div className="feature-icon">
               <i className="fas fa-laptop-code"></i>
             </div>
-            <h3>Access Your Courses</h3>
-            <p>View all your enrolled courses and continue learning right where you left off.</p>
+            <h3>Access Courses</h3>
+            <p>Continue learning right where you left off with easy access to all your courses.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">
               <i className="fas fa-tasks"></i>
             </div>
             <h3>Track Assignments</h3>
-            <p>Stay on top of your assignments with due dates, submissions, and feedback.</p>
+            <p>Stay on top of your assignments with due dates and submission tracking.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">
               <i className="fas fa-chart-line"></i>
             </div>
             <h3>Monitor Progress</h3>
-            <p>Track your course completion and performance with intuitive progress visuals.</p>
+            <p>Track your course completion with intuitive progress visuals.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">
               <i className="fas fa-comments"></i>
             </div>
-            <h3>Connect & Collaborate</h3>
-            <p>Engage with instructors and fellow students through discussion forums.</p>
+            <h3>Connect & Discuss</h3>
+            <p>Engage with instructors and classmates through discussion forums.</p>
           </div>
         </div>
       </div>

@@ -1,63 +1,25 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const path = require('path');
 const cors = require('cors');
 
+// Import database connection
+const connectDB = require('./config/db');
+
+// Import models
+const User = require('./models/User');
+const Contact = require('./models/Contact');
+const Course = require('./models/Course');
+
 const app = express();
 
-// MongoDB Connection with retry logic
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/edtech', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-    console.log('MongoDB Connected Successfully');
-  } catch (err) {
-    console.error('MongoDB Connection Error:', err);
-    // Retry connection after 5 seconds
-    setTimeout(connectDB, 5000);
-  }
-};
-
+// Connect to MongoDB
 connectDB();
-
-// Handle MongoDB connection errors
-mongoose.connection.on('error', err => {
-  console.error('MongoDB Connection Error:', err);
-});
-
-mongoose.connection.on('disconnected', () => {
-  console.log('MongoDB Disconnected. Attempting to reconnect...');
-  connectDB();
-});
-
-// User Schema
-const UserSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  role: { type: String, enum: ['student', 'instructor', 'admin'], default: 'student' }
-});
-
-const User = mongoose.model('User', UserSchema);
-
-// Contact Form Schema
-const ContactSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  message: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
-
-const Contact = mongoose.model('Contact', ContactSchema);
 
 // Middleware
 app.use(cors());
@@ -89,7 +51,7 @@ passport.use(new LocalStrategy(
       const user = await User.findOne({ username });
       if (!user) return done(null, false, { message: 'Incorrect username.' });
       
-      const isValid = await bcrypt.compare(password, user.password);
+      const isValid = await user.comparePassword(password);
       if (!isValid) return done(null, false, { message: 'Incorrect password.' });
       
       return done(null, user);
@@ -153,7 +115,7 @@ app.post('/api/contact', async (req, res) => {
 
 app.post('/api/register', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, firstName, lastName } = req.body;
     
     // Check if user exists
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
@@ -161,14 +123,13 @@ app.post('/api/register', async (req, res) => {
       return res.status(400).json({ message: 'Username or email already exists' });
     }
     
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
     // Create user
     const user = new User({
       username,
       email,
-      password: hashedPassword
+      password,
+      firstName,
+      lastName
     });
     
     await user.save();
@@ -198,6 +159,64 @@ app.get('/api/user', (req, res) => {
     res.json({ user: req.user });
   } else {
     res.status(401).json({ message: 'Not authenticated' });
+  }
+});
+
+// Course routes
+app.get('/api/courses', async (req, res) => {
+  try {
+    const courses = await Course.find({ status: 'published' })
+      .populate('instructor', 'username firstName lastName')
+      .select('-enrolledStudents');
+    
+    res.json({ success: true, courses });
+  } catch (err) {
+    console.error('Error fetching courses:', err);
+    res.status(500).json({ message: 'Error fetching courses' });
+  }
+});
+
+app.get('/api/courses/:id', async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id)
+      .populate('instructor', 'username firstName lastName')
+      .populate('enrolledStudents', 'username firstName lastName');
+    
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    
+    res.json({ success: true, course });
+  } catch (err) {
+    console.error('Error fetching course:', err);
+    res.status(500).json({ message: 'Error fetching course' });
+  }
+});
+
+app.post('/api/courses', async (req, res) => {
+  if (!req.isAuthenticated() || req.user.role !== 'instructor') {
+    return res.status(403).json({ message: 'Not authorized' });
+  }
+  
+  try {
+    const { title, description, price, duration, level, topics } = req.body;
+    
+    const course = new Course({
+      title,
+      description,
+      instructor: req.user._id,
+      price,
+      duration,
+      level,
+      topics
+    });
+    
+    await course.save();
+    
+    res.json({ success: true, course });
+  } catch (err) {
+    console.error('Error creating course:', err);
+    res.status(500).json({ message: 'Error creating course' });
   }
 });
 

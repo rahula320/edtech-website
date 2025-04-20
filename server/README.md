@@ -1,23 +1,70 @@
 # EdTech Website Server
 
-This is the backend server for the EdTech website. It provides API endpoints for authentication, user management, and contact form submission.
+Backend server for the EdTech website with MongoDB integration.
 
-## Setup
+## Features
+
+- Express.js backend
+- MongoDB database with Mongoose ODM
+- User authentication with Passport.js
+- Email notifications with Nodemailer
+- Session management
+- RESTful API endpoints
+
+## Database Models
+
+The following models are defined:
+
+1. **User**
+   - Authentication and user management
+   - Roles: student, instructor, admin
+
+2. **Course**
+   - Educational content
+   - Supports different levels and topics
+
+3. **Contact**
+   - Contact form submissions
+   - Status tracking
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or newer)
+- MongoDB (local or Atlas)
+
+### Environment Setup
+
+1. Copy the example environment file:
+   ```
+   cp .env.example .env
+   ```
+
+2. Update the `.env` file with your own values:
+   ```
+   PORT=5001
+   NODE_ENV=development
+   MONGODB_URI=mongodb://localhost:27017/edtech
+   MONGODB_USER=
+   MONGODB_PASSWORD=
+   MONGODB_DATABASE=edtech
+   SESSION_SECRET=your-secret-key-change-this-in-production
+   EMAIL_USER=your-email@gmail.com
+   EMAIL_PASS=your-app-specific-password
+   ADMIN_EMAIL=admin@example.com
+   ```
+
+### Installation
 
 1. Install dependencies:
    ```
    npm install
    ```
 
-2. Create a `.env` file in the root directory with the following variables:
+2. Seed the database with initial data:
    ```
-   PORT=5001
-   NODE_ENV=development
-   MONGODB_URI=mongodb://localhost:27017/edtech
-   SESSION_SECRET=your-secret-key-change-this-in-production
-   EMAIL_USER=your-email@gmail.com
-   EMAIL_PASS=your-app-specific-password
-   ADMIN_EMAIL=admin@example.com
+   npm run seed
    ```
 
 3. Start the development server:
@@ -25,40 +72,42 @@ This is the backend server for the EdTech website. It provides API endpoints for
    npm run dev
    ```
 
-4. For production, use:
-   ```
-   npm start
-   ```
+## Database Connection
+
+The server connects to MongoDB using Mongoose. The connection is established in `config/db.js` with automatic retry logic for better reliability.
+
+### Local Development
+
+For local development, MongoDB should be running on your machine or accessible via network. The default connection string is `mongodb://localhost:27017/edtech`.
+
+### Production
+
+In production, use the complete connection string with authentication in the `MONGODB_URI` environment variable. When using Docker, the MongoDB service is automatically configured.
 
 ## API Endpoints
 
-- **POST /api/register**: Register a new user
-- **POST /api/login**: Authenticate a user
-- **GET /api/logout**: Log out a user
-- **GET /api/user**: Get the current authenticated user
-- **POST /api/contact**: Submit a contact form
-- **GET /api/health**: Health check endpoint
+### Authentication
+- `POST /api/register` - Register a new user
+- `POST /api/login` - Login
+- `GET /api/logout` - Logout
+- `GET /api/user` - Get current user
 
-## Deployment
+### Courses
+- `GET /api/courses` - Get all published courses
+- `GET /api/courses/:id` - Get course by ID
+- `POST /api/courses` - Create a new course (instructors only)
 
-For deployment to a production server:
+### Contact
+- `POST /api/contact` - Submit contact form
 
-1. Set the environment variables:
-   - Set `NODE_ENV=production`
-   - Update `MONGODB_URI` to your production MongoDB instance
-   - Set a strong `SESSION_SECRET`
-   - Configure proper email credentials
+## Docker Deployment
 
-2. Build the client application:
-   ```
-   cd ../client
-   npm run build
-   ```
+The server can be deployed using Docker with the included Dockerfile and docker-compose.yml. The MongoDB service is included in the Docker Compose configuration.
 
-3. Start the server:
-   ```
-   cd ../server
-   npm start
-   ```
+```
+docker-compose up -d
+```
 
-The server will serve the built client files in production mode. 
+## License
+
+ISC 

@@ -146,6 +146,160 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* Applications Header with Actions */
+.applications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.applications-header h2 {
+  margin: 0;
+}
+
+.application-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Table Styles */
+.applications-table-container {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.applications-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.applications-table th,
+.applications-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.applications-table th {
+  background-color: #f5f7fa;
+  color: #555;
+  font-weight: 600;
+  font-size: 14px;
+  position: sticky;
+  top: 0;
+}
+
+.applications-table tr {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.applications-table tr:hover {
+  background-color: #f9fafc;
+}
+
+.applications-table tr.selected {
+  background-color: #e8f0fe;
+}
+
+.applications-table td:first-child,
+.applications-table th:first-child {
+  width: 50px;
+  text-align: center;
+}
+
+.applications-table input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+/* Action Buttons */
+.action-button {
+  padding: 8px 16px;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.action-button:hover {
+  background-color: #303f9f;
+}
+
+.action-button:disabled {
+  background-color: #9fa8da;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.delete-button {
+  background-color: #f44336;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.delete-button:disabled {
+  background-color: #ffcdd2;
+}
+
+/* Dropdown Menu */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 4px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: none;
+  z-index: 10;
+  min-width: 180px;
+  overflow: hidden;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-menu button:hover {
+  background-color: #f5f7fa;
+}
+
+.dropdown-menu button:disabled {
+  color: #bbb;
+  cursor: not-allowed;
+}
+
 /* Application Details */
 .application-details {
   background-color: white;
@@ -219,6 +373,19 @@
 }
 
 /* Responsive Styles */
+@media (max-width: 1024px) {
+  .applications-table th,
+  .applications-table td {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  .action-button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-content {
     flex-direction: column;
@@ -240,6 +407,22 @@
     white-space: nowrap;
   }
   
+  .applications-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .application-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .applications-table {
+    display: block;
+    overflow-x: auto;
+  }
+  
   .detail-row {
     flex-direction: column;
   }
@@ -247,4 +430,50 @@
   .detail-label {
     margin-bottom: 4px;
   }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 16px;
+  }
+  
+  .applications-table th,
+  .applications-table td {
+    padding: 8px;
+    font-size: 13px;
+  }
+  
+  .action-button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  
+  .dropdown-menu {
+    min-width: 150px;
+  }
+  
+  .dropdown-menu button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Additional styles for BDA applications */
+.resume-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.resume-info i {
+  color: #e53935;
+  font-size: 1.2rem;
+}
+
+.text-success {
+  color: #43a047;
+}
+
+.text-danger {
+  color: #e53935;
 } 

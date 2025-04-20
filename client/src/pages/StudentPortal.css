@@ -1,25 +1,30 @@
 /* Student Portal Login / Register Page */
 .student-portal {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4ecfb 100%);
-  padding: 3rem 1rem;
+  background: linear-gradient(145deg, #f8faff 0%, #e6ecfd 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
 .portal-container {
-  max-width: 1200px;
+  max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
 }
 
 .portal-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 
 .portal-header h1 {
-  font-size: 2.5rem;
-  color: #1a2b49;
-  margin-bottom: 1rem;
+  font-size: 2.2rem;
+  color: #1e293b;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,56 +32,57 @@
 }
 
 .portal-header p {
-  font-size: 1.1rem;
-  color: #4a5568;
-  max-width: 600px;
+  font-size: 1rem;
+  color: #475569;
+  max-width: 500px;
   margin: 0 auto;
+  line-height: 1.5;
 }
 
+/* Auth Container */
 .auth-container {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  max-width: 500px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  max-width: 450px;
   margin: 0 auto 3rem;
   overflow: hidden;
-}
-
-.auth-tabs {
-  display: flex;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.auth-tabs button {
-  flex: 1;
-  background: none;
-  border: none;
-  padding: 1.2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #4a5568;
-  cursor: pointer;
   transition: all 0.3s ease;
-}
-
-.auth-tabs button.active {
-  color: #2563eb;
-  box-shadow: inset 0 -3px 0 #2563eb;
-}
-
-.auth-form {
   padding: 2rem;
 }
 
-.form-group {
+.auth-tabs {
+  text-align: center;
   margin-bottom: 1.5rem;
+}
+
+.auth-tabs h2 {
+  color: #1e293b;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.auth-tabs p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.auth-form {
+  margin-top: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #1a2b49;
+  color: #475569;
+  font-size: 0.9rem;
 }
 
 .input-icon-wrapper {
@@ -85,25 +91,28 @@
   align-items: center;
 }
 
-.input-icon-wrapper i {
+.input-icon-wrapper span {
   position: absolute;
   left: 1rem;
-  color: #a0aec0;
+  font-size: 1.1rem;
+  z-index: 1;
 }
 
 .input-icon-wrapper input {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  padding: 0.85rem 1rem 0.85rem 2.5rem;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  background-color: #f8fafc;
 }
 
 .input-icon-wrapper input:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: #3b82f6;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .form-options {
@@ -111,7 +120,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .remember-me {
@@ -120,9 +129,16 @@
   gap: 0.5rem;
 }
 
+.remember-me input[type="checkbox"] {
+  accent-color: #3b82f6;
+  width: 16px;
+  height: 16px;
+}
+
 .forgot-password {
-  color: #2563eb;
+  color: #3b82f6;
   text-decoration: none;
+  font-weight: 500;
 }
 
 .forgot-password:hover {
@@ -131,100 +147,130 @@
 
 .auth-button {
   width: 100%;
-  padding: 0.75rem;
-  background: #2563eb;
+  padding: 0.9rem;
+  background: #3b82f6;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  position: relative;
+  overflow: hidden;
 }
 
 .auth-button:hover {
-  background: #1d4ed8;
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
+}
+
+.auth-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.auth-button.loading {
+  background: #3b82f6;
+  color: transparent;
+}
+
+.auth-button.loading::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  margin-top: -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .auth-error {
   background: #fee2e2;
   color: #b91c1c;
-  padding: 0.75rem;
-  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
   margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-}
-
-.terms-agreement {
+  font-size: 0.85rem;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
 }
 
-.terms-agreement a {
-  color: #2563eb;
-  text-decoration: none;
-}
-
-.terms-agreement a:hover {
-  text-decoration: underline;
+.auth-error::before {
+  content: "⚠️";
 }
 
 .demo-credentials {
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #f1f5f9;
   text-align: center;
-  font-size: 0.9rem;
-  color: #4a5568;
+  font-size: 0.85rem;
+  color: #64748b;
 }
 
 /* Features Section */
 .portal-features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 4rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
 }
 
 .feature-card {
   background: white;
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
   text-align: center;
   transition: all 0.3s ease;
+  border: 1px solid #f1f5f9;
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border-color: #e2e8f0;
 }
 
 .feature-icon {
-  width: 60px;
-  height: 60px;
-  background: #ebf5ff;
-  color: #2563eb;
-  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  background: #eff6ff;
+  color: #3b82f6;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
-  font-size: 1.5rem;
+  margin: 0 auto 1.25rem;
+  font-size: 1.4rem;
 }
 
 .feature-card h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #1a2b49;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: #1e293b;
+  font-weight: 600;
 }
 
 .feature-card p {
-  color: #4a5568;
+  color: #64748b;
   line-height: 1.6;
+  font-size: 0.9rem;
 }
 
 /* Dashboard Styles */
@@ -620,14 +666,15 @@
 
 @media (max-width: 768px) {
   .portal-header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   
   .portal-header p {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
   
   .auth-container {
+    max-width: 100%;
     margin-bottom: 2rem;
   }
   
@@ -683,15 +730,29 @@
   .course-card {
     padding: 1.2rem;
   }
+  
+  .feature-card {
+    padding: 1.5rem;
+  }
 }
 
 @media (max-width: 480px) {
-  .portal-header h1 {
-    font-size: 1.8rem;
+  .student-portal {
+    padding: 1rem;
   }
   
-  .auth-tabs button {
-    padding: 1rem;
+  .portal-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .portal-features {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
   
   .dashboard-stats {

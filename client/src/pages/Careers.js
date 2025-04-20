@@ -29,6 +29,10 @@ function Careers() {
   // Input focus states
   const [focusedInput, setFocusedInput] = useState(null);
   
+  // Form display states
+  const [showMentorForm, setShowMentorForm] = useState(false);
+  const [showBdaForm, setShowBdaForm] = useState(false);
+  
   // Popup state
   const [showPopup, setShowPopup] = useState(false);
   const [showBdaPopup, setShowBdaPopup] = useState(false);
@@ -237,9 +241,8 @@ function Careers() {
       setShowPopup(true);
       setIsSubmitting(false);
       
-      // Reset form after popup is closed
+      // Reset form after a delay but keep the form open
       setTimeout(() => {
-        setShowPopup(false);
         setFormData({
           name: '',
           email: '',
@@ -249,7 +252,12 @@ function Careers() {
           experience: '',
           domains: []
         });
-      }, 3000);
+        
+        // Hide the success popup after 5 seconds
+        setTimeout(() => {
+          setShowPopup(false);
+        }, 5000);
+      }, 1000);
     }, 800);
   };
   
@@ -267,18 +275,25 @@ function Careers() {
     // Set submitting state
     setIsBdaSubmitting(true);
     
+    // Create application object with timestamp
+    const application = {
+      ...bdaFormData,
+      timestamp: new Date().getTime()
+    };
+    
     // Simulate API call with timeout
     setTimeout(() => {
-      // In a real app, this would be a FormData object to handle file uploads
-      // and an actual API call to the backend
+      // Save to localStorage (in a real app, this would be an API call)
+      const existingApplications = JSON.parse(localStorage.getItem('bdaApplications') || '[]');
+      existingApplications.push(application);
+      localStorage.setItem('bdaApplications', JSON.stringify(existingApplications));
       
       // Show success popup
       setShowBdaPopup(true);
       setIsBdaSubmitting(false);
       
-      // Reset form after popup is closed
+      // Reset form after a delay but keep the form open
       setTimeout(() => {
-        setShowBdaPopup(false);
         setBdaFormData({
           fullName: '',
           email: '',
@@ -288,7 +303,12 @@ function Careers() {
           portfolio: '',
           resume: null
         });
-      }, 3000);
+        
+        // Hide the success popup after 5 seconds
+        setTimeout(() => {
+          setShowBdaPopup(false);
+        }, 5000);
+      }, 1000);
     }, 800);
   };
 
@@ -301,6 +321,18 @@ function Careers() {
   const closeBdaPopup = () => {
     setShowBdaPopup(false);
   };
+  
+  // Close form popup
+  const closeMentorForm = () => {
+    setShowMentorForm(false);
+    setShowPopup(false);
+  };
+  
+  // Close BDA form popup
+  const closeBdaForm = () => {
+    setShowBdaForm(false);
+    setShowBdaPopup(false);
+  };
 
   return (
     <div className="careers-page">
@@ -310,6 +342,35 @@ function Careers() {
           <p>We're looking for passionate individuals who want to make a difference in the lives of students around the world. Explore our open positions and become part of our team.</p>
         </div>
       </div>
+
+      <section className="careers-options">
+        <div className="container">
+          <div className="section-header">
+            <h2>Join Our Team</h2>
+            <p>We're looking for talented individuals to join our mission. Select an option below to apply.</p>
+          </div>
+          
+          <div className="career-options-container">
+            <div className="career-option-card" onClick={() => setShowMentorForm(true)}>
+              <div className="option-icon">
+                <i className="fas fa-chalkboard-teacher"></i>
+              </div>
+              <h3>Become a Mentor</h3>
+              <p>Share your expertise and help shape the next generation of tech professionals.</p>
+              <button className="option-apply-button">Apply Now</button>
+            </div>
+            
+            <div className="career-option-card" onClick={() => setShowBdaForm(true)}>
+              <div className="option-icon">
+                <i className="fas fa-handshake"></i>
+              </div>
+              <h3>Business Development</h3>
+              <p>Join our business development team and help us grow by connecting with potential clients and partners.</p>
+              <button className="option-apply-button">Apply Now</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="careers-why-join">
         <div className="container">
@@ -338,347 +399,7 @@ function Careers() {
           </div>
         </div>
       </section>
-
-      <section className="mentor-application">
-        <div className="container">
-          <div className="section-header">
-            <h2>Join Us as a Mentor</h2>
-            <p>Share your expertise and help shape the next generation of tech professionals. Apply to become a mentor in your area of expertise.</p>
-          </div>
-          
-          <div className="application-form-container">
-            <form className="mentor-form" onSubmit={handleSubmit}>
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="name">
-                    Full Name <span className="required-star">*</span>
-                  </label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="name" 
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    onFocus={() => handleFocus('name')}
-                    onBlur={handleBlur}
-                    className={errors.name ? 'error' : ''}
-                    placeholder="Enter your full name"
-                  />
-                  {errors.name && <span className="error-message">{errors.name}</span>}
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="email">
-                    Email Address <span className="required-star">*</span>
-                  </label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    onFocus={() => handleFocus('email')}
-                    onBlur={handleBlur}
-                    className={errors.email ? 'error' : ''}
-                    placeholder="Enter your email address"
-                  />
-                  {errors.email && <span className="error-message">{errors.email}</span>}
-                </div>
-              </div>
-              
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="phone">
-                    Phone Number <span className="required-star">*</span>
-                  </label>
-                  <input 
-                    type="tel" 
-                    id="phone" 
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    onFocus={() => handleFocus('phone')}
-                    onBlur={handleBlur}
-                    className={errors.phone ? 'error' : ''}
-                    placeholder="Enter your phone number"
-                  />
-                  {errors.phone && <span className="error-message">{errors.phone}</span>}
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="company">
-                    Company Name <span className="required-star">*</span>
-                  </label>
-                  <input 
-                    type="text" 
-                    id="company" 
-                    name="company"
-                    value={formData.company}
-                    onChange={handleInputChange}
-                    onFocus={() => handleFocus('company')}
-                    onBlur={handleBlur}
-                    className={errors.company ? 'error' : ''}
-                    placeholder="Enter your company name"
-                  />
-                  {errors.company && <span className="error-message">{errors.company}</span>}
-                </div>
-              </div>
-              
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="designation">
-                    Current Designation <span className="required-star">*</span>
-                  </label>
-                  <input 
-                    type="text" 
-                    id="designation" 
-                    name="designation"
-                    value={formData.designation}
-                    onChange={handleInputChange}
-                    onFocus={() => handleFocus('designation')}
-                    onBlur={handleBlur}
-                    className={errors.designation ? 'error' : ''}
-                    placeholder="Enter your current job title"
-                  />
-                  {errors.designation && <span className="error-message">{errors.designation}</span>}
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="experience">
-                    Years of Experience
-                  </label>
-                  <input 
-                    type="number" 
-                    id="experience" 
-                    name="experience"
-                    min="0"
-                    value={formData.experience}
-                    onChange={handleInputChange}
-                    onFocus={() => handleFocus('experience')}
-                    onBlur={handleBlur}
-                    placeholder="Optional"
-                  />
-                </div>
-              </div>
-              
-              <div className="form-group domains-group">
-                <label>
-                  Select Domain(s) <span className="required-star">*</span>
-                </label>
-                <p className="domains-hint">Select at least one domain where you'd like to mentor students</p>
-                
-                <div className={`domains-grid ${errors.domains ? 'error' : ''}`}>
-                  {domainOptions.map(domain => (
-                    <div 
-                      key={domain.id} 
-                      className={`domain-option ${formData.domains.includes(domain.id) ? 'selected' : ''}`}
-                      onClick={() => toggleDomain(domain.id)}
-                    >
-                      <div className="checkbox-container">
-                        {formData.domains.includes(domain.id) ? (
-                          <i className="fas fa-check-square"></i>
-                        ) : (
-                          <i className="far fa-square"></i>
-                        )}
-                      </div>
-                      <span>{domain.label}</span>
-                    </div>
-                  ))}
-                </div>
-                {errors.domains && <span className="error-message domains-error">{errors.domains}</span>}
-                
-                {formData.domains.length > 0 && (
-                  <div className="selected-domains-count">
-                    <span>{formData.domains.length} domain{formData.domains.length !== 1 ? 's' : ''} selected</span>
-                  </div>
-                )}
-              </div>
-              
-              <button 
-                type="submit" 
-                className="apply-button" 
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <><i className="fas fa-spinner fa-spin"></i> Submitting...</>
-                ) : (
-                  'Apply Now'
-                )}
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
       
-      {/* Business Development Associate Application */}
-      <section className="bda-application">
-        <div className="container">
-          <div className="section-header">
-            <h2>Apply for Business Development Associate</h2>
-            <p>Join our business development team and help us grow by connecting with potential clients, partners, and industry stakeholders. We're looking for motivated individuals with excellent communication skills.</p>
-          </div>
-          
-          <div className="application-form-container">
-            <form className="bda-form" onSubmit={handleBdaSubmit}>
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="fullName">
-                    Full Name <span className="required-star">*</span>
-                  </label>
-                  <input 
-                    type="text" 
-                    id="fullName" 
-                    name="fullName" 
-                    value={bdaFormData.fullName}
-                    onChange={handleBdaInputChange}
-                    onFocus={() => handleFocus('fullName')}
-                    onBlur={handleBlur}
-                    className={bdaErrors.fullName ? 'error' : ''}
-                    placeholder="Enter your full name"
-                  />
-                  {bdaErrors.fullName && <span className="error-message">{bdaErrors.fullName}</span>}
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="bdaEmail">
-                    Email Address <span className="required-star">*</span>
-                  </label>
-                  <input 
-                    type="email" 
-                    id="bdaEmail" 
-                    name="email"
-                    value={bdaFormData.email}
-                    onChange={handleBdaInputChange}
-                    onFocus={() => handleFocus('bdaEmail')}
-                    onBlur={handleBlur}
-                    className={bdaErrors.email ? 'error' : ''}
-                    placeholder="Enter your email address"
-                  />
-                  {bdaErrors.email && <span className="error-message">{bdaErrors.email}</span>}
-                </div>
-              </div>
-              
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="bdaPhone">
-                    Phone Number <span className="required-star">*</span>
-                  </label>
-                  <input 
-                    type="tel" 
-                    id="bdaPhone" 
-                    name="phone"
-                    value={bdaFormData.phone}
-                    onChange={handleBdaInputChange}
-                    onFocus={() => handleFocus('bdaPhone')}
-                    onBlur={handleBlur}
-                    className={bdaErrors.phone ? 'error' : ''}
-                    placeholder="Enter your phone number"
-                  />
-                  {bdaErrors.phone && <span className="error-message">{bdaErrors.phone}</span>}
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="education">
-                    Education <span className="required-star">*</span>
-                  </label>
-                  <input 
-                    type="text" 
-                    id="education" 
-                    name="education"
-                    value={bdaFormData.education}
-                    onChange={handleBdaInputChange}
-                    onFocus={() => handleFocus('education')}
-                    onBlur={handleBlur}
-                    className={bdaErrors.education ? 'error' : ''}
-                    placeholder="E.g., MBA in Marketing from XYZ University"
-                  />
-                  {bdaErrors.education && <span className="error-message">{bdaErrors.education}</span>}
-                </div>
-              </div>
-              
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="bdaExperience">
-                    Years of Experience in Business Development
-                  </label>
-                  <input 
-                    type="number" 
-                    id="bdaExperience" 
-                    name="experience"
-                    min="0"
-                    value={bdaFormData.experience}
-                    onChange={handleBdaInputChange}
-                    onFocus={() => handleFocus('bdaExperience')}
-                    onBlur={handleBlur}
-                    placeholder="Optional"
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="portfolio">
-                    LinkedIn Profile
-                  </label>
-                  <input 
-                    type="url" 
-                    id="portfolio" 
-                    name="portfolio"
-                    value={bdaFormData.portfolio}
-                    onChange={handleBdaInputChange}
-                    onFocus={() => handleFocus('portfolio')}
-                    onBlur={handleBlur}
-                    placeholder="https://linkedin.com/in/yourprofile"
-                  />
-                </div>
-              </div>
-              
-              <div className="form-group resume-upload">
-                <label htmlFor="resume">
-                  Upload Resume <span className="required-star">*</span>
-                </label>
-                <p className="file-format-note">Please upload your resume in PDF format only. Maximum file size: 5MB</p>
-                
-                <div className="resume-upload-container">
-                  <input 
-                    type="file" 
-                    id="resume" 
-                    name="resume"
-                    onChange={handleFileChange}
-                    accept="application/pdf"
-                    className={`file-input ${bdaErrors.resume ? 'error' : ''}`}
-                  />
-                  <div className="resume-upload-icon">
-                    <i className="fas fa-file-pdf"></i>
-                    <span>Upload PDF</span>
-                  </div>
-                </div>
-                
-                {bdaErrors.resume && <span className="error-message">{bdaErrors.resume}</span>}
-                
-                {bdaFormData.resume && (
-                  <div className="file-selected">
-                    <i className="fas fa-file-pdf"></i> 
-                    <span className="filename">{bdaFormData.resume.name}</span>
-                    <span className="filesize">({(bdaFormData.resume.size / (1024 * 1024)).toFixed(2)} MB)</span>
-                  </div>
-                )}
-              </div>
-              
-              <button 
-                type="submit" 
-                className="apply-button" 
-                disabled={isBdaSubmitting}
-              >
-                {isBdaSubmitting ? (
-                  <><i className="fas fa-spinner fa-spin"></i> Submitting...</>
-                ) : (
-                  'Submit Application'
-                )}
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
-
       <section className="careers-cta">
         <div className="container">
           <h2>Don't See a Role That Fits?</h2>
@@ -687,29 +408,373 @@ function Careers() {
         </div>
       </section>
       
+      {/* Mentor Form Modal */}
+      {showMentorForm && (
+        <div className="form-modal-overlay">
+          <div className="form-modal">
+            <div className="form-modal-header">
+              <h3>Apply to Become a Mentor</h3>
+              <button className="close-modal" onClick={closeMentorForm}><i className="fas fa-times"></i></button>
+            </div>
+            <div className="form-modal-content">
+              <form className="mentor-form" onSubmit={handleSubmit}>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="name">
+                      Full Name <span className="required-star">*</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      id="name" 
+                      name="name" 
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      onFocus={() => handleFocus('name')}
+                      onBlur={handleBlur}
+                      className={errors.name ? 'error' : ''}
+                      placeholder="Enter your full name"
+                    />
+                    {errors.name && <span className="error-message">{errors.name}</span>}
+                  </div>
+                  
+                  <div className="form-group">
+                    <label htmlFor="email">
+                      Email Address <span className="required-star">*</span>
+                    </label>
+                    <input 
+                      type="email" 
+                      id="email" 
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      onFocus={() => handleFocus('email')}
+                      onBlur={handleBlur}
+                      className={errors.email ? 'error' : ''}
+                      placeholder="Enter your email address"
+                    />
+                    {errors.email && <span className="error-message">{errors.email}</span>}
+                  </div>
+                </div>
+                
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="phone">
+                      Phone Number <span className="required-star">*</span>
+                    </label>
+                    <input 
+                      type="tel" 
+                      id="phone" 
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      onFocus={() => handleFocus('phone')}
+                      onBlur={handleBlur}
+                      className={errors.phone ? 'error' : ''}
+                      placeholder="Enter your phone number"
+                    />
+                    {errors.phone && <span className="error-message">{errors.phone}</span>}
+                  </div>
+                  
+                  <div className="form-group">
+                    <label htmlFor="company">
+                      Company Name <span className="required-star">*</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      id="company" 
+                      name="company"
+                      value={formData.company}
+                      onChange={handleInputChange}
+                      onFocus={() => handleFocus('company')}
+                      onBlur={handleBlur}
+                      className={errors.company ? 'error' : ''}
+                      placeholder="Enter your company name"
+                    />
+                    {errors.company && <span className="error-message">{errors.company}</span>}
+                  </div>
+                </div>
+                
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="designation">
+                      Current Designation <span className="required-star">*</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      id="designation" 
+                      name="designation"
+                      value={formData.designation}
+                      onChange={handleInputChange}
+                      onFocus={() => handleFocus('designation')}
+                      onBlur={handleBlur}
+                      className={errors.designation ? 'error' : ''}
+                      placeholder="Enter your current job title"
+                    />
+                    {errors.designation && <span className="error-message">{errors.designation}</span>}
+                  </div>
+                  
+                  <div className="form-group">
+                    <label htmlFor="experience">
+                      Years of Experience
+                    </label>
+                    <input 
+                      type="number" 
+                      id="experience" 
+                      name="experience"
+                      min="0"
+                      value={formData.experience}
+                      onChange={handleInputChange}
+                      onFocus={() => handleFocus('experience')}
+                      onBlur={handleBlur}
+                      placeholder="Optional"
+                    />
+                  </div>
+                </div>
+                
+                <div className="form-group domains-group">
+                  <label>
+                    Select Domain(s) <span className="required-star">*</span>
+                  </label>
+                  <p className="domains-hint">Select at least one domain where you'd like to mentor students</p>
+                  
+                  <div className={`domains-grid ${errors.domains ? 'error' : ''}`}>
+                    {domainOptions.map(domain => (
+                      <div 
+                        key={domain.id} 
+                        className={`domain-option ${formData.domains.includes(domain.id) ? 'selected' : ''}`}
+                        onClick={() => toggleDomain(domain.id)}
+                      >
+                        <div className="checkbox-container">
+                          {formData.domains.includes(domain.id) ? (
+                            <i className="fas fa-check-square"></i>
+                          ) : (
+                            <i className="far fa-square"></i>
+                          )}
+                        </div>
+                        <span>{domain.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {errors.domains && <span className="error-message domains-error">{errors.domains}</span>}
+                  
+                  {formData.domains.length > 0 && (
+                    <div className="selected-domains-count">
+                      <span>{formData.domains.length} domain{formData.domains.length !== 1 ? 's' : ''} selected</span>
+                    </div>
+                  )}
+                </div>
+                
+                <button 
+                  type="submit" 
+                  className="apply-button" 
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <><i className="fas fa-spinner fa-spin"></i> Submitting...</>
+                  ) : (
+                    'Submit Application'
+                  )}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* BDA Form Modal */}
+      {showBdaForm && (
+        <div className="form-modal-overlay">
+          <div className="form-modal">
+            <div className="form-modal-header">
+              <h3>Apply for Business Development Associate</h3>
+              <button className="close-modal" onClick={closeBdaForm}><i className="fas fa-times"></i></button>
+            </div>
+            <div className="form-modal-content">
+              <form className="bda-form" onSubmit={handleBdaSubmit}>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="fullName">
+                      Full Name <span className="required-star">*</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      id="fullName" 
+                      name="fullName" 
+                      value={bdaFormData.fullName}
+                      onChange={handleBdaInputChange}
+                      onFocus={() => handleFocus('fullName')}
+                      onBlur={handleBlur}
+                      className={bdaErrors.fullName ? 'error' : ''}
+                      placeholder="Enter your full name"
+                    />
+                    {bdaErrors.fullName && <span className="error-message">{bdaErrors.fullName}</span>}
+                  </div>
+                  
+                  <div className="form-group">
+                    <label htmlFor="bdaEmail">
+                      Email Address <span className="required-star">*</span>
+                    </label>
+                    <input 
+                      type="email" 
+                      id="bdaEmail" 
+                      name="email"
+                      value={bdaFormData.email}
+                      onChange={handleBdaInputChange}
+                      onFocus={() => handleFocus('bdaEmail')}
+                      onBlur={handleBlur}
+                      className={bdaErrors.email ? 'error' : ''}
+                      placeholder="Enter your email address"
+                    />
+                    {bdaErrors.email && <span className="error-message">{bdaErrors.email}</span>}
+                  </div>
+                </div>
+                
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="bdaPhone">
+                      Phone Number <span className="required-star">*</span>
+                    </label>
+                    <input 
+                      type="tel" 
+                      id="bdaPhone" 
+                      name="phone"
+                      value={bdaFormData.phone}
+                      onChange={handleBdaInputChange}
+                      onFocus={() => handleFocus('bdaPhone')}
+                      onBlur={handleBlur}
+                      className={bdaErrors.phone ? 'error' : ''}
+                      placeholder="Enter your phone number"
+                    />
+                    {bdaErrors.phone && <span className="error-message">{bdaErrors.phone}</span>}
+                  </div>
+                  
+                  <div className="form-group">
+                    <label htmlFor="education">
+                      Education <span className="required-star">*</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      id="education" 
+                      name="education"
+                      value={bdaFormData.education}
+                      onChange={handleBdaInputChange}
+                      onFocus={() => handleFocus('education')}
+                      onBlur={handleBlur}
+                      className={bdaErrors.education ? 'error' : ''}
+                      placeholder="E.g., MBA in Marketing from XYZ University"
+                    />
+                    {bdaErrors.education && <span className="error-message">{bdaErrors.education}</span>}
+                  </div>
+                </div>
+                
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="bdaExperience">
+                      Years of Experience in Business Development
+                    </label>
+                    <input 
+                      type="number" 
+                      id="bdaExperience" 
+                      name="experience"
+                      min="0"
+                      value={bdaFormData.experience}
+                      onChange={handleBdaInputChange}
+                      onFocus={() => handleFocus('bdaExperience')}
+                      onBlur={handleBlur}
+                      placeholder="Optional"
+                    />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label htmlFor="portfolio">
+                      LinkedIn Profile
+                    </label>
+                    <input 
+                      type="url" 
+                      id="portfolio" 
+                      name="portfolio"
+                      value={bdaFormData.portfolio}
+                      onChange={handleBdaInputChange}
+                      onFocus={() => handleFocus('portfolio')}
+                      onBlur={handleBlur}
+                      placeholder="https://linkedin.com/in/yourprofile"
+                    />
+                  </div>
+                </div>
+                
+                <div className="form-group resume-upload">
+                  <label htmlFor="resume">
+                    Upload Resume <span className="required-star">*</span>
+                  </label>
+                  <p className="file-format-note">Please upload your resume in PDF format only. Maximum file size: 5MB</p>
+                  
+                  <div className="resume-upload-container">
+                    <input 
+                      type="file" 
+                      id="resume" 
+                      name="resume"
+                      onChange={handleFileChange}
+                      accept="application/pdf"
+                      className={`file-input ${bdaErrors.resume ? 'error' : ''}`}
+                    />
+                    <div className="resume-upload-icon">
+                      <i className="fas fa-file-pdf"></i>
+                      <span>Upload PDF</span>
+                    </div>
+                  </div>
+                  
+                  {bdaErrors.resume && <span className="error-message">{bdaErrors.resume}</span>}
+                  
+                  {bdaFormData.resume && (
+                    <div className="file-selected">
+                      <i className="fas fa-file-pdf"></i> 
+                      <span className="filename">{bdaFormData.resume.name}</span>
+                      <span className="filesize">({(bdaFormData.resume.size / (1024 * 1024)).toFixed(2)} MB)</span>
+                    </div>
+                  )}
+                </div>
+                
+                <button 
+                  type="submit" 
+                  className="apply-button" 
+                  disabled={isBdaSubmitting}
+                >
+                  {isBdaSubmitting ? (
+                    <><i className="fas fa-spinner fa-spin"></i> Submitting...</>
+                  ) : (
+                    'Submit Application'
+                  )}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Success Popups */}
       {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
+        <div className="confirmation-popup-overlay">
+          <div className="confirmation-popup">
             <div className="popup-header">
-              <h3><i className="fas fa-check-circle"></i> Application Submitted</h3>
+              <h3><i className="fas fa-check-circle"></i> Application Submitted Successfully</h3>
               <button className="close-popup" onClick={closePopup}><i className="fas fa-times"></i></button>
             </div>
             <div className="popup-content">
-              <p>Thank you for your interest in becoming a mentor! Your application has been submitted to our HR department. We will review your information and get back to you soon.</p>
+              <p>Thank you for applying as a mentor! We've received your application and will carefully review your qualifications. A member of our team will contact you within 3-5 business days.</p>
             </div>
           </div>
         </div>
       )}
       
       {showBdaPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
+        <div className="confirmation-popup-overlay">
+          <div className="confirmation-popup">
             <div className="popup-header">
-              <h3><i className="fas fa-check-circle"></i> Application Submitted</h3>
+              <h3><i className="fas fa-check-circle"></i> Application Submitted Successfully</h3>
               <button className="close-popup" onClick={closeBdaPopup}><i className="fas fa-times"></i></button>
             </div>
             <div className="popup-content">
-              <p>Thank you for applying to the Business Development Associate position! We've received your application and will review it shortly. Our recruitment team will contact you regarding the next steps.</p>
+              <p>Thank you for applying to the Business Development position! Your application has been successfully submitted. We'll review your qualifications and reach out to you within 3-5 business days to discuss next steps.</p>
             </div>
           </div>
         </div>
