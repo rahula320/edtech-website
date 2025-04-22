@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs');
+const session = require('express-session');
 
 // Load environment variables
 dotenv.config();
@@ -17,11 +19,27 @@ const apiRoutes = require('./server/routes/api');
 const app = express();
 
 // Enable CORS for all routes
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://acmyx.vercel.app', 'https://acmyx-clt6afshw-edtechrk2319.vercel.app', /\.vercel\.app$/] 
+    : 'http://localhost:3000',
+  credentials: true
+}));
 
 // Parse JSON and URL-encoded bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Session configuration
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'acmyx-session-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
 
 // Initialize database on startup
 (async function() {
@@ -37,6 +55,95 @@ app.use(express.urlencoded({ extended: true }));
 
 // Use API routes
 app.use('/api', apiRoutes);
+
+// Admin login endpoint
+app.post('/api/admin/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    console.log(`API: Login attempt for email: ${email}`);
+    
+    // Find admin user in the database
+    let adminUser = null;
+    try {
+      console.log('API: Attempting database query for admin user');
+      const admins = await db.sql`
+        SELECT id, email, password, role, first_name, last_name FROM users 
+        WHERE email = ${email} AND role = 'admin'
+      `;
+      
+      console.log(`API: Query complete, found ${admins.length} matching users`);
+      
+      if (admins.length === 0) {
+        console.log(`API: Login failed: No admin found with email ${email}`);
+        return res.status(401).json({ 
+          success: false, 
+          message: 'Invalid admin credentials' 
+        });
+      }
+      
+      adminUser = admins[0];
+      console.log('API: Admin user found in database');
+    } catch (dbError) {
+      console.error('API: Database error during admin lookup:', dbError);
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Authentication error' 
+      });
+    }
+
+    // Verify password
+    console.log('API: Verifying password');
+    const isValid = await bcrypt.compare(password, adminUser.password);
+    if (!isValid) {
+      console.log(`API: Login failed: Password mismatch for admin ${email}`);
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid admin credentials' 
+      });
+    }
+
+    // Login successful 
+    console.log(`API: Admin login successful for ${email}`);
+    
+    // Set session
+    req.session.isAdmin = true;
+    req.session.adminEmail = adminUser.email;
+    req.session.adminId = adminUser.id;
+    req.session.adminRole = adminUser.role;
+
+    // Save session before sending response
+    req.session.save(err => {
+      if (err) {
+        console.error('API: Session save error:', err);
+        return res.status(500).json({ 
+          success: false, 
+          message: 'Session error' 
+        });
+      }
+      
+      console.log('API: Session saved successfully, sending response');
+      return res.json({ 
+        success: true, 
+        message: 'Admin login successful',
+        user: { 
+          id: adminUser.id,
+          email: adminUser.email, 
+          role: adminUser.role,
+          firstName: adminUser.first_name,
+          lastName: adminUser.last_name
+        }
+      });
+    });
+
+  } catch (error) {
+    console.error('API: Admin login route error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Internal server error' 
+    });
+  }
+});
 
 // Root endpoint for basic health check - serving a simple HTML page
 app.get('/', (req, res) => {
