@@ -10,6 +10,7 @@
     "server": "cd server && npm run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client:build": "cd client && npm run build",
+    "build": "npm run install-all && npm run client:build",
     "start": "cd server && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
