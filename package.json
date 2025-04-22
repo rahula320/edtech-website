@@ -1,21 +1,14 @@
 {
-  "name": "acmyx-website-monorepo",
+  "name": "acmyx-website",
   "version": "1.0.0",
-  "description": "ACMYX Website - Full Stack Application",
+  "description": "ACMYX Website",
+  "main": "server.js",
   "scripts": {
-    "client:install": "cd client && npm install",
-    "server:install": "cd server && npm install",
-    "install-all": "npm install && npm run client:install && npm run server:install",
-    "client": "cd client && npm start",
-    "server": "cd server && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "client:build": "cd client && npm run build",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "build": "cd client && npm install && npm run build",
-    "start": "cd server && npm start",
-    "deploy": "./vercel.deploy.sh",
-    "deploy:prod": "vercel --prod",
-    "db:setup": "node ./server/scripts/init-db.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "bash deploy.sh"
   },
   "keywords": [
     "acmyx",
