@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "APPWRITE_ENDPOINT": "https://fra.cloud.appwrite.io/v1",
+    "APPWRITE_PROJECT_ID": "6807acd800061e46f305",
+    "APPWRITE_DATABASE_ID": "6807b03b001c93ebc92a",
+    "APPWRITE_API_KEY": "your-api-key-here",
+    "SESSION_SECRET": "your-session-secret-here"
+  }
+} 

@@ -150,4 +150,69 @@ Contributions, issues and feature requests are welcome!
 
 ## 📧 Contact
 
-For questions or feedback, reach out to the project maintainer. 
+For questions or feedback, reach out to the project maintainer.
+
+## Deployment to Vercel
+
+### Prerequisites
+- A Vercel account
+- Vercel CLI installed (`npm install -g vercel`)
+- Appwrite account with project setup
+
+### Automatic Deployment
+1. Run the deployment script:
+   ```
+   npm run deploy
+   ```
+   
+2. Follow the prompts from the Vercel CLI.
+
+3. When deployment is complete, your application will be available at the provided Vercel URL.
+
+### Manual Deployment
+If you prefer to deploy manually:
+
+1. Login to Vercel:
+   ```
+   vercel login
+   ```
+
+2. Deploy the application:
+   ```
+   vercel --prod
+   ```
+
+3. Configure environment variables in the Vercel dashboard:
+   - `APPWRITE_ENDPOINT`: https://fra.cloud.appwrite.io/v1
+   - `APPWRITE_PROJECT_ID`: Your Appwrite project ID
+   - `APPWRITE_DATABASE_ID`: Your Appwrite database ID
+   - `APPWRITE_API_KEY`: Your Appwrite API key
+   - `SESSION_SECRET`: A secure random string
+
+### Admin Access
+Once deployed, you can access the admin panel at:
+```
+https://[your-vercel-domain]/admin
+```
+
+Login with:
+- Email: admin@acmyx.com
+- Password: admin123
+
+## Development
+
+### Setup
+1. Install dependencies:
+   ```
+   npm run install-all
+   ```
+
+2. Start development servers:
+   ```
+   npm run dev
+   ```
+
+### Project Structure
+- `/client` - React frontend
+- `/server` - Express backend
+- `vercel.json` - Vercel deployment configuration 
