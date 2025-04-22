@@ -18,14 +18,14 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    container_name: edtech-server
+    container_name: acmyx-server
     restart: always
     depends_on:
       - mongodb
     environment:
       - NODE_ENV=production
       - PORT=5001
-      - MONGODB_URI=mongodb://mongodb:27017/edtech
+      - MONGODB_URI=mongodb://mongodb:27017/acmyx
       - SESSION_SECRET=${SESSION_SECRET}
       - EMAIL_USER=${EMAIL_USER}
       - EMAIL_PASS=${EMAIL_PASS}
@@ -40,7 +40,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    container_name: edtech-client
+    container_name: acmyx-client
     restart: always
     depends_on:
       - server

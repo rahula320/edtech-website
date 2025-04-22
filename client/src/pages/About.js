@@ -32,7 +32,7 @@ function About() {
               <ul>
                 <li>Explore our <a href="/programs">available courses</a></li>
                 <li>Read our <a href="/blog">latest articles</a></li>
-                <li>Contact us at <a href="mailto:info@techedu.com">info@techedu.com</a></li>
+                <li>Contact us at <a href="mailto:info@acmyx.com">info@acmyx.com</a></li>
               </ul>
             </div>
           </div>

@@ -101,7 +101,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-brand">
         <Link to="/">
-          <i className="fas fa-graduation-cap"></i> EdTech
+          <i className="fas fa-graduation-cap"></i> ACMYX
         </Link>
       </div>
       

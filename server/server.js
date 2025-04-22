@@ -32,7 +32,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({ 
-    mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/edtech',
+    mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/acmyx',
     ttl: 24 * 60 * 60 // 1 day
   }),
   cookie: { 

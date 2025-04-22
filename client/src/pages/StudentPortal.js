@@ -118,7 +118,7 @@ function StudentPortal() {
       <div className="student-dashboard">
         <header className="dashboard-header">
           <div className="dashboard-brand">
-            <i className="fas fa-graduation-cap"></i> EdTech Student Portal
+            <i className="fas fa-graduation-cap"></i> ACMYX Student Portal
           </div>
           <div className="user-menu">
             <span className="user-greeting">Welcome, Demo Student</span>

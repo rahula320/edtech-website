@@ -23,7 +23,7 @@ export NODE_ENV=production
 # Step 5: Restart the server (using PM2 if available)
 if command -v pm2 &> /dev/null; then
     echo "Restarting server with PM2..."
-    pm2 restart server/server.js || pm2 start server/server.js --name="edtech-website"
+    pm2 restart server/server.js || pm2 start server/server.js --name="acmyx-website"
 else
     echo "PM2 not found. Starting server with Node..."
     echo "Note: For production, consider using PM2 for process management."

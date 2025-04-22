@@ -449,7 +449,7 @@ function Home() {
       {/* Mobile Navigation Menu */}
       <div className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`}>
         <div className="mobile-menu-header">
-          <h2>EdTech</h2>
+          <h2>ACMYX</h2>
           <button className="close-menu" onClick={toggleMobileMenu}>
             <i className="fas fa-times"></i>
           </button>
@@ -1010,7 +1010,7 @@ function Home() {
             <div className="footer-logo-section">
               <div className="footer-logo">
                 <Link to="/">
-                  <img src="https://via.placeholder.com/180x60" alt="TechEdu Logo" />
+                  <img src="https://via.placeholder.com/180x60" alt="ACMYX Logo" />
                 </Link>
               </div>
               <p className="footer-tagline">Transforming lives through technology education</p>
@@ -1051,7 +1051,7 @@ function Home() {
                 <ul>
                   <li><Link to="/portal">Student Login</Link></li>
                   <li><Link to="/about">FAQs</Link></li>
-                  <li><a href="mailto:support@techedu.com">Contact Support</a></li>
+                  <li><a href="mailto:support@acmyx.com">Contact Support</a></li>
                 </ul>
               </div>
               
@@ -1069,7 +1069,7 @@ function Home() {
           
           <div className="footer-bottom">
             <div className="footer-bottom-left">
-              <p>&copy; {new Date().getFullYear()} TechEdu. All rights reserved.</p>
+              <p>&copy; {new Date().getFullYear()} ACMYX. All rights reserved.</p>
             </div>
             <div className="footer-bottom-right">
               <div className="footer-app-links">

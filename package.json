@@ -1,7 +1,7 @@
 {
-  "name": "edtech-website-monorepo",
+  "name": "acmyx-website-monorepo",
   "version": "1.0.0",
-  "description": "EdTech Website - Full Stack Application",
+  "description": "ACMYX Website - Full Stack Application",
   "scripts": {
     "client:install": "cd client && npm install",
     "server:install": "cd server && npm install",
@@ -14,7 +14,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "edtech",
+    "acmyx",
     "website",
     "education",
     "fullstack"
