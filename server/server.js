@@ -14,7 +14,8 @@ const {
   databaseId, 
   usersCollectionId, 
   coursesCollectionId, 
-  contactsCollectionId, 
+  contactsCollectionId,
+  adminsCollectionId,
   ID, 
   Query 
 } = require('./config/appwrite');
@@ -323,6 +324,90 @@ app.post('/api/courses', async (req, res) => {
     console.error('Error creating course:', err);
     res.status(500).json({ message: 'Error creating course' });
   }
+});
+
+// Admin login endpoint
+app.post('/api/admin/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    // Check if admin credentials match expected values
+    if (email !== 'admin@acmyx.com') {
+      return res.status(401).json({ success: false, message: 'Invalid admin credentials' });
+    }
+    
+    // Check if admin exists in database, if not create it
+    let adminUser;
+    try {
+      const admins = await databases.listDocuments(
+        databaseId,
+        adminsCollectionId,
+        [Query.equal('email', email)]
+      );
+      
+      if (admins.documents.length === 0) {
+        // Create admin user if it doesn't exist
+        const hashedPassword = await bcrypt.hash('admin123', 10);
+        adminUser = await databases.createDocument(
+          databaseId,
+          adminsCollectionId,
+          ID.unique(),
+          {
+            email: 'admin@acmyx.com',
+            password: hashedPassword,
+            role: 'admin',
+            createdAt: new Date().toISOString()
+          }
+        );
+      } else {
+        adminUser = admins.documents[0];
+      }
+    } catch (error) {
+      // If collection doesn't exist, create it first
+      console.error('Admin collection access error:', error);
+      // Continue with hardcoded password check
+    }
+    
+    // If we have an admin user in database, verify password
+    if (adminUser) {
+      const isValid = await bcrypt.compare(password, adminUser.password);
+      if (!isValid) {
+        return res.status(401).json({ success: false, message: 'Invalid admin credentials' });
+      }
+    } else {
+      // Fall back to hardcoded password for initial setup
+      const isValid = password === 'admin123';
+      if (!isValid) {
+        return res.status(401).json({ success: false, message: 'Invalid admin credentials' });
+      }
+    }
+    
+    // Create admin session
+    req.session.isAdmin = true;
+    
+    return res.json({ 
+      success: true, 
+      message: 'Admin login successful',
+      admin: { email, role: 'admin' }
+    });
+  } catch (error) {
+    console.error('Admin login error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+// Check admin status endpoint
+app.get('/api/admin/status', (req, res) => {
+  if (req.session.isAdmin) {
+    return res.json({ isAdmin: true });
+  }
+  return res.status(401).json({ isAdmin: false });
+});
+
+// Admin logout endpoint
+app.get('/api/admin/logout', (req, res) => {
+  req.session.isAdmin = false;
+  res.json({ success: true, message: 'Admin logged out successfully' });
 });
 
 // Serve static files in production

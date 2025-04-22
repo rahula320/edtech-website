@@ -14,20 +14,65 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     // Check if admin is logged in
-    const adminAuth = localStorage.getItem('adminAuth');
-    if (!adminAuth) {
-      navigate('/admin');
-      return;
-    }
-    setIsAdmin(true);
+    const checkAdminStatus = async () => {
+      try {
+        const response = await fetch('/api/admin/status', {
+          credentials: 'include'
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.isAdmin) {
+            setIsAdmin(true);
+            
+            // Load mentor applications from localStorage
+            const mentorApplications = JSON.parse(localStorage.getItem('mentorApplications') || '[]');
+            setApplications(mentorApplications);
+            
+            // Load BDA applications from localStorage
+            const bdaApplicationsData = JSON.parse(localStorage.getItem('bdaApplications') || '[]');
+            setBdaApplications(bdaApplicationsData);
+          } else {
+            navigate('/admin');
+          }
+        } else {
+          // Check local fallback
+          const adminAuth = localStorage.getItem('adminAuth');
+          if (!adminAuth) {
+            navigate('/admin');
+            return;
+          }
+          setIsAdmin(true);
+          
+          // Load mentor applications from localStorage
+          const mentorApplications = JSON.parse(localStorage.getItem('mentorApplications') || '[]');
+          setApplications(mentorApplications);
+          
+          // Load BDA applications from localStorage
+          const bdaApplicationsData = JSON.parse(localStorage.getItem('bdaApplications') || '[]');
+          setBdaApplications(bdaApplicationsData);
+        }
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        // Fallback to local storage check
+        const adminAuth = localStorage.getItem('adminAuth');
+        if (!adminAuth) {
+          navigate('/admin');
+          return;
+        }
+        setIsAdmin(true);
+        
+        // Load mentor applications from localStorage
+        const mentorApplications = JSON.parse(localStorage.getItem('mentorApplications') || '[]');
+        setApplications(mentorApplications);
+        
+        // Load BDA applications from localStorage
+        const bdaApplicationsData = JSON.parse(localStorage.getItem('bdaApplications') || '[]');
+        setBdaApplications(bdaApplicationsData);
+      }
+    };
     
-    // Load mentor applications from localStorage
-    const mentorApplications = JSON.parse(localStorage.getItem('mentorApplications') || '[]');
-    setApplications(mentorApplications);
-    
-    // Load BDA applications from localStorage
-    const bdaApplicationsData = JSON.parse(localStorage.getItem('bdaApplications') || '[]');
-    setBdaApplications(bdaApplicationsData);
+    checkAdminStatus();
   }, [navigate]);
 
   // Toggle active tab
@@ -232,8 +277,18 @@ const AdminDashboard = () => {
     document.body.removeChild(link);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', {
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+    
+    // Clear admin from localStorage
     localStorage.removeItem('adminAuth');
+    // Redirect to login page
     navigate('/admin');
   };
 

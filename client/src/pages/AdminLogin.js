@@ -4,10 +4,11 @@ import './AdminLogin.css';
 
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,23 +19,43 @@ const AdminLogin = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Simple validation
-    if (!credentials.username || !credentials.password) {
-      setError('Please enter both username and password');
+    if (!credentials.email || !credentials.password) {
+      setError('Please enter both email and password');
       return;
     }
     
-    // Demo credentials (in a real app, this would be handled securely on a server)
-    if (credentials.username === 'admin' && credentials.password === 'admin123') {
-      // Set admin session
-      localStorage.setItem('adminAuth', 'true');
-      // Redirect to dashboard
-      navigate('/admin/dashboard');
-    } else {
-      setError('Invalid username or password');
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials),
+        credentials: 'include'
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Set admin session
+        localStorage.setItem('adminAuth', 'true');
+        // Redirect to dashboard
+        navigate('/admin/dashboard');
+      } else {
+        setError(data.message || 'Invalid login credentials');
+      }
+    } catch (error) {
+      setError('Server error. Please try again later.');
+      console.error('Login error:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,14 +67,15 @@ const AdminLogin = () => {
           {error && <div className="error-message">{error}</div>}
           
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Email</label>
             <input
-              type="text"
-              id="username"
-              name="username"
-              value={credentials.username}
+              type="email"
+              id="email"
+              name="email"
+              value={credentials.email}
               onChange={handleChange}
-              placeholder="Enter your username"
+              placeholder="admin@acmyx.com"
+              disabled={loading}
             />
           </div>
           
@@ -66,10 +88,13 @@ const AdminLogin = () => {
               value={credentials.password}
               onChange={handleChange}
               placeholder="Enter your password"
+              disabled={loading}
             />
           </div>
           
-          <button type="submit" className="login-button">Login</button>
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
         </form>
       </div>
     </div>
