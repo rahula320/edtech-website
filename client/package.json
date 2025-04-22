@@ -1,6 +1,7 @@
 {
   "name": "acmyx-website-client",
   "version": "1.0.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
@@ -17,6 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "CI=false react-scripts build",
+    "vercel-build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

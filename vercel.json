@@ -6,8 +6,11 @@
       "use": "@vercel/node"
     },
     {
-      "src": "client/build/**",
-      "use": "@vercel/static"
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
     }
   ],
   "routes": [
@@ -16,7 +19,12 @@
       "dest": "/server.js"
     },
     {
-      "handle": "filesystem"
+      "src": "/static/(.*)",
+      "dest": "/client/build/static/$1"
+    },
+    {
+      "src": "/(.+\\.[a-zA-Z]+)$",
+      "dest": "/client/build/$1"
     },
     {
       "src": "/(.*)",
