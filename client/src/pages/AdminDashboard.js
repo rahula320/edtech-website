@@ -291,7 +291,14 @@ const AdminDashboard = () => {
             <span>Logged in as: <strong>{adminData.email}</strong></span>
             <span className="admin-role">{adminData.role}</span>
           </div>
-          <button className="logout-button" onClick={handleLogout}>Logout</button>
+          <button className="logout-button" onClick={handleLogout}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Logout
+          </button>
         </div>
       </div>
       
@@ -313,7 +320,13 @@ const AdminDashboard = () => {
       <div className="admin-actions">
         <div className="select-actions">
           <button className="action-button refresh-button" onClick={handleRefresh}>
-            Refresh Data
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 2v6h-6"></path>
+              <path d="M3 12a9 9 0 0 1 15-6.7l3-3"></path>
+              <path d="M3 22v-6h6"></path>
+              <path d="M21 12a9 9 0 0 1-15 6.7l-3 3"></path>
+            </svg>
+            Refresh
           </button>
           <label className="select-all-container">
             <input 
@@ -328,11 +341,20 @@ const AdminDashboard = () => {
             onClick={deleteSelected}
             disabled={selectedItems.length === 0}
           >
-            Delete Selected
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 6h18"></path>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Delete {selectedItems.length ? `(${selectedItems.length})` : ''}
           </button>
         </div>
         <div className="download-actions">
           <button className="action-button" onClick={downloadCSV}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
             Download All
           </button>
           <button 
@@ -340,6 +362,11 @@ const AdminDashboard = () => {
             onClick={downloadSelectedCSV}
             disabled={selectedItems.length === 0}
           >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
             Download Selected
           </button>
         </div>
@@ -347,9 +374,19 @@ const AdminDashboard = () => {
       
       <div className="applications-container">
         {loading ? (
-          <div className="loading-indicator">Loading applications...</div>
+          <div className="loading-indicator">
+            <div className="loading-spinner"></div>
+            <p>Loading applications...</p>
+          </div>
         ) : error ? (
-          <div className="error-message">{error}</div>
+          <div className="error-message">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            {error}
+          </div>
         ) : activeTab === 'mentor' ? (
           applications.length === 0 ? (
             <div className="no-applications">No mentor applications found.</div>
@@ -372,7 +409,7 @@ const AdminDashboard = () => {
                     <h3>{app.full_name}</h3>
                     <p><strong>Email:</strong> {app.email}</p>
                     <p><strong>Company:</strong> {app.company}</p>
-                    <p><strong>Experience:</strong> {app.experience}</p>
+                    <p><strong>Experience:</strong> {app.experience} years</p>
                     <p><strong>Applied:</strong> {new Date(app.timestamp).toLocaleString()}</p>
                   </div>
                 </div>
@@ -401,7 +438,7 @@ const AdminDashboard = () => {
                     <h3>{app.full_name}</h3>
                     <p><strong>Email:</strong> {app.email}</p>
                     <p><strong>Education:</strong> {app.education}</p>
-                    <p><strong>Experience:</strong> {app.experience}</p>
+                    <p><strong>Experience:</strong> {app.experience} years</p>
                     <p><strong>Applied:</strong> {new Date(app.timestamp).toLocaleString()}</p>
                   </div>
                 </div>
@@ -416,25 +453,25 @@ const AdminDashboard = () => {
             <h2>Application Details</h2>
             {activeTab === 'mentor' ? (
               <div className="details-content">
-                <p><strong>Name:</strong> {selectedApplication.full_name}</p>
-                <p><strong>Email:</strong> {selectedApplication.email}</p>
-                <p><strong>Phone:</strong> {selectedApplication.phone}</p>
-                <p><strong>Company:</strong> {selectedApplication.company}</p>
-                <p><strong>Designation:</strong> {selectedApplication.designation}</p>
-                <p><strong>Experience:</strong> {selectedApplication.experience}</p>
-                <p><strong>Domains:</strong> {formatDomainsForCSV(selectedApplication.domains)}</p>
-                <p><strong>Applied:</strong> {new Date(selectedApplication.timestamp).toLocaleString()}</p>
+                <p><strong>Name</strong> {selectedApplication.full_name}</p>
+                <p><strong>Email</strong> {selectedApplication.email}</p>
+                <p><strong>Phone</strong> {selectedApplication.phone}</p>
+                <p><strong>Company</strong> {selectedApplication.company}</p>
+                <p><strong>Designation</strong> {selectedApplication.designation}</p>
+                <p><strong>Experience</strong> {selectedApplication.experience} years</p>
+                <p><strong>Domains</strong> {formatDomainsForCSV(selectedApplication.domains)}</p>
+                <p><strong>Applied</strong> {new Date(selectedApplication.timestamp).toLocaleString()}</p>
               </div>
             ) : (
               <div className="details-content">
-                <p><strong>Full Name:</strong> {selectedApplication.full_name}</p>
-                <p><strong>Email:</strong> {selectedApplication.email}</p>
-                <p><strong>Phone:</strong> {selectedApplication.phone}</p>
-                <p><strong>Education:</strong> {selectedApplication.education}</p>
-                <p><strong>Experience:</strong> {selectedApplication.experience}</p>
-                <p><strong>LinkedIn:</strong> {selectedApplication.portfolio_url || 'Not provided'}</p>
-                <p><strong>Resume URL:</strong> {selectedApplication.resume_url || 'Not uploaded'}</p>
-                <p><strong>Applied:</strong> {new Date(selectedApplication.timestamp).toLocaleString()}</p>
+                <p><strong>Full Name</strong> {selectedApplication.full_name}</p>
+                <p><strong>Email</strong> {selectedApplication.email}</p>
+                <p><strong>Phone</strong> {selectedApplication.phone}</p>
+                <p><strong>Education</strong> {selectedApplication.education}</p>
+                <p><strong>Experience</strong> {selectedApplication.experience} years</p>
+                <p><strong>LinkedIn</strong> {selectedApplication.portfolio_url || 'Not provided'}</p>
+                <p><strong>Resume URL</strong> {selectedApplication.resume_url || 'Not uploaded'}</p>
+                <p><strong>Applied</strong> {new Date(selectedApplication.timestamp).toLocaleString()}</p>
               </div>
             )}
           </div>
