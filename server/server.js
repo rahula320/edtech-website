@@ -1,25 +1,25 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const nodemailer = require('nodemailer');
 const path = require('path');
 const cors = require('cors');
+const bcrypt = require('bcryptjs');
 
-// Import database connection
-const connectDB = require('./config/db');
-
-// Import models
-const User = require('./models/User');
-const Contact = require('./models/Contact');
-const Course = require('./models/Course');
+// Import Appwrite configuration
+const { 
+  databases, 
+  databaseId, 
+  usersCollectionId, 
+  coursesCollectionId, 
+  contactsCollectionId, 
+  ID, 
+  Query 
+} = require('./config/appwrite');
 
 const app = express();
-
-// Connect to MongoDB
-connectDB();
 
 // Middleware
 app.use(cors());
@@ -31,10 +31,6 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'your-secret-key',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ 
-    mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/acmyx',
-    ttl: 24 * 60 * 60 // 1 day
-  }),
   cookie: { 
     secure: process.env.NODE_ENV === 'production',
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
@@ -48,11 +44,24 @@ app.use(passport.session());
 passport.use(new LocalStrategy(
   async (username, password, done) => {
     try {
-      const user = await User.findOne({ username });
-      if (!user) return done(null, false, { message: 'Incorrect username.' });
+      // Find user in Appwrite
+      const users = await databases.listDocuments(
+        databaseId,
+        usersCollectionId,
+        [Query.equal('username', username)]
+      );
       
-      const isValid = await user.comparePassword(password);
-      if (!isValid) return done(null, false, { message: 'Incorrect password.' });
+      if (users.documents.length === 0) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      
+      const user = users.documents[0];
+      
+      // Compare passwords
+      const isValid = await bcrypt.compare(password, user.password);
+      if (!isValid) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
       
       return done(null, user);
     } catch (err) {
@@ -61,10 +70,14 @@ passport.use(new LocalStrategy(
   }
 ));
 
-passport.serializeUser((user, done) => done(null, user.id));
+passport.serializeUser((user, done) => done(null, user.$id));
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findById(id);
+    const user = await databases.getDocument(
+      databaseId,
+      usersCollectionId,
+      id
+    );
     done(null, user);
   } catch (err) {
     done(err);
@@ -94,9 +107,18 @@ app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, message } = req.body;
     
-    // Save to database
-    const contact = new Contact({ name, email, message });
-    await contact.save();
+    // Save to Appwrite
+    await databases.createDocument(
+      databaseId,
+      contactsCollectionId,
+      ID.unique(),
+      {
+        name,
+        email,
+        message,
+        createdAt: new Date().toISOString()
+      }
+    );
     
     // Send email
     await transporter.sendMail({
@@ -118,21 +140,37 @@ app.post('/api/register', async (req, res) => {
     const { username, email, password, firstName, lastName } = req.body;
     
     // Check if user exists
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
-    if (existingUser) {
+    const existingUsers = await databases.listDocuments(
+      databaseId,
+      usersCollectionId,
+      [Query.equal('$or', [
+        { username },
+        { email }
+      ])]
+    );
+    
+    if (existingUsers.documents.length > 0) {
       return res.status(400).json({ message: 'Username or email already exists' });
     }
     
-    // Create user
-    const user = new User({
-      username,
-      email,
-      password,
-      firstName,
-      lastName
-    });
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
     
-    await user.save();
+    // Create user in Appwrite
+    await databases.createDocument(
+      databaseId,
+      usersCollectionId,
+      ID.unique(),
+      {
+        username,
+        email,
+        password: hashedPassword,
+        firstName,
+        lastName,
+        role: 'student',
+        createdAt: new Date().toISOString()
+      }
+    );
     
     res.json({ success: true, message: 'User registered successfully' });
   } catch (err) {
@@ -165,11 +203,34 @@ app.get('/api/user', (req, res) => {
 // Course routes
 app.get('/api/courses', async (req, res) => {
   try {
-    const courses = await Course.find({ status: 'published' })
-      .populate('instructor', 'username firstName lastName')
-      .select('-enrolledStudents');
+    const courses = await databases.listDocuments(
+      databaseId,
+      coursesCollectionId,
+      [Query.equal('status', 'published')]
+    );
     
-    res.json({ success: true, courses });
+    // Get instructor details for each course
+    const coursesWithInstructors = await Promise.all(
+      courses.documents.map(async (course) => {
+        const instructor = await databases.getDocument(
+          databaseId,
+          usersCollectionId,
+          course.instructor
+        );
+        
+        return {
+          ...course,
+          instructor: {
+            $id: instructor.$id,
+            username: instructor.username,
+            firstName: instructor.firstName,
+            lastName: instructor.lastName
+          }
+        };
+      })
+    );
+    
+    res.json({ success: true, courses: coursesWithInstructors });
   } catch (err) {
     console.error('Error fetching courses:', err);
     res.status(500).json({ message: 'Error fetching courses' });
@@ -178,15 +239,52 @@ app.get('/api/courses', async (req, res) => {
 
 app.get('/api/courses/:id', async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id)
-      .populate('instructor', 'username firstName lastName')
-      .populate('enrolledStudents', 'username firstName lastName');
+    const course = await databases.getDocument(
+      databaseId,
+      coursesCollectionId,
+      req.params.id
+    );
     
-    if (!course) {
-      return res.status(404).json({ message: 'Course not found' });
+    // Get instructor details
+    const instructor = await databases.getDocument(
+      databaseId,
+      usersCollectionId,
+      course.instructor
+    );
+    
+    // Get enrolled students details if they exist
+    let enrolledStudents = [];
+    if (course.enrolledStudents && course.enrolledStudents.length > 0) {
+      enrolledStudents = await Promise.all(
+        course.enrolledStudents.map(async (studentId) => {
+          const student = await databases.getDocument(
+            databaseId,
+            usersCollectionId,
+            studentId
+          );
+          
+          return {
+            $id: student.$id,
+            username: student.username,
+            firstName: student.firstName,
+            lastName: student.lastName
+          };
+        })
+      );
     }
     
-    res.json({ success: true, course });
+    const courseWithDetails = {
+      ...course,
+      instructor: {
+        $id: instructor.$id,
+        username: instructor.username,
+        firstName: instructor.firstName,
+        lastName: instructor.lastName
+      },
+      enrolledStudents
+    };
+    
+    res.json({ success: true, course: courseWithDetails });
   } catch (err) {
     console.error('Error fetching course:', err);
     res.status(500).json({ message: 'Error fetching course' });
@@ -201,17 +299,24 @@ app.post('/api/courses', async (req, res) => {
   try {
     const { title, description, price, duration, level, topics } = req.body;
     
-    const course = new Course({
-      title,
-      description,
-      instructor: req.user._id,
-      price,
-      duration,
-      level,
-      topics
-    });
-    
-    await course.save();
+    // Create course in Appwrite
+    const course = await databases.createDocument(
+      databaseId,
+      coursesCollectionId,
+      ID.unique(),
+      {
+        title,
+        description,
+        instructor: req.user.$id,
+        price,
+        duration,
+        level,
+        topics,
+        status: 'published',
+        enrolledStudents: [],
+        createdAt: new Date().toISOString()
+      }
+    );
     
     res.json({ success: true, course });
   } catch (err) {
@@ -236,7 +341,7 @@ app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK',
     message: 'Server is running',
-    mongodb: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
+    appwrite: 'Connected'
   });
 });
 
@@ -266,19 +371,15 @@ server.on('error', (error) => {
 process.on('SIGTERM', () => {
   console.log('Received SIGTERM. Performing graceful shutdown...');
   server.close(() => {
-    mongoose.connection.close(false, () => {
-      console.log('Server and MongoDB connections closed.');
-      process.exit(0);
-    });
+    console.log('Server connections closed.');
+    process.exit(0);
   });
 });
 
 process.on('SIGINT', () => {
   console.log('Received SIGINT. Performing graceful shutdown...');
   server.close(() => {
-    mongoose.connection.close(false, () => {
-      console.log('Server and MongoDB connections closed.');
-      process.exit(0);
-    });
+    console.log('Server connections closed.');
+    process.exit(0);
   });
 }); 

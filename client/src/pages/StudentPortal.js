@@ -1,33 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './StudentPortal.css';
+import AuthService from '../utils/auth';
 
 function StudentPortal() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const [showMockData, setShowMockData] = useState(false);
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleLogin = (e) => {
+  // Check if user is already logged in
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const currentUser = await AuthService.getCurrentUser();
+        if (currentUser) {
+          setUser(currentUser);
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        console.error('Authentication check error:', error);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setLoginError('');
     
-    // Simulate API call delay
-    setTimeout(() => {
+    try {
+      // Use demo account for demo mode
       if (email === 'demo@example.com' && password === 'password') {
-        setLoginError('');
-        setShowMockData(true);
+        setIsAuthenticated(true);
+        setUser({
+          firstName: 'Demo',
+          lastName: 'Student',
+          email: 'demo@example.com'
+        });
       } else {
-        setLoginError('Invalid credentials. Use demo@example.com / password to access demo mode.');
+        // Real authentication with Appwrite
+        const result = await AuthService.login(email, password);
+        setUser(result.user);
+        setIsAuthenticated(true);
       }
+    } catch (error) {
+      setLoginError('Invalid credentials. Try demo@example.com / password for demo access.');
+    } finally {
       setIsLoading(false);
-    }, 800);
+    }
   };
 
-  const handleLogout = () => {
-    setShowMockData(false);
-    setEmail('');
-    setPassword('');
+  const handleLogout = async () => {
+    setIsLoading(true);
+    
+    try {
+      if (email !== 'demo@example.com') {
+        await AuthService.logout();
+      }
+      
+      setIsAuthenticated(false);
+      setUser(null);
+      setEmail('');
+      setPassword('');
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Mock data for demo purposes
@@ -113,7 +156,7 @@ function StudentPortal() {
     }
   ];
 
-  if (showMockData) {
+  if (isAuthenticated) {
     return (
       <div className="student-dashboard">
         <header className="dashboard-header">
@@ -121,7 +164,7 @@ function StudentPortal() {
             <i className="fas fa-graduation-cap"></i> ACMYX Student Portal
           </div>
           <div className="user-menu">
-            <span className="user-greeting">Welcome, Demo Student</span>
+            <span className="user-greeting">Welcome, {user.firstName} {user.lastName}</span>
             <button className="logout-button" onClick={handleLogout}>
               <i className="fas fa-sign-out-alt"></i> Logout
             </button>
@@ -160,7 +203,7 @@ function StudentPortal() {
           <main className="dashboard-main">
             <div className="welcome-banner">
               <div className="welcome-content">
-                <h1>Welcome back, Demo Student!</h1>
+                <h1>Welcome back, {user.firstName}!</h1>
                 <p>Track your progress, stay on top of assignments, and continue your learning journey.</p>
               </div>
             </div>
