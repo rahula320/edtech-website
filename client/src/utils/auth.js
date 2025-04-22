@@ -1,100 +1,59 @@
-import { account, databases, databaseId, usersCollectionId, ID } from './appwrite';
+import axios from 'axios';
 
-// Authentication service using Appwrite
+// Authentication service using the server API
 const AuthService = {
   // Register a new user
   register: async (userData) => {
     try {
-      // Create account in Appwrite
-      const newAccount = await account.create(
-        ID.unique(),
-        userData.email,
-        userData.password,
-        `${userData.firstName} ${userData.lastName}`
-      );
-      
-      // Create user record in database
-      await databases.createDocument(
-        databaseId,
-        usersCollectionId,
-        newAccount.$id,
-        {
-          username: userData.username,
-          email: userData.email,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          role: 'student',
-          createdAt: new Date().toISOString()
-        }
-      );
-      
-      return { success: true };
+      const response = await axios.post('/api/register', userData);
+      return response.data;
     } catch (error) {
-      console.error('Registration error:', error);
-      throw error;
+      throw new Error(error.response?.data?.message || 'Error during registration');
     }
   },
-  
-  // Login user
-  login: async (email, password) => {
+
+  // Login user with email and password
+  login: async (credentials) => {
     try {
-      // Create email session in Appwrite
-      await account.createEmailSession(email, password);
-      
-      // Get account
-      const user = await account.get();
-      
-      // Get user details from database
-      const userDetails = await databases.getDocument(
-        databaseId,
-        usersCollectionId,
-        user.$id
-      );
-      
-      return { success: true, user: userDetails };
+      const response = await axios.post('/api/login', credentials);
+      if (response.data.success) {
+        // Store user session info
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        return response.data.user;
+      }
+      throw new Error('Login failed');
     } catch (error) {
-      console.error('Login error:', error);
-      throw error;
+      throw new Error(error.response?.data?.message || 'Login failed');
     }
   },
-  
-  // Logout user
+
+  // Logout current user
   logout: async () => {
     try {
-      await account.deleteSession('current');
+      await axios.get('/api/logout');
+      localStorage.removeItem('user');
       return { success: true };
     } catch (error) {
-      console.error('Logout error:', error);
-      throw error;
+      throw new Error('Logout failed');
     }
   },
-  
+
   // Get current user
-  getCurrentUser: async () => {
-    try {
-      const user = await account.get();
-      
-      // Get user details from database
-      const userDetails = await databases.getDocument(
-        databaseId,
-        usersCollectionId,
-        user.$id
-      );
-      
-      return userDetails;
-    } catch (error) {
-      return null;
-    }
+  getCurrentUser: () => {
+    const userJson = localStorage.getItem('user');
+    if (!userJson) return null;
+    return JSON.parse(userJson);
   },
-  
+
   // Check if user is authenticated
-  isAuthenticated: async () => {
-    try {
-      await account.get();
-      return true;
-    } catch (error) {
-      return false;
-    }
+  isAuthenticated: () => {
+    return !!localStorage.getItem('user');
+  },
+
+  // Check if user is admin
+  isAdmin: () => {
+    const user = AuthService.getCurrentUser();
+    return user && user.role === 'admin';
   }
 };
 

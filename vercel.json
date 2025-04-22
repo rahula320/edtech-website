@@ -6,11 +6,8 @@
       "use": "@vercel/node"
     },
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "client/build"
-      }
+      "src": "client/build/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -19,27 +16,15 @@
       "dest": "/server.js"
     },
     {
-      "src": "^/static/(.*)",
-      "dest": "/client/build/static/$1"
-    },
-    {
-      "src": "^/images/(.*)",
-      "dest": "/client/build/images/$1"
-    },
-    {
-      "src": "^/manifest.json",
-      "dest": "/client/build/manifest.json"
-    },
-    {
-      "src": "^/favicon.ico",
-      "dest": "/client/build/favicon.ico"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/server.js"
+      "dest": "/client/build/$1"
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "DATABASE_URL": "postgresql://neondb_owner:npg_OSsZKqm1iTV3@ep-floral-silence-a18kxybn-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require",
+    "ADMIN_EMAIL": "admin@acmyx.com",
+    "ADMIN_PASSWORD": "admin123",
+    "SESSION_SECRET": "acmyx-session-secret-key"
   }
 } 

@@ -1,105 +1,88 @@
-import { databases, databaseId, coursesCollectionId, ID, Query } from './appwrite';
+import axios from 'axios';
 
-// Course service using Appwrite
+// Course service using the server API
 const CourseService = {
-  // Get all published courses
+  // Get all courses
   getAllCourses: async () => {
     try {
-      const response = await databases.listDocuments(
-        databaseId,
-        coursesCollectionId,
-        [Query.equal('status', 'published')]
-      );
-      
-      return response.documents;
+      const response = await axios.get('/api/courses');
+      return response.data;
     } catch (error) {
       console.error('Error fetching courses:', error);
       throw error;
     }
   },
-  
+
   // Get course by ID
   getCourseById: async (courseId) => {
     try {
-      const course = await databases.getDocument(
-        databaseId,
-        coursesCollectionId,
-        courseId
-      );
-      
-      return course;
+      const response = await axios.get(`/api/courses/${courseId}`);
+      return response.data;
     } catch (error) {
-      console.error('Error fetching course:', error);
+      console.error(`Error fetching course ${courseId}:`, error);
       throw error;
     }
   },
-  
-  // Create new course (for instructors)
+
+  // Create a new course
   createCourse: async (courseData) => {
     try {
-      const course = await databases.createDocument(
-        databaseId,
-        coursesCollectionId,
-        ID.unique(),
-        {
-          ...courseData,
-          status: 'published',
-          enrolledStudents: [],
-          createdAt: new Date().toISOString()
-        }
-      );
-      
-      return course;
+      const response = await axios.post('/api/courses', courseData, {
+        withCredentials: true
+      });
+      return response.data;
     } catch (error) {
       console.error('Error creating course:', error);
       throw error;
     }
   },
-  
-  // Enroll in a course
-  enrollInCourse: async (courseId, userId) => {
+
+  // Update a course
+  updateCourse: async (courseId, courseData) => {
     try {
-      // Get current course
-      const course = await databases.getDocument(
-        databaseId,
-        coursesCollectionId,
-        courseId
-      );
-      
-      // Add user to enrolled students
-      const enrolledStudents = course.enrolledStudents || [];
-      
-      if (!enrolledStudents.includes(userId)) {
-        enrolledStudents.push(userId);
-        
-        // Update course
-        await databases.updateDocument(
-          databaseId,
-          coursesCollectionId,
-          courseId,
-          {
-            enrolledStudents
-          }
-        );
-      }
-      
-      return { success: true };
+      const response = await axios.put(`/api/courses/${courseId}`, courseData, {
+        withCredentials: true
+      });
+      return response.data;
     } catch (error) {
-      console.error('Error enrolling in course:', error);
+      console.error(`Error updating course ${courseId}:`, error);
       throw error;
     }
   },
-  
-  // Get enrolled courses for a user
-  getEnrolledCourses: async (userId) => {
+
+  // Delete a course
+  deleteCourse: async (courseId) => {
     try {
-      const courses = await databases.listDocuments(
-        databaseId,
-        coursesCollectionId,
-        [Query.search('enrolledStudents', userId)]
-      );
-      
-      return courses.documents;
+      const response = await axios.delete(`/api/courses/${courseId}`, {
+        withCredentials: true
+      });
+      return response.data;
+    } catch (error) {
+      console.error(`Error deleting course ${courseId}:`, error);
+      throw error;
+    }
+  },
+
+  // Enroll in a course
+  enrollInCourse: async (courseId) => {
+    try {
+      const response = await axios.post(`/api/courses/${courseId}/enroll`, {}, {
+        withCredentials: true
+      });
+      return response.data;
+    } catch (error) {
+      console.error(`Error enrolling in course ${courseId}:`, error);
+      throw error;
+    }
+  },
+
+  // Get enrolled courses for current user
+  getEnrolledCourses: async () => {
+    try {
+      const response = await axios.get('/api/user/courses', {
+        withCredentials: true
+      });
+      return response.data;
     } catch (error) {
       console.error('Error fetching enrolled courses:', error);
       throw error;

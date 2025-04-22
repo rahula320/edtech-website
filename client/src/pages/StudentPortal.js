@@ -42,7 +42,7 @@ function StudentPortal() {
           email: 'demo@example.com'
         });
       } else {
-        // Real authentication with Appwrite
+        // Real authentication with server API
         const result = await AuthService.login(email, password);
         setUser(result.user);
         setIsAuthenticated(true);

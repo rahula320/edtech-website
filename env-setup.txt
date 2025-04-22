@@ -1,0 +1,32 @@
+# Instructions for setting up your .env file
+
+1. Create a file named `.env` in the root directory of your project
+2. Copy and paste the following content:
+
+```
+# Server Configuration
+PORT=5001
+NODE_ENV=development
+
+# Database Configuration
+DATABASE_URL=postgresql://neondb_owner:npg_OSsZKqm1iTV3@ep-floral-silence-a18kxybn-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+
+# Admin Configuration
+ADMIN_EMAIL=admin@acmyx.com
+ADMIN_PASSWORD=admin123
+
+# Security
+SESSION_SECRET=acmyx-education-platform-secret-key
+
+# Email Configuration (optional)
+# EMAIL_USER=your_email@gmail.com
+# EMAIL_PASS=your_email_app_password
+```
+
+3. Save the file
+4. Restart your server application
+
+## Important Notes:
+- The ADMIN_EMAIL and ADMIN_PASSWORD values should match what you're using in the login form
+- The current error suggests that your server isn't recognizing these environment variables
+- After creating the .env file, you need to restart your server for the changes to take effect 

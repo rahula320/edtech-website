@@ -224,41 +224,66 @@ function Careers() {
     // Set submitting state
     setIsSubmitting(true);
     
-    // Create application object with timestamp
-    const application = {
-      ...formData,
-      timestamp: new Date().getTime()
+    // Create domain labels string or array as needed
+    const domainLabels = formData.domains.map(domainId => {
+      const domain = domainOptions.find(d => d.id === domainId);
+      return domain ? domain.label : domainId;
+    });
+    
+    // Create application object for API
+    const applicationData = {
+      type: 'mentor',
+      full_name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      company: formData.company,
+      designation: formData.designation,
+      experience: formData.experience,
+      domains: domainLabels
     };
     
-    // Simulate API call with timeout
-    setTimeout(() => {
-      // Save to localStorage (in a real app, this would be an API call)
-      const existingApplications = JSON.parse(localStorage.getItem('mentorApplications') || '[]');
-      existingApplications.push(application);
-      localStorage.setItem('mentorApplications', JSON.stringify(existingApplications));
-      
+    // Send to API
+    fetch('/api/applications/mentor', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(applicationData)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to submit application');
+      }
+      return response.json();
+    })
+    .then(data => {
       // Show success popup
       setShowPopup(true);
       setIsSubmitting(false);
       
-      // Reset form after a delay but keep the form open
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        designation: '',
+        experience: '',
+        domains: []
+      });
+      
+      // Hide the success popup after 5 seconds
       setTimeout(() => {
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          company: '',
-          designation: '',
-          experience: '',
-          domains: []
-        });
-        
-        // Hide the success popup after 5 seconds
-        setTimeout(() => {
-          setShowPopup(false);
-        }, 5000);
-      }, 1000);
-    }, 800);
+        setShowPopup(false);
+      }, 5000);
+    })
+    .catch(error => {
+      console.error('Error submitting application:', error);
+      setErrors({
+        submit: 'Failed to submit application. Please try again later.'
+      });
+      setIsSubmitting(false);
+    });
   };
   
   // Handle BDA form submission
@@ -275,41 +300,86 @@ function Careers() {
     // Set submitting state
     setIsBdaSubmitting(true);
     
-    // Create application object with timestamp
-    const application = {
-      ...bdaFormData,
-      timestamp: new Date().getTime()
+    // Create FormData for file upload
+    const formDataObj = new FormData();
+    formDataObj.append('type', 'bda');
+    formDataObj.append('full_name', bdaFormData.fullName);
+    formDataObj.append('email', bdaFormData.email);
+    formDataObj.append('phone', bdaFormData.phone);
+    formDataObj.append('education', bdaFormData.education);
+    formDataObj.append('experience', bdaFormData.experience);
+    formDataObj.append('portfolio_url', bdaFormData.portfolio || '');
+    
+    if (bdaFormData.resume) {
+      formDataObj.append('resume', bdaFormData.resume);
+    }
+    
+    // For now, we'll create a URL from the file since API doesn't support file upload
+    let resumeUrl = '';
+    if (bdaFormData.resume) {
+      resumeUrl = bdaFormData.resume.name;
+    }
+    
+    // Create application object for API
+    const applicationData = {
+      type: 'bda',
+      full_name: bdaFormData.fullName,
+      email: bdaFormData.email,
+      phone: bdaFormData.phone,
+      education: bdaFormData.education,
+      experience: bdaFormData.experience,
+      portfolio_url: bdaFormData.portfolio || '',
+      resume_url: resumeUrl
     };
     
-    // Simulate API call with timeout
-    setTimeout(() => {
-      // Save to localStorage (in a real app, this would be an API call)
-      const existingApplications = JSON.parse(localStorage.getItem('bdaApplications') || '[]');
-      existingApplications.push(application);
-      localStorage.setItem('bdaApplications', JSON.stringify(existingApplications));
-      
+    // Send to API
+    fetch('/api/applications/bda', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(applicationData)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to submit application');
+      }
+      return response.json();
+    })
+    .then(data => {
       // Show success popup
       setShowBdaPopup(true);
       setIsBdaSubmitting(false);
       
-      // Reset form after a delay but keep the form open
+      // Reset form
+      setBdaFormData({
+        fullName: '',
+        email: '',
+        phone: '',
+        education: '',
+        experience: '',
+        portfolio: '',
+        resume: null
+      });
+      
+      // Reset file input
+      const fileInput = document.getElementById('resume');
+      if (fileInput) {
+        fileInput.value = '';
+      }
+      
+      // Hide the success popup after 5 seconds
       setTimeout(() => {
-        setBdaFormData({
-          fullName: '',
-          email: '',
-          phone: '',
-          education: '',
-          experience: '',
-          portfolio: '',
-          resume: null
-        });
-        
-        // Hide the success popup after 5 seconds
-        setTimeout(() => {
-          setShowBdaPopup(false);
-        }, 5000);
-      }, 1000);
-    }, 800);
+        setShowBdaPopup(false);
+      }, 5000);
+    })
+    .catch(error => {
+      console.error('Error submitting application:', error);
+      setBdaErrors({
+        submit: 'Failed to submit application. Please try again later.'
+      });
+      setIsBdaSubmitting(false);
+    });
   };
 
   // Close popup

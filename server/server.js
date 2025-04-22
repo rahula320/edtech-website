@@ -1,4 +1,9 @@
 require('dotenv').config();
+
+// Log loaded environment variables for debugging
+console.log('ADMIN_EMAIL loaded:', process.env.ADMIN_EMAIL ? 'Yes' : 'No');
+console.log('ADMIN_PASSWORD loaded:', process.env.ADMIN_PASSWORD ? 'Yes' : 'No');
+
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
@@ -8,22 +13,16 @@ const path = require('path');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 
-// Import Appwrite configuration
-const { 
-  databases, 
-  databaseId, 
-  usersCollectionId, 
-  coursesCollectionId, 
-  contactsCollectionId,
-  adminsCollectionId,
-  ID, 
-  Query 
-} = require('./config/appwrite');
+// Import database connection
+const db = require('./config/db');
 
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://acmyx.vercel.app'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -45,18 +44,16 @@ app.use(passport.session());
 passport.use(new LocalStrategy(
   async (username, password, done) => {
     try {
-      // Find user in Appwrite
-      const users = await databases.listDocuments(
-        databaseId,
-        usersCollectionId,
-        [Query.equal('username', username)]
-      );
+      // Find user in database
+      const users = await db.sql`
+        SELECT * FROM users WHERE username = ${username}
+      `;
       
-      if (users.documents.length === 0) {
+      if (users.length === 0) {
         return done(null, false, { message: 'Incorrect username.' });
       }
       
-      const user = users.documents[0];
+      const user = users[0];
       
       // Compare passwords
       const isValid = await bcrypt.compare(password, user.password);
@@ -71,15 +68,18 @@ passport.use(new LocalStrategy(
   }
 ));
 
-passport.serializeUser((user, done) => done(null, user.$id));
+passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await databases.getDocument(
-      databaseId,
-      usersCollectionId,
-      id
-    );
-    done(null, user);
+    const users = await db.sql`
+      SELECT * FROM users WHERE id = ${id}
+    `;
+    
+    if (users.length === 0) {
+      return done(null, false);
+    }
+    
+    done(null, users[0]);
   } catch (err) {
     done(err);
   }
@@ -108,18 +108,11 @@ app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, message } = req.body;
     
-    // Save to Appwrite
-    await databases.createDocument(
-      databaseId,
-      contactsCollectionId,
-      ID.unique(),
-      {
-        name,
-        email,
-        message,
-        createdAt: new Date().toISOString()
-      }
-    );
+    // Save to database
+    await db.sql`
+      INSERT INTO contacts (name, email, message, created_at)
+      VALUES (${name}, ${email}, ${message}, ${new Date().toISOString()})
+    `;
     
     // Send email
     await transporter.sendMail({
@@ -141,37 +134,22 @@ app.post('/api/register', async (req, res) => {
     const { username, email, password, firstName, lastName } = req.body;
     
     // Check if user exists
-    const existingUsers = await databases.listDocuments(
-      databaseId,
-      usersCollectionId,
-      [Query.equal('$or', [
-        { username },
-        { email }
-      ])]
-    );
+    const existingUsers = await db.sql`
+      SELECT * FROM users WHERE username = ${username} OR email = ${email}
+    `;
     
-    if (existingUsers.documents.length > 0) {
+    if (existingUsers.length > 0) {
       return res.status(400).json({ message: 'Username or email already exists' });
     }
     
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    // Create user in Appwrite
-    await databases.createDocument(
-      databaseId,
-      usersCollectionId,
-      ID.unique(),
-      {
-        username,
-        email,
-        password: hashedPassword,
-        firstName,
-        lastName,
-        role: 'student',
-        createdAt: new Date().toISOString()
-      }
-    );
+    // Create user in database
+    await db.sql`
+      INSERT INTO users (username, email, password, first_name, last_name, role, created_at)
+      VALUES (${username}, ${email}, ${hashedPassword}, ${firstName}, ${lastName}, 'student', ${new Date().toISOString()})
+    `;
     
     res.json({ success: true, message: 'User registered successfully' });
   } catch (err) {
@@ -204,28 +182,24 @@ app.get('/api/user', (req, res) => {
 // Course routes
 app.get('/api/courses', async (req, res) => {
   try {
-    const courses = await databases.listDocuments(
-      databaseId,
-      coursesCollectionId,
-      [Query.equal('status', 'published')]
-    );
+    const courses = await db.sql`
+      SELECT * FROM courses WHERE status = 'published'
+    `;
     
     // Get instructor details for each course
     const coursesWithInstructors = await Promise.all(
-      courses.documents.map(async (course) => {
-        const instructor = await databases.getDocument(
-          databaseId,
-          usersCollectionId,
-          course.instructor
-        );
+      courses.map(async (course) => {
+        const instructor = await db.sql`
+          SELECT * FROM users WHERE id = ${course.instructor}
+        `;
         
         return {
           ...course,
           instructor: {
-            $id: instructor.$id,
-            username: instructor.username,
-            firstName: instructor.firstName,
-            lastName: instructor.lastName
+            $id: instructor[0].id,
+            username: instructor[0].username,
+            firstName: instructor[0].firstName,
+            lastName: instructor[0].lastName
           }
         };
       })
@@ -240,47 +214,41 @@ app.get('/api/courses', async (req, res) => {
 
 app.get('/api/courses/:id', async (req, res) => {
   try {
-    const course = await databases.getDocument(
-      databaseId,
-      coursesCollectionId,
-      req.params.id
-    );
+    const course = await db.sql`
+      SELECT * FROM courses WHERE id = ${req.params.id}
+    `;
     
     // Get instructor details
-    const instructor = await databases.getDocument(
-      databaseId,
-      usersCollectionId,
-      course.instructor
-    );
+    const instructor = await db.sql`
+      SELECT * FROM users WHERE id = ${course[0].instructor}
+    `;
     
     // Get enrolled students details if they exist
     let enrolledStudents = [];
-    if (course.enrolledStudents && course.enrolledStudents.length > 0) {
+    if (course[0].enrolledStudents && course[0].enrolledStudents.length > 0) {
       enrolledStudents = await Promise.all(
-        course.enrolledStudents.map(async (studentId) => {
-          const student = await databases.getDocument(
-            databaseId,
-            usersCollectionId,
-            studentId
-          );
+        course[0].enrolledStudents.map(async (studentId) => {
+          const student = await db.sql`
+            SELECT * FROM users WHERE id = ${studentId}
+          `;
           
           return {
-            $id: student.$id,
-            username: student.username,
-            firstName: student.firstName,
-            lastName: student.lastName
+            $id: student[0].id,
+            username: student[0].username,
+            firstName: student[0].firstName,
+            lastName: student[0].lastName
           };
         })
       );
     }
     
     const courseWithDetails = {
-      ...course,
+      ...course[0],
       instructor: {
-        $id: instructor.$id,
-        username: instructor.username,
-        firstName: instructor.firstName,
-        lastName: instructor.lastName
+        $id: instructor[0].id,
+        username: instructor[0].username,
+        firstName: instructor[0].firstName,
+        lastName: instructor[0].lastName
       },
       enrolledStudents
     };
@@ -300,26 +268,14 @@ app.post('/api/courses', async (req, res) => {
   try {
     const { title, description, price, duration, level, topics } = req.body;
     
-    // Create course in Appwrite
-    const course = await databases.createDocument(
-      databaseId,
-      coursesCollectionId,
-      ID.unique(),
-      {
-        title,
-        description,
-        instructor: req.user.$id,
-        price,
-        duration,
-        level,
-        topics,
-        status: 'published',
-        enrolledStudents: [],
-        createdAt: new Date().toISOString()
-      }
-    );
+    // Create course in database
+    const course = await db.sql`
+      INSERT INTO courses (title, description, instructor, price, duration, level, topics, status, enrolledStudents, created_at)
+      VALUES (${title}, ${description}, ${req.user.id}, ${price}, ${duration}, ${level}, ${topics}, 'published', ${[]}, ${new Date().toISOString()})
+      RETURNING *
+    `;
     
-    res.json({ success: true, course });
+    res.json({ success: true, course: course[0] });
   } catch (err) {
     console.error('Error creating course:', err);
     res.status(500).json({ message: 'Error creating course' });
@@ -331,77 +287,141 @@ app.post('/api/admin/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     
-    // Check if admin credentials match expected values
-    if (email !== 'admin@acmyx.com') {
-      return res.status(401).json({ success: false, message: 'Invalid admin credentials' });
-    }
+    console.log(`Login attempt for email: ${email}`);
     
-    // Check if admin exists in database, if not create it
-    let adminUser;
+    // Find admin user in the database
+    let adminUser = null;
     try {
-      const admins = await databases.listDocuments(
-        databaseId,
-        adminsCollectionId,
-        [Query.equal('email', email)]
-      );
+      const admins = await db.sql`
+        SELECT id, email, password, role, first_name, last_name FROM users 
+        WHERE email = ${email} AND role = 'admin'
+      `;
       
-      if (admins.documents.length === 0) {
-        // Create admin user if it doesn't exist
-        const hashedPassword = await bcrypt.hash('admin123', 10);
-        adminUser = await databases.createDocument(
-          databaseId,
-          adminsCollectionId,
-          ID.unique(),
-          {
-            email: 'admin@acmyx.com',
-            password: hashedPassword,
-            role: 'admin',
-            createdAt: new Date().toISOString()
-          }
-        );
-      } else {
-        adminUser = admins.documents[0];
+      if (admins.length === 0) {
+        console.log(`Login failed: No admin found with email ${email}`);
+        return res.status(401).json({ 
+          success: false, 
+          message: 'Invalid admin credentials' 
+        });
       }
-    } catch (error) {
-      // If collection doesn't exist, create it first
-      console.error('Admin collection access error:', error);
-      // Continue with hardcoded password check
+      
+      adminUser = admins[0];
+      console.log('Admin user found in database');
+    } catch (dbError) {
+      console.error('Database error during admin lookup:', dbError);
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Authentication error' 
+      });
     }
-    
-    // If we have an admin user in database, verify password
-    if (adminUser) {
-      const isValid = await bcrypt.compare(password, adminUser.password);
-      if (!isValid) {
-        return res.status(401).json({ success: false, message: 'Invalid admin credentials' });
-      }
-    } else {
-      // Fall back to hardcoded password for initial setup
-      const isValid = password === 'admin123';
-      if (!isValid) {
-        return res.status(401).json({ success: false, message: 'Invalid admin credentials' });
-      }
+
+    // Verify password
+    const isValid = await bcrypt.compare(password, adminUser.password);
+    if (!isValid) {
+      console.log(`Login failed: Password mismatch for admin ${email}`);
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid admin credentials' 
+      });
     }
+
+    // Login successful 
+    console.log(`Admin login successful for ${email}`);
     
-    // Create admin session
+    // Set session
     req.session.isAdmin = true;
-    
-    return res.json({ 
-      success: true, 
-      message: 'Admin login successful',
-      admin: { email, role: 'admin' }
+    req.session.adminEmail = adminUser.email;
+    req.session.adminId = adminUser.id;
+    req.session.adminRole = adminUser.role;
+
+    // Save session before sending response
+    req.session.save(err => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.status(500).json({ 
+          success: false, 
+          message: 'Session error' 
+        });
+      }
+      
+      return res.json({ 
+        success: true, 
+        message: 'Admin login successful',
+        admin: { 
+          id: adminUser.id,
+          email: adminUser.email, 
+          role: adminUser.role,
+          firstName: adminUser.first_name,
+          lastName: adminUser.last_name
+        }
+      });
     });
+
   } catch (error) {
-    console.error('Admin login error:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    console.error('Admin login route error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Internal server error' 
+    });
   }
 });
 
-// Check admin status endpoint
-app.get('/api/admin/status', (req, res) => {
-  if (req.session.isAdmin) {
-    return res.json({ isAdmin: true });
+// Admin status check endpoint
+app.get('/api/admin/status', async (req, res) => {
+  try {
+    // Check if user is authenticated via session
+    if (req.session && req.session.isAdmin && req.session.adminEmail) {
+      console.log(`Admin status check: authenticated user ${req.session.adminEmail}`);
+      
+      // Get admin details from database
+      try {
+        const admins = await db.sql`
+          SELECT id, email, role, first_name, last_name 
+          FROM users 
+          WHERE email = ${req.session.adminEmail} AND role = 'admin'
+        `;
+        
+        if (admins.length === 0) {
+          console.log(`Admin not found in database: ${req.session.adminEmail}`);
+          return res.json({ 
+            isAdmin: false, 
+            message: 'Admin session invalid'
+          });
+        }
+        
+        const adminUser = admins[0];
+        return res.json({ 
+          isAdmin: true,
+          admin: {
+            id: adminUser.id,
+            email: adminUser.email,
+            role: adminUser.role,
+            firstName: adminUser.first_name,
+            lastName: adminUser.last_name
+          }
+        });
+      } catch (dbError) {
+        console.error('Database error during admin status check:', dbError);
+        return res.status(500).json({ 
+          isAdmin: false, 
+          message: 'Database error' 
+        });
+      }
+    }
+    
+    // Not authenticated
+    return res.json({ 
+      isAdmin: false, 
+      message: 'Not authenticated' 
+    });
+    
+  } catch (error) {
+    console.error('Admin status check error:', error);
+    res.status(500).json({ 
+      isAdmin: false, 
+      message: 'Server error'
+    });
   }
-  return res.status(401).json({ isAdmin: false });
 });
 
 // Admin logout endpoint
@@ -426,7 +446,7 @@ app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK',
     message: 'Server is running',
-    appwrite: 'Connected'
+    database: 'Connected'
   });
 });
 
@@ -438,33 +458,53 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 5001;
-const server = app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
 
-// Handle server errors
-server.on('error', (error) => {
-  if (error.code === 'EADDRINUSE') {
-    console.error(`Port ${PORT} is already in use`);
-    process.exit(1);
-  } else {
-    console.error('Server error:', error);
-  }
-});
+// Initialize database before starting server
+db.testConnection()
+  .then(connected => {
+    if (connected) {
+      return db.initDatabase();
+    } else {
+      console.error('Failed to connect to database. Server will start but may not function correctly.');
+    }
+  })
+  .then(() => {
+    const server = app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('Received SIGTERM. Performing graceful shutdown...');
-  server.close(() => {
-    console.log('Server connections closed.');
-    process.exit(0);
-  });
-});
+    // Handle server errors
+    server.on('error', (error) => {
+      if (error.code === 'EADDRINUSE') {
+        console.error(`Port ${PORT} is already in use`);
+        process.exit(1);
+      } else {
+        console.error('Server error:', error);
+      }
+    });
 
-process.on('SIGINT', () => {
-  console.log('Received SIGINT. Performing graceful shutdown...');
-  server.close(() => {
-    console.log('Server connections closed.');
-    process.exit(0);
-  });
-}); 
+    // Graceful shutdown
+    process.on('SIGTERM', () => {
+      console.log('Received SIGTERM. Performing graceful shutdown...');
+      server.close(() => {
+        console.log('Server connections closed.');
+        process.exit(0);
+      });
+    });
+
+    process.on('SIGINT', () => {
+      console.log('Received SIGINT. Performing graceful shutdown...');
+      server.close(() => {
+        console.log('Server connections closed.');
+        process.exit(0);
+      });
+    });
+  })
+  .catch(err => {
+    console.error('Failed to initialize database:', err);
+    console.log('Starting server without database initialization...');
+    
+    const server = app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT} (without database)`);
+    });
+  }); 

@@ -1,56 +1,79 @@
 #!/bin/bash
 
-# Colors for better output
+# Colors for terminal output
+RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-RED='\033[0;31m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}=== ACMYX Website Vercel Deployment Script ===${NC}\n"
+echo -e "${BLUE}========================================${NC}"
+echo -e "${BLUE}ACMYX Website Deployment Script${NC}"
+echo -e "${BLUE}========================================${NC}"
+echo ""
 
 # Check if Vercel CLI is installed
-if ! command -v vercel &> /dev/null; then
-    echo -e "${YELLOW}Vercel CLI is not installed. Installing globally...${NC}"
-    npm install -g vercel
+if ! command -v vercel &> /dev/null
+then
+    echo -e "${RED}Vercel CLI is not installed. Please install it with: npm install -g vercel${NC}"
+    exit 1
 fi
 
-# Verify login status
-echo -e "${YELLOW}Please login to Vercel if prompted...${NC}"
-vercel whoami &> /dev/null || (echo -e "${YELLOW}You need to login to Vercel:${NC}" && vercel login)
+# Verify that we're in the project root
+if [ ! -f "vercel.json" ]; then
+    echo -e "${RED}Error: vercel.json not found. Make sure you're running this script from the project root.${NC}"
+    exit 1
+fi
 
-echo -e "\n${GREEN}=== Setting up environment variables ===${NC}"
-echo -e "${YELLOW}Your Appwrite credentials will be set as environment variables in Vercel${NC}"
+echo -e "${YELLOW}Your Neon PostgreSQL credentials will be set as environment variables in Vercel${NC}"
+echo -e "${YELLOW}Make sure you have created a project in Neon PostgreSQL first.${NC}"
+echo ""
 
-# Deploy with environment variables
-echo -e "\n${GREEN}=== Deploying to Vercel ===${NC}"
-echo -e "${YELLOW}Starting deployment process. Follow the prompts from Vercel CLI.${NC}"
-echo -e "${YELLOW}Make sure to select the following options when prompted:${NC}"
-echo -e "  - Set up and deploy? ${GREEN}Yes${NC}"
-echo -e "  - Which scope (if asked)? ${GREEN}Select your personal or team account${NC}"
-echo -e "  - Link to existing project? ${GREEN}No${NC} (unless you've deployed this before)"
-echo -e "  - What's your project name? ${GREEN}acmyx${NC} (or whatever you prefer)"
-echo -e "  - In which directory is your code located? ${GREEN}./${NC} (root directory)"
-echo -e "  - Want to override settings? ${GREEN}Yes${NC}"
-echo -e "  - Build command: ${GREEN}npm run build${NC}"
-echo -e "  - Output directory: ${GREEN}client/build${NC}"
-echo -e "  - Development command: ${GREEN}npm run dev${NC}"
-echo -e "  - Want to modify these settings? ${GREEN}No${NC}"
+# Check if .env file exists
+if [ -f ".env" ]; then
+    echo -e "${GREEN}Found .env file. Using environment variables from this file.${NC}"
+    # Load environment variables from .env
+    export $(grep -v '^#' .env | xargs)
+else
+    echo -e "${YELLOW}No .env file found. You'll need to provide environment variables during deployment.${NC}"
+fi
 
-# Run deployment command
-vercel deploy --prod
+# Build the client app
+echo -e "${BLUE}Building client application...${NC}"
+cd client && npm run build
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Client build failed. Aborting deployment.${NC}"
+    exit 1
+fi
+cd ..
+
+echo -e "${GREEN}Client build successful!${NC}"
+echo ""
+
+# Execute vercel deployment
+echo -e "${BLUE}Starting Vercel deployment...${NC}"
+vercel --prod
 
 # Check if deployment was successful
 if [ $? -eq 0 ]; then
-    echo -e "\n${GREEN}=== Deployment completed! ===${NC}"
-    echo -e "${YELLOW}Your application is now live.${NC}"
-    echo -e "${YELLOW}You can access your admin dashboard at: https://[your-vercel-domain]/admin${NC}"
-    echo -e "${YELLOW}Login with: admin@acmyx.com / admin123${NC}"
+    echo ""
+    echo -e "${GREEN}======================================${NC}"
+    echo -e "${GREEN}Deployment completed successfully!${NC}"
+    echo -e "${GREEN}======================================${NC}"
+    echo ""
+    echo -e "Your site should now be live on Vercel!"
+    echo ""
+    echo -e "${YELLOW}Post-Deployment Checklist:${NC}"
+    echo -e "1. ${YELLOW}Ensure your Neon PostgreSQL database is properly configured${NC}"
+    echo -e "2. ${YELLOW}Check that your environment variables are set correctly in Vercel${NC}"
+    echo -e "3. ${YELLOW}Test the application to ensure everything works as expected${NC}"
+    echo ""
+    echo -e "For more information, refer to the DEPLOYMENT.md document."
 else
-    echo -e "\n${RED}=== Deployment failed! ===${NC}"
-    echo -e "${YELLOW}Please check the error messages above and try again.${NC}"
-fi
-
-echo -e "\n${GREEN}=== Additional steps ===${NC}"
-echo -e "1. ${YELLOW}Ensure your Appwrite collections are set up properly${NC}"
-echo -e "2. ${YELLOW}Update DNS settings if you're using a custom domain${NC}"
-echo -e "3. ${YELLOW}Test your application thoroughly after deployment${NC}" 
+    echo ""
+    echo -e "${RED}======================================${NC}"
+    echo -e "${RED}Deployment encountered issues.${NC}"
+    echo -e "${RED}======================================${NC}"
+    echo ""
+    echo -e "Please check the error messages above and refer to DEPLOYMENT.md for troubleshooting."
+fi 

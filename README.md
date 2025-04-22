@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/license-ISC-green)
 ![React](https://img.shields.io/badge/React-18.2.0-61DAFB)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-339933)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791)
 
 This is a full-stack application for an educational technology platform, split into client and server components for easier development and deployment.
 
@@ -115,11 +115,12 @@ Create a `.env` file in the server directory:
 ```
 PORT=5001
 NODE_ENV=development
-MONGODB_URI=mongodb://localhost:27017/edtech
+DATABASE_URL=postgresql://username:password@hostname/database?sslmode=require
 SESSION_SECRET=your-secret-key-change-this-in-production
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-specific-password
 ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=your-secure-password
 ```
 
 ### Client Environment Variables (if needed for separate deployment)
@@ -134,8 +135,9 @@ REACT_APP_API_URL=https://your-api-server-url.com
 
 - **Frontend:** React, React Router, CSS
 - **Backend:** Node.js, Express
-- **Database:** MongoDB
-- **Authentication:** Passport.js
+- **Database:** Neon PostgreSQL
+- **Authentication:** Passport.js, bcrypt
+- **Email:** Nodemailer
 - **Icons:** Font Awesome
 - **Containerization:** Docker, Docker Compose
 - **Deployment:** Shell scripts for automation
@@ -157,7 +159,7 @@ For questions or feedback, reach out to the project maintainer.
 ### Prerequisites
 - A Vercel account
 - Vercel CLI installed (`npm install -g vercel`)
-- Appwrite account with project setup
+- Neon PostgreSQL account with project setup
 
 ### Automatic Deployment
 1. Run the deployment script:
@@ -183,11 +185,10 @@ If you prefer to deploy manually:
    ```
 
 3. Configure environment variables in the Vercel dashboard:
-   - `APPWRITE_ENDPOINT`: https://fra.cloud.appwrite.io/v1
-   - `APPWRITE_PROJECT_ID`: Your Appwrite project ID
-   - `APPWRITE_DATABASE_ID`: Your Appwrite database ID
-   - `APPWRITE_API_KEY`: Your Appwrite API key
+   - `DATABASE_URL`: Your Neon PostgreSQL connection string
    - `SESSION_SECRET`: A secure random string
+   - `ADMIN_EMAIL`: Email for admin access
+   - `ADMIN_PASSWORD`: Password for admin access
 
 ### Admin Access
 Once deployed, you can access the admin panel at:
@@ -195,9 +196,7 @@ Once deployed, you can access the admin panel at:
 https://[your-vercel-domain]/admin
 ```
 
-Login with:
-- Email: admin@acmyx.com
-- Password: admin123
+Login with the credentials configured in your environment variables.
 
 ## Development
 
@@ -215,4 +214,28 @@ Login with:
 ### Project Structure
 - `/client` - React frontend
 - `/server` - Express backend
-- `vercel.json` - Vercel deployment configuration 
+- `vercel.json` - Vercel deployment configuration
+
+# Security Update: Removing Hardcoded Credentials
+
+In a recent security update, all hardcoded admin credentials and database connection details have been removed from the codebase. These credentials are now managed through environment variables, which enhances the security of the application.
+
+## Key Changes
+
+1. **Admin Authentication**: Admin credentials are now stored as environment variables instead of being hardcoded in the codebase.
+2. **Database Connection**: Database connection strings have been removed from the codebase and are now expected to be provided via environment variables.
+3. **Client-Side Authentication**: The client now properly communicates with the server API for authentication instead of using hardcoded values.
+
+## Setting Up Environment Variables
+
+See the `ENV_SETUP.md` file for detailed instructions on setting up the required environment variables for both local development and deployment.
+
+## Required Environment Variables
+
+The following environment variables are now required:
+
+- `DATABASE_URL`: The PostgreSQL connection string
+- `ADMIN_EMAIL`: The email address for admin login
+- `ADMIN_PASSWORD`: The password for admin login
+
+Please refer to the `ENV_SETUP.md` file for more detailed information. 

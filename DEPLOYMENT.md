@@ -1,170 +1,129 @@
-# Deploying ACMYX to Vercel with Appwrite
+# Deploying ACMYX to Vercel with Neon PostgreSQL
 
-This guide will walk you through deploying the ACMYX website using Vercel for hosting and Appwrite for the backend database.
+This guide will walk you through deploying the ACMYX website using Vercel for hosting and Neon PostgreSQL for the database.
 
 ## Prerequisites
 
-- [Vercel account](https://vercel.com/)
-- [Appwrite account](https://appwrite.io/)
+- [Vercel account](https://vercel.com/signup)
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Neon PostgreSQL account](https://neon.tech/)
 - [Git](https://git-scm.com/)
-- [Node.js](https://nodejs.org/) (v14+ recommended)
 
-## Step 1: Setting up Appwrite
+## Step 1: Setting up Neon PostgreSQL
 
-1. Create a new account on [Appwrite](https://appwrite.io/) or login to your existing account.
+1. Create a new account on [Neon](https://neon.tech/) or login to your existing account.
+2. Create a new project with the following steps:
+   - Name your project (e.g., "ACMYX")
+   - Select a region closest to your users
+   - Complete the project creation
 
-2. Create a new project:
-   - Go to the Appwrite console
-   - Click "Create Project"
-   - Give your project a name (e.g., "ACMYX")
-   - Click "Create"
+3. Create the necessary tables for the application:
+   - Use the SQL editor to run the database initialization SQL (you can find this in the setup scripts)
+   - Make note of your database connection string which should look like:
+     ```
+     postgresql://username:password@hostname:port/database?sslmode=require
+     ```
 
-3. Create a new database:
-   - In your project, go to "Databases"
-   - Click "Create Database"
-   - Name it "acmyx" or whatever you prefer
-   - Click "Create"
+## Step 2: Preparing Your Project for Deployment
 
-4. Create the following collections:
+1. Ensure your code is in a Git repository (GitHub, GitLab, or Bitbucket).
 
-   **Users Collection:**
-   - Name: "users"
-   - Attributes:
-     - username (string, required)
-     - email (string, required)
-     - firstName (string, required)
-     - lastName (string, required)
-     - role (string, required, default "student")
-     - createdAt (string, required)
+2. Make sure your project has a `vercel.json` file at the root level. You can copy and modify `vercel.json.example`.
 
-   **Courses Collection:**
-   - Name: "courses"
-   - Attributes:
-     - title (string, required)
-     - description (string, required)
-     - instructor (string, required)
-     - price (number, required)
-     - duration (string, required)
-     - level (string, required)
-     - topics (string array)
-     - status (string, required, default "published")
-     - enrolledStudents (string array)
-     - createdAt (string, required)
+3. Update environment variables:
+   - Create a `.env` file (for local development) based on the `.env.example` template
+   - Make sure to include your Neon PostgreSQL connection string
 
-   **Contacts Collection:**
-   - Name: "contacts"
-   - Attributes:
-     - name (string, required)
-     - email (string, required)
-     - message (string, required)
-     - createdAt (string, required)
+## Step 3: Deploying to Vercel
 
-5. Set up permissions for each collection:
-   - Go to the collection → Settings → Permissions
-   - For each collection, set appropriate read/write permissions
+### Option 1: Using Vercel Dashboard
 
-6. Create an API key:
-   - Go to Project Settings → API Keys
-   - Create a new API key with permissions to:
-     - Read/Write to Database
-     - Read/Write to Users
-   - Copy the API key for later use
+1. Login to your [Vercel Dashboard](https://vercel.com/dashboard)
+2. Click "New Project"
+3. Import your Git repository
+4. Configure your project:
+   - Set the framework preset to "Other"
+   - Set the root directory (if not the repository root)
+   - Configure environment variables:
 
-## Step 2: Setting up Environment Variables
+```
+# Server Configuration
+NODE_ENV=production
+DATABASE_URL=your_neon_postgresql_connection_string
+SESSION_SECRET=your_secure_session_secret
 
-1. Create the following .env files:
+# Admin Configuration
+ADMIN_EMAIL=your_admin_email
+ADMIN_PASSWORD=your_secure_admin_password
 
-   **For the server (.env in server directory):**
+# Email Configuration (optional)
+EMAIL_USER=your_email_service_username
+EMAIL_PASS=your_email_service_password
+```
+
+5. Click "Deploy"
+
+### Option 2: Using Vercel CLI
+
+1. Install the Vercel CLI globally:
    ```
-   # Server Configuration
-   PORT=5001
-   NODE_ENV=production
-   SESSION_SECRET=your_session_secret
-
-   # Email Configuration (optional for production)
-   EMAIL_USER=your_email@gmail.com
-   EMAIL_PASS=your_email_password
-   ADMIN_EMAIL=admin@acmyx.com
-
-   # Appwrite Configuration
-   APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
-   APPWRITE_PROJECT_ID=your_appwrite_project_id
-   APPWRITE_API_KEY=your_appwrite_api_key
-   APPWRITE_DATABASE_ID=your_appwrite_database_id
+   npm install -g vercel
    ```
 
-   **For the client (.env in client directory):**
+2. Login to Vercel from the command line:
    ```
-   # API Configuration
-   REACT_APP_API_URL=http://localhost:5001
-
-   # Appwrite Configuration
-   REACT_APP_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
-   REACT_APP_APPWRITE_PROJECT_ID=your_appwrite_project_id
-   REACT_APP_APPWRITE_DATABASE_ID=your_appwrite_database_id
+   vercel login
    ```
 
-2. Replace the placeholder values with your actual Appwrite credentials.
-
-## Step 3: Deploy to Vercel
-
-1. Create a new repository for your project (if not already done).
-
-2. Push your code to the repository:
-   ```bash
-   git add .
-   git commit -m "Ready for deployment"
-   git push
+3. Navigate to your project directory and run:
+   ```
+   vercel
    ```
 
-3. Connect your repository to Vercel:
-   - Go to [Vercel](https://vercel.com/)
-   - Click "New Project"
-   - Import your repository
-   - Configure the project:
-     - Framework: Other
-     - Root Directory: ./
-     - Build Command: npm run install-all && npm run client:build
-     - Output Directory: client/build
-     - Install Command: npm run install-all
+4. Follow the prompts to complete the deployment
+   - When asked about environment variables, add them manually or use a `.env` file
 
-4. Add environment variables:
-   - In the Vercel project settings, add all the environment variables from both .env files
-   - Make sure to prefix the client-side variables with REACT_APP_
+## Step 4: Post-Deployment Configuration
 
-5. Deploy the project:
-   - Click "Deploy"
-   - Wait for the deployment to complete
+1. Once deployed, your application will be available at a Vercel URL (e.g., `https://acmyx.vercel.app`)
 
-## Step 4: Verify the Deployment
+2. Verify that your application can connect to the Neon PostgreSQL database:
+   - Visit your application's dashboard or health endpoint
+   - Ensure all features work correctly
 
-1. Once the deployment is complete, Vercel will provide you with a URL.
-
-2. Visit the URL to verify that the website is working correctly.
-
-3. Test the following functionality:
-   - Registration
-   - Login
-   - Viewing courses
-   - Contact form
+3. Make sure your database tables were created properly:
+   - The application should initialize the database on first run
+   - If not, check the Vercel logs and ensure your connection string is correct
 
 ## Troubleshooting
 
-If you encounter any issues during deployment:
+- **Database Connection Issues:**
+  - Check your `DATABASE_URL` environment variable
+  - Ensure your IP is allowed in the Neon PostgreSQL security settings
+  - Try connecting to the database from your local machine to verify credentials
 
-1. Check the Vercel build logs for errors.
+- **Application Not Loading:**
+  - Check the Vercel deployment logs
+  - Verify that your `vercel.json` configuration is correct
+  - Make sure all environment variables are set properly
 
-2. Verify that all environment variables are correctly set.
+- **Authentication Issues:**
+  - Ensure your `ADMIN_EMAIL` and `ADMIN_PASSWORD` environment variables are set
+  - Check that the database tables were created correctly
 
-3. Make sure your Appwrite collections have the correct permissions.
+## Production Best Practices
 
-4. Check the browser console for any client-side errors.
+1. Set up a custom domain for your Vercel deployment.
+2. Configure SSL for your domain.
+3. Make sure your Neon PostgreSQL database has regular backups.
+4. Consider implementing rate limiting for your APIs.
+5. Regularly update your dependencies for security patches.
+6. Implement proper logging and monitoring for your application.
+7. Set up CI/CD for automated deployments on code changes.
 
-5. Check the server logs on Vercel for any server-side errors.
+## Maintenance
 
-## Additional Notes
-
-- For production, consider using a real email service like SendGrid instead of Gmail.
-- Make sure to secure your API keys and never commit them to the repository.
-- Consider adding more security measures like rate limiting and CORS restrictions for production.
-- Regularly back up your Appwrite database. 
+- Regularly back up your Neon PostgreSQL database.
+- Update your application dependencies regularly.
+- Monitor performance metrics in the Vercel dashboard.
+- Keep an eye on database usage to ensure you stay within your plan limits. 

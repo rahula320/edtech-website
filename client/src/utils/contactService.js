@@ -1,25 +1,14 @@
-import { databases, databaseId, contactsCollectionId, ID } from './appwrite';
+import axios from 'axios';
 
-// Contact service using Appwrite
+// Contact service using the server API
 const ContactService = {
-  // Send a contact message
-  sendContactMessage: async (contactData) => {
+  // Submit a contact form
+  submitContactForm: async (contactData) => {
     try {
-      await databases.createDocument(
-        databaseId,
-        contactsCollectionId,
-        ID.unique(),
-        {
-          name: contactData.name,
-          email: contactData.email,
-          message: contactData.message,
-          createdAt: new Date().toISOString()
-        }
-      );
-      
-      return { success: true };
+      const response = await axios.post('/api/contact', contactData);
+      return response.data;
     } catch (error) {
-      console.error('Error sending contact message:', error);
+      console.error('Error submitting contact form:', error);
       throw error;
     }
   }

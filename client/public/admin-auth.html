@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACMYX Admin</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      background-color: #f0f4f8;
+    }
+    h1 {
+      color: #2563eb;
+      margin-bottom: 1rem;
+    }
+    .login-form {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    .error-message {
+      color: #dc2626;
+      margin-top: 1rem;
+    }
+    .success-message {
+      color: #16a34a;
+      margin-top: 1rem;
+    }
+    .dashboard {
+      display: none;
+    }
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .dashboard-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .logout-btn {
+      background-color: #ef4444;
+    }
+    .logout-btn:hover {
+      background-color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-form" id="loginForm">
+    <h1>Admin Login</h1>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="admin@acmyx.com">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password">
+    </div>
+    <button id="loginButton">Login</button>
+    <div id="errorMessage" class="error-message"></div>
+  </div>
+  
+  <div class="dashboard" id="dashboard">
+    <div class="dashboard-header">
+      <h1>Admin Dashboard</h1>
+      <button class="logout-btn" id="logoutButton">Logout</button>
+    </div>
+    
+    <div class="dashboard-card">
+      <h2>Welcome to ACMYX Admin Dashboard</h2>
+      <p>This is a simplified version of the admin dashboard.</p>
+      <p>You're now logged in as <strong id="adminEmail"></strong>.</p>
+    </div>
+    
+    <div class="dashboard-card">
+      <h2>Admin Actions</h2>
+      <p>In a full implementation, you would be able to:</p>
+      <ul>
+        <li>Manage courses and programs</li>
+        <li>Manage users and instructors</li>
+        <li>View contact form submissions</li>
+        <li>Configure site settings</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('loginForm');
+      const dashboard = document.getElementById('dashboard');
+      const loginButton = document.getElementById('loginButton');
+      const logoutButton = document.getElementById('logoutButton');
+      const errorMessage = document.getElementById('errorMessage');
+      const adminEmail = document.getElementById('adminEmail');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      
+      // Simple local authentication
+      loginButton.addEventListener('click', function() {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        
+        if (!email || !password) {
+          errorMessage.textContent = 'Please enter both email and password';
+          return;
+        }
+        
+        // Hardcoded credentials for admin demo
+        if (email === 'admin@acmyx.com' && password === 'admin123') {
+          loginForm.style.display = 'none';
+          dashboard.style.display = 'block';
+          adminEmail.textContent = email;
+          localStorage.setItem('adminLoggedIn', 'true');
+          localStorage.setItem('adminEmail', email);
+        } else {
+          errorMessage.textContent = 'Invalid email or password';
+        }
+      });
+      
+      // Logout handler
+      logoutButton.addEventListener('click', function() {
+        dashboard.style.display = 'none';
+        loginForm.style.display = 'block';
+        emailInput.value = '';
+        passwordInput.value = '';
+        errorMessage.textContent = '';
+        localStorage.removeItem('adminLoggedIn');
+        localStorage.removeItem('adminEmail');
+      });
+      
+      // Check if already logged in
+      if (localStorage.getItem('adminLoggedIn') === 'true') {
+        loginForm.style.display = 'none';
+        dashboard.style.display = 'block';
+        adminEmail.textContent = localStorage.getItem('adminEmail');
+      }
+    });
+  </script>
+</body>
+</html> 

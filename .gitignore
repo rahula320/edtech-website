@@ -65,6 +65,3 @@ typings/
 *.swp
 *.swo 
 .vercel
-
-# Security
-**/appwrite.js
