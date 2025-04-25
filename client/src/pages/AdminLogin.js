@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { adminLogin } from '../utils/api';
 import './AdminLogin.css';
 
@@ -10,14 +10,34 @@ const AdminLogin = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [entranceAnimation, setEntranceAnimation] = useState(false);
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
   
-  // Check if already logged in
+  // Initial animations and logout state handling
   useEffect(() => {
-    if (localStorage.getItem('adminAuth') === 'true') {
-      navigate('/admin/dashboard');
+    // Check if redirected after logout (localStorage check)
+    const isLoggedOut = localStorage.getItem('justLoggedOut');
+    
+    if (isLoggedOut) {
+      console.log('Detected logout redirection');
+      setMessage('You have been successfully logged out');
+      localStorage.removeItem('justLoggedOut');
     }
-  }, [navigate]);
+    
+    // Start entrance animation
+    setEntranceAnimation(true);
+    
+    // Check if already logged in
+    const timer = setTimeout(() => {
+      if (localStorage.getItem('adminAuth') === 'true') {
+        navigate('/admin/dashboard');
+      }
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, [navigate, location]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,12 +69,18 @@ const AdminLogin = () => {
       if (data && data.success) {
         // Set admin session
         localStorage.setItem('adminAuth', 'true');
-        localStorage.setItem('adminEmail', data.user?.email);
-        localStorage.setItem('adminRole', data.user?.role);
+        localStorage.setItem('adminUser', credentials.email);
+        localStorage.setItem('adminToken', data.token || 'mock-token');
         
         console.log('Login successful, redirecting to dashboard');
-        // Redirect to dashboard
-        navigate('/admin/dashboard');
+        
+        // Add exit animation
+        setEntranceAnimation(false);
+        
+        // Redirect to dashboard after animation completes
+        setTimeout(() => {
+          navigate('/admin/dashboard');
+        }, 300);
       } else {
         console.error('Login failed:', data);
         
@@ -62,9 +88,15 @@ const AdminLogin = () => {
         if (credentials.email === 'admin@acmyx.com' && credentials.password === 'admin123') {
           console.log('Using hardcoded credentials as fallback');
           localStorage.setItem('adminAuth', 'true');
-          localStorage.setItem('adminEmail', 'admin@acmyx.com');
-          localStorage.setItem('adminRole', 'admin');
-          navigate('/admin/dashboard');
+          localStorage.setItem('adminUser', 'admin@acmyx.com');
+          localStorage.setItem('adminToken', 'mock-token');
+          
+          // Add exit animation
+          setEntranceAnimation(false);
+          
+          setTimeout(() => {
+            navigate('/admin/dashboard');
+          }, 300);
           return;
         }
         
@@ -77,9 +109,15 @@ const AdminLogin = () => {
       if (credentials.email === 'admin@acmyx.com' && credentials.password === 'admin123') {
         console.log('Using hardcoded credentials due to API error');
         localStorage.setItem('adminAuth', 'true');
-        localStorage.setItem('adminEmail', 'admin@acmyx.com');
-        localStorage.setItem('adminRole', 'admin');
-        navigate('/admin/dashboard');
+        localStorage.setItem('adminUser', 'admin@acmyx.com');
+        localStorage.setItem('adminToken', 'mock-token');
+        
+        // Add exit animation
+        setEntranceAnimation(false);
+        
+        setTimeout(() => {
+          navigate('/admin/dashboard');
+        }, 300);
         return;
       }
       
@@ -90,9 +128,17 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="admin-login-container">
+    <div className={`admin-login-container ${entranceAnimation ? 'enter' : 'exit'}`}>
       <div className="admin-login-form-container">
-        <h1>Admin Login</h1>
+        <h1>Admin Console</h1>
+        
+        {message && (
+          <div className="login-success-message">
+            <span className="success-icon">✓</span>
+            {message}
+          </div>
+        )}
+        
         <form onSubmit={handleSubmit} className="admin-login-form">
           {error && <div className="error-message">{error}</div>}
           

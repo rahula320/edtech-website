@@ -12,7 +12,7 @@ import {
   FiFilter, FiSearch, FiMapPin, FiExternalLink, FiX,
   FiHome, FiSettings, FiTrendingUp, FiPieChart,
   FiDollarSign, FiDatabase, FiFileText, FiArrowDown,
-  FiArrowUp, FiServer, FiActivity, FiClipboard, FiBarChart2, FiChevronDown, FiChevronLeft, FiClock, FiArrowRight, FiEdit, FiInbox, FiAlertTriangle, FiMenu, FiTrash
+  FiArrowUp, FiServer, FiActivity, FiClipboard, FiBarChart2, FiChevronDown, FiChevronLeft, FiClock, FiArrowRight, FiEdit, FiInbox, FiAlertTriangle, FiMenu, FiTrash, FiBox, FiChevronsRight, FiChevronsLeft
 } from 'react-icons/fi';
 import axios from 'axios';
 
@@ -200,7 +200,7 @@ const AdminDashboard = () => {
       
       const pendingMentorApps = mentorData.filter(app => app.status === 'pending').length;
       const pendingBDAApps = bdaData.filter(app => app.status === 'pending').length;
-      
+
       const approvedMentorApps = mentorData.filter(app => app.status === 'approved').length;
       const approvedBDAApps = bdaData.filter(app => app.status === 'approved').length;
       
@@ -245,14 +245,31 @@ const AdminDashboard = () => {
     }
   }, [activeTab, applicationType]);
 
-  // Handle admin logout
+  // Handle logout with animation
   const handleLogout = () => {
-    // Clear localStorage
+    // Show logout notification
+    setNotification({
+      show: true,
+      message: 'You have been successfully logged out',
+      type: 'success'
+    });
+    
+    // Set flag for login page to detect logout
+    localStorage.setItem('justLoggedOut', 'true');
+    
+    // Clear token and user from localStorage
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
+    localStorage.removeItem('adminAuth');
     
-    // Navigate to login page
-    navigate('/admin/login');
+    // Add animation class to body
+    document.body.classList.add('logout-animation');
+    
+    // Wait for animation to complete before redirecting
+    setTimeout(() => {
+      // Redirect to admin page
+      window.location.href = '/admin';
+    }, 800);
   };
 
   // View application details
@@ -291,7 +308,7 @@ const AdminDashboard = () => {
               : app
           )
         );
-      } else {
+    } else {
         setBdaApplications(
           bdaApplications.map(app => 
             (app.id || app._id) === (currentApplication.id || currentApplication._id) 
@@ -497,8 +514,8 @@ const AdminDashboard = () => {
     if (!currentApplication) return null;
     
     const isMentor = applicationType === 'mentor';
-    
-    return (
+
+  return (
       <div className="modal-overlay" onClick={() => setShowDetailsModal(false)}>
         <div className="modal-container details-modal" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
@@ -542,9 +559,9 @@ const AdminDashboard = () => {
                       {currentApplication?.timestamp ? moment(currentApplication.timestamp).format('MMMM D, YYYY') : 'Unknown'}
                     </span>
                   </div>
-                </div>
-              </div>
-              
+        </div>
+      </div>
+
               {/* Conditional sections based on application type */}
               {isMentor && (
                 <>
@@ -562,7 +579,7 @@ const AdminDashboard = () => {
                       <div className="detail-item">
                         <span className="detail-label">Experience</span>
                         <span className="detail-value">{currentApplication?.experience || 'Not provided'}</span>
-                      </div>
+          </div>
                       <div className="detail-item">
                         <span className="detail-label">LinkedIn</span>
                         <span className="detail-value">
@@ -572,9 +589,9 @@ const AdminDashboard = () => {
                             </a>
                           ) : 'Not provided'}
                         </span>
-                      </div>
-                    </div>
-                  </div>
+          </div>
+        </div>
+          </div>
                   
                   <div className="details-section">
                     <h5>Mentoring Preferences</h5>
@@ -589,8 +606,8 @@ const AdminDashboard = () => {
                           ) : (
                             <span>No domains specified</span>
                           )}
-                        </div>
-                      </div>
+          </div>
+        </div>
                       <div className="detail-item full-width">
                         <span className="detail-label">Why do you want to mentor?</span>
                         <p className="detail-text">{currentApplication?.why_mentor || 'Not provided'}</p>
@@ -598,9 +615,9 @@ const AdminDashboard = () => {
                       <div className="detail-item full-width">
                         <span className="detail-label">Previous mentoring experience</span>
                         <p className="detail-text">{currentApplication?.previous_experience || 'Not provided'}</p>
-                      </div>
-                    </div>
-                  </div>
+          </div>
+          </div>
+        </div>
                 </>
               )}
               
@@ -620,7 +637,7 @@ const AdminDashboard = () => {
                       <div className="detail-item">
                         <span className="detail-label">Graduation Year</span>
                         <span className="detail-value">{currentApplication?.graduation_year || 'Not provided'}</span>
-                      </div>
+          </div>
                       <div className="detail-item">
                         <span className="detail-label">LinkedIn</span>
                         <span className="detail-value">
@@ -630,10 +647,10 @@ const AdminDashboard = () => {
                             </a>
                           ) : 'Not provided'}
                         </span>
-                      </div>
-                    </div>
-                  </div>
-                  
+          </div>
+        </div>
+      </div>
+      
                   <div className="details-section">
                     <h5>BDA Position Information</h5>
                     <div className="details-grid">
@@ -664,7 +681,7 @@ const AdminDashboard = () => {
             </div>
             
             <div className="modal-actions">
-              <button 
+        <button 
                 className="action-btn edit-btn"
                 onClick={() => {
                   setShowDetailsModal(false);
@@ -672,8 +689,8 @@ const AdminDashboard = () => {
                 }}
               >
                 <FiEdit /> Change Status
-              </button>
-              <button 
+        </button>
+        <button 
                 className="action-btn delete-btn"
                 onClick={() => {
                   if (window.confirm(`Are you sure you want to delete this ${isMentor ? 'mentor' : 'BDA'} application?`)) {
@@ -681,9 +698,9 @@ const AdminDashboard = () => {
                     setShowDetailsModal(false);
                   }
                 }}
-              >
+        >
                 <FiTrash /> Delete
-              </button>
+        </button>
             </div>
           </div>
         </div>
@@ -703,7 +720,7 @@ const AdminDashboard = () => {
     return (
       <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
-          <h3>{isCollapsed ? 'AA' : 'Admin Area'}</h3>
+          <h3>{isCollapsed ? 'AC' : 'Admin Console'}</h3>
           <button onClick={() => setIsCollapsed(!isCollapsed)}>
             <FiChevronLeft />
           </button>
@@ -786,16 +803,16 @@ const AdminDashboard = () => {
             </select>
             <div className="search-box">
               <FiSearch />
-              <input 
-                type="text" 
+            <input 
+              type="text" 
                 placeholder="Search by name or email..." 
-                value={searchTerm} 
-                onChange={(e) => setSearchTerm(e.target.value)} 
-              />
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
             </div>
           </div>
-        </div>
-
+          </div>
+          
         <div className="applications-table">
           <table>
             <thead>
@@ -835,21 +852,21 @@ const AdminDashboard = () => {
                         >
                           <FiEye />
                         </button>
-                        <button 
+            <button 
                           className="action-btn edit-btn" 
                           title="Edit Status"
                           onClick={() => handleUpdateStatus(app)}
-                        >
+            >
                           <FiEdit />
-                        </button>
-                        <button 
+            </button>
+            <button 
                           className="action-btn delete-btn" 
                           title="Delete"
                           onClick={() => handleDeleteApplication(app.id || app._id)}
-                        >
+            >
                           <FiTrash />
-                        </button>
-                      </div>
+            </button>
+          </div>
                     </td>
                   </tr>
                 ))
@@ -934,27 +951,27 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Loading and Error States */}
-        {isLoading && (
+      {isLoading && (
           <div className="admin-loading-container">
             <div className="loading-spinner"></div>
             <p>Loading data...</p>
           </div>
-        )}
-        
+      )}
+
         {error && !isLoading && (
           <div className="error-message">
             <p>{error}</p>
             <button onClick={memoizedFetchApplications}>Try Again</button>
           </div>
-        )}
-        
+      )}
+
         {/* Dashboard View */}
         {!isLoading && !error && activeTab === 'dashboard' && (
           <div className="dashboard-content">
             <h2>Dashboard Overview</h2>
-            
+                
             <div className="metrics-grid">
               <div className="metric-card">
                 <div className="metric-icon"><FiUsers /></div>
@@ -985,25 +1002,25 @@ const AdminDashboard = () => {
                 <div className="metric-info">
                   <h3>Rejected</h3>
                   <p className="metric-value">{metrics.rejectedApplications || '-'}</p>
+                  </div>
                 </div>
-              </div>
               
               <div className="metric-card">
                 <div className="metric-icon"><FiUserCheck /></div>
                 <div className="metric-info">
                   <h3>Mentor Applications</h3>
                   <p className="metric-value">{metrics.mentorApplications || '-'}</p>
+                  </div>
                 </div>
-              </div>
               
               <div className="metric-card">
                 <div className="metric-icon"><FiBriefcase /></div>
                 <div className="metric-info">
                   <h3>BDA Applications</h3>
                   <p className="metric-value">{metrics.bdaApplications || '-'}</p>
-                </div>
+                  </div>
               </div>
-            </div>
+      </div>
             
             <div className="recent-applications">
               <h3>Recent Applications</h3>
@@ -1041,8 +1058,8 @@ const AdminDashboard = () => {
           <div className="settings-content">
             <h2>Account Settings</h2>
             <p>This section is under development.</p>
-          </div>
-        )}
+        </div>
+      )}
       </div>
       
       {/* Application Modals */}
