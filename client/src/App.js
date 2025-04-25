@@ -9,6 +9,7 @@ import StudentPortal from './pages/StudentPortal';
 import ProgramDetail from './pages/ProgramDetail';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import { programsData } from './data/programsData';
 
@@ -28,7 +29,11 @@ function App() {
           <Route path="/portal" element={<StudentPortal />} />
           <Route path="/programs/:programId" element={<ProgramDetail programsData={programsData} />} />
           <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/dashboard" element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
           <Route path="/login" element={<Navigate to="/admin" replace />} />
         </Routes>
       </main>

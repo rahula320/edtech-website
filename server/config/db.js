@@ -61,11 +61,10 @@ async function initDatabase() {
       console.log(`Admin user already exists with email: ${adminEmail}`);
     }
     
-    // Create applications table if it doesn't exist
+    // Create mentor_applications table if it doesn't exist
     await sql`
-      CREATE TABLE IF NOT EXISTS applications (
+      CREATE TABLE IF NOT EXISTS mentor_applications (
         id SERIAL PRIMARY KEY,
-        type VARCHAR(50) NOT NULL,
         full_name VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
         phone VARCHAR(20),
@@ -73,32 +72,37 @@ async function initDatabase() {
         designation VARCHAR(255),
         experience INTEGER,
         education TEXT,
-        domains TEXT,
+        domains TEXT[],
         resume_url TEXT,
         portfolio_url TEXT,
         status VARCHAR(50) DEFAULT 'pending',
-        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP
       )
     `;
     
-    console.log('Applications table initialized');
+    console.log('Mentor applications table initialized');
     
-    // Check and update existing applications to have the status field
-    try {
-      // Check if any applications exist
-      const applications = await sql`SELECT COUNT(*) FROM applications`;
-      if (applications[0].count > 0) {
-        // Add status field to any applications that don't have it set
-        await sql`
-          UPDATE applications 
-          SET status = 'pending' 
-          WHERE status IS NULL
-        `;
-        console.log('Migrated existing applications to include status field');
-      }
-    } catch (error) {
-      console.error('Error during applications migration:', error);
-    }
+    // Create bda_applications table if it doesn't exist
+    await sql`
+      CREATE TABLE IF NOT EXISTS bda_applications (
+        id SERIAL PRIMARY KEY,
+        full_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(20),
+        education TEXT,
+        experience INTEGER,
+        resume_url TEXT,
+        portfolio_url TEXT,
+        status VARCHAR(50) DEFAULT 'pending',
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP
+      )
+    `;
+    
+    console.log('BDA applications table initialized');
+    
+    // Removed migration logic since the old applications table has been dropped
     
     console.log('Database initialization completed successfully');
   } catch (error) {

@@ -37,20 +37,24 @@ async function testMentorSubmission() {
     // Parse experience to integer
     const experienceValue = parseInt(experience) || 0;
     
-    // Insert the application with domains as TEXT
+    // Process domains into a proper PostgreSQL array format
+    const domainsArray = domains.split(',').map(domain => `"${domain.trim()}"`).join(',');
+    const domainsArrayStr = `{${domainsArray}}`;
+    
+    // Insert the application into mentor_applications table
     const result = await sql`
-      INSERT INTO applications (
-        type, full_name, email, phone, company, designation, 
+      INSERT INTO mentor_applications (
+        full_name, email, phone, company, designation, 
         experience, education, domains, resume_url, portfolio_url
       ) VALUES (
-        'mentor', ${fullName}, 
+        ${fullName}, 
         ${email}, 
         ${phone}, 
         ${company}, 
         ${designation}, 
         ${experienceValue},
         ${education},
-        ${domains}, 
+        ${domainsArrayStr}::text[], 
         ${resumeUrl}, 
         ${portfolioUrl}
       ) RETURNING *

@@ -21,11 +21,24 @@ router.get('/health', (req, res) => {
   });
 });
 
-// Get all applications
+// Get all applications (updated to combine results from both tables)
 router.get('/applications', async (req, res) => {
   try {
-    const applications = await sql`SELECT * FROM applications ORDER BY timestamp DESC`;
-    res.status(200).json(applications);
+    // Get mentor applications
+    const mentorApplications = await sql`
+      SELECT *, 'mentor' as type FROM mentor_applications ORDER BY timestamp DESC
+    `;
+    
+    // Get BDA applications
+    const bdaApplications = await sql`
+      SELECT *, 'bda' as type FROM bda_applications ORDER BY timestamp DESC
+    `;
+    
+    // Combine and sort by timestamp
+    const allApplications = [...mentorApplications, ...bdaApplications]
+      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    res.status(200).json(allApplications);
   } catch (error) {
     console.error('Error fetching applications:', error);
     res.status(500).json({ error: 'Failed to fetch applications' });
@@ -35,7 +48,9 @@ router.get('/applications', async (req, res) => {
 // Get mentor applications
 router.get('/applications/mentor', async (req, res) => {
   try {
-    const applications = await sql`SELECT * FROM applications WHERE type = 'mentor' ORDER BY timestamp DESC`;
+    const applications = await sql`
+      SELECT *, 'mentor' as type FROM mentor_applications ORDER BY timestamp DESC
+    `;
     res.status(200).json(applications);
   } catch (error) {
     console.error('Error fetching mentor applications:', error);
@@ -46,7 +61,9 @@ router.get('/applications/mentor', async (req, res) => {
 // Get BDA applications
 router.get('/applications/bda', async (req, res) => {
   try {
-    const applications = await sql`SELECT * FROM applications WHERE type = 'bda' ORDER BY timestamp DESC`;
+    const applications = await sql`
+      SELECT *, 'bda' as type FROM bda_applications ORDER BY timestamp DESC
+    `;
     res.status(200).json(applications);
   } catch (error) {
     console.error('Error fetching BDA applications:', error);
@@ -77,19 +94,23 @@ router.post('/applications/mentor', async (req, res) => {
       return res.status(400).json({ error: 'Full name and email are required' });
     }
 
-    // Process domains field correctly - store as string 
-    let domainsValue = '';
+    // Process domains field correctly - store as an array
+    let domainsArray = [];
     if (domains) {
       if (Array.isArray(domains)) {
-        domainsValue = domains.join(',');
+        domainsArray = domains;
       } else if (typeof domains === 'string') {
-        domainsValue = domains;
+        domainsArray = domains.split(',').map(domain => domain.trim());
       }
     }
+    
+    // Convert to PostgreSQL array format
+    const domainsStr = domainsArray.map(domain => `"${domain}"`).join(',');
+    const domainsArrayStr = `{${domainsStr}}`;
 
     console.log('Saving mentor application with data:', { 
       fullName, email, phone, company, designation, 
-      experience, education, domains: domainsValue
+      experience, education, domains: domainsArray
     });
 
     // Parse experience to integer if it's a string
@@ -102,19 +123,20 @@ router.post('/applications/mentor', async (req, res) => {
       }
     }
 
-    // Insert application without the domains field
+    // Insert application into mentor_applications table
     const result = await sql`
-      INSERT INTO applications (
-        type, full_name, email, phone, company, designation, 
-        experience, education, resume_url, portfolio_url
+      INSERT INTO mentor_applications (
+        full_name, email, phone, company, designation, 
+        experience, education, domains, resume_url, portfolio_url
       ) VALUES (
-        'mentor', ${fullName || ''}, 
+        ${fullName || ''}, 
         ${email}, 
         ${phone || ''}, 
         ${company || ''}, 
         ${designation || ''}, 
         ${experienceValue}, 
-        ${education || ''}, 
+        ${education || ''},
+        ${domainsArrayStr}::text[],
         ${resumeUrl || ''}, 
         ${portfolioUrl || ''}
       ) RETURNING id
@@ -155,16 +177,26 @@ router.post('/applications/bda', async (req, res) => {
       return res.status(400).json({ error: 'Full name and email are required', body: req.body });
     }
 
+    // Parse experience to integer if it's a string
+    let experienceValue = 0;
+    if (experience) {
+      if (typeof experience === 'string') {
+        experienceValue = parseInt(experience) || 0;
+      } else if (typeof experience === 'number') {
+        experienceValue = experience;
+      }
+    }
+
     const result = await sql`
-      INSERT INTO applications (
-        type, full_name, email, phone, education, experience, resume_url, portfolio_url
+      INSERT INTO bda_applications (
+        full_name, email, phone, education, 
+        experience, resume_url, portfolio_url
       ) VALUES (
-        'bda', 
         ${fullName || req.body.full_name || ''}, 
         ${email}, 
         ${phone || ''}, 
         ${education || ''}, 
-        ${experience || 0}, 
+        ${experienceValue}, 
         ${resumeUrl || req.body.resume_url || ''}, 
         ${portfolioUrl || req.body.portfolio_url || ''}
       ) RETURNING id
@@ -325,20 +357,32 @@ router.post('/admin/reset-password', async (req, res) => {
 // Delete multiple applications by IDs
 router.delete('/applications/batch', async (req, res) => {
   try {
-    const { ids } = req.body;
+    const { ids, type } = req.body;
     
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
       return res.status(400).json({ error: 'Valid application IDs are required' });
     }
     
-    console.log(`Deleting ${ids.length} applications with IDs:`, ids);
+    if (!type || !['mentor', 'bda'].includes(type)) {
+      return res.status(400).json({ error: 'Valid application type is required (mentor or bda)' });
+    }
     
-    // Delete applications with the provided IDs
-    const result = await sql`
-      DELETE FROM applications
-      WHERE id IN ${sql(ids)}
-      RETURNING id
-    `;
+    console.log(`Deleting ${ids.length} ${type} applications with IDs:`, ids);
+    
+    let result;
+    if (type === 'mentor') {
+      result = await sql`
+        DELETE FROM mentor_applications
+        WHERE id IN ${sql(ids)}
+        RETURNING id
+      `;
+    } else {
+      result = await sql`
+        DELETE FROM bda_applications
+        WHERE id IN ${sql(ids)}
+        RETURNING id
+      `;
+    }
     
     console.log(`Deleted ${result.length} applications`);
     
@@ -357,7 +401,7 @@ router.delete('/applications/batch', async (req, res) => {
 router.patch('/applications/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, type } = req.body;
     
     if (!id) {
       return res.status(400).json({ error: 'Application ID is required' });
@@ -367,14 +411,30 @@ router.patch('/applications/:id', async (req, res) => {
       return res.status(400).json({ error: 'Valid status is required (pending, approved, or rejected)' });
     }
     
-    console.log(`Updating application ${id} status to ${status}`);
+    if (!type || !['mentor', 'bda'].includes(type)) {
+      return res.status(400).json({ error: 'Valid application type is required (mentor or bda)' });
+    }
     
-    const result = await sql`
-      UPDATE applications
-      SET status = ${status}
-      WHERE id = ${id}
-      RETURNING id, status
-    `;
+    console.log(`Updating ${type} application ${id} status to ${status}`);
+    
+    let result;
+    if (type === 'mentor') {
+      result = await sql`
+        UPDATE mentor_applications
+        SET status = ${status},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ${id}
+        RETURNING id, status
+      `;
+    } else {
+      result = await sql`
+        UPDATE bda_applications
+        SET status = ${status},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = ${id}
+        RETURNING id, status
+      `;
+    }
     
     if (result.length === 0) {
       return res.status(404).json({ error: 'Application not found' });

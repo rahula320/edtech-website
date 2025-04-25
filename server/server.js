@@ -16,6 +16,10 @@ const bcrypt = require('bcryptjs');
 // Import database connection
 const db = require('./config/db');
 
+// Import routes
+const apiRoutes = require('./routes/api');
+const adminRoutes = require('./routes/admin');
+
 const app = express();
 
 // Middleware
@@ -102,6 +106,10 @@ transporter.verify((error, success) => {
     console.log('Email server is ready to send messages');
   }
 });
+
+// Use routes
+app.use('/api', apiRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Routes
 app.post('/api/contact', async (req, res) => {

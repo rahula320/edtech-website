@@ -1,101 +1,93 @@
 import axios from 'axios';
 
-// Create an axios instance with base URL
+// In development, React will proxy requests to the URL in package.json's "proxy" field
+// In production, use the environment variable or fallback to relative path
+const isDevelopment = process.env.NODE_ENV === 'development';
+const baseURL = isDevelopment ? '' : (process.env.REACT_APP_API_URL || '/api');
+console.log('API baseURL:', baseURL, 'Environment:', process.env.NODE_ENV);
+
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || '',
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  baseURL,
+  withCredentials: true,
 });
 
-// API functions
-export const checkHealth = async () => {
-  try {
-    const response = await api.get('/api/health');
-    return response.data;
-  } catch (error) {
-    console.error('Health check failed:', error);
-    throw error;
-  }
+// Authentication
+export const login = async (credentials) => {
+  const response = await api.post('/login', credentials);
+  return response.data;
 };
 
-export const login = async (username, password) => {
-  try {
-    const response = await api.post('/api/login', { username, password });
-    return response.data;
-  } catch (error) {
-    console.error('Login failed:', error);
-    throw error;
-  }
-};
-
-export const register = async (username, email, password) => {
-  try {
-    const response = await api.post('/api/register', { username, email, password });
-    return response.data;
-  } catch (error) {
-    console.error('Registration failed:', error);
-    throw error;
-  }
+export const adminLogin = async (credentials) => {
+  const response = await api.post('/admin/login', credentials);
+  return response.data;
 };
 
 export const logout = async () => {
+  const response = await api.get('/logout');
+  return response.data;
+};
+
+export const getUser = async () => {
+  const response = await api.get('/user');
+  return response.data;
+};
+
+export const isAdmin = async () => {
   try {
-    const response = await api.get('/api/logout');
-    return response.data;
+    // For now, rely on the localStorage value for simplicity
+    return localStorage.getItem('adminAuth') === 'true';
   } catch (error) {
-    console.error('Logout failed:', error);
-    throw error;
+    console.error('Error checking admin status:', error);
+    return false;
   }
 };
 
-export const getCurrentUser = async () => {
-  try {
-    const response = await api.get('/api/user');
-    return response.data;
-  } catch (error) {
-    // Don't log 401s as they're expected when not logged in
-    if (error.response && error.response.status !== 401) {
-      console.error('Get current user failed:', error);
-    }
-    return { user: null };
-  }
+// Admin Dashboard API
+export const getApplications = async () => {
+  const response = await api.get('/admin/applications');
+  return response.data;
 };
 
-export const submitContactForm = async (name, email, message) => {
-  try {
-    const response = await api.post('/api/contact', { name, email, message });
-    return response.data;
-  } catch (error) {
-    console.error('Contact form submission failed:', error);
-    throw error;
-  }
+export const getMentorApplications = async () => {
+  const response = await api.get('/admin/applications/mentor');
+  return response.data;
 };
 
-// Add request interceptor to handle tokens if needed
-api.interceptors.request.use(
-  (config) => {
-    // You can add auth token to requests here if needed
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+export const getBdaApplications = async () => {
+  const response = await api.get('/admin/applications/bda');
+  return response.data;
+};
 
-// Add response interceptor to handle common errors
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      // Handle unauthorized errors
-      console.log('User is not authenticated');
-      // You could redirect to login page here
-    }
-    return Promise.reject(error);
-  }
-);
+export const getDashboardMetrics = async () => {
+  const response = await api.get('/admin/metrics');
+  return response.data;
+};
+
+export const updateApplicationStatus = async (applicationId, status) => {
+  const response = await api.put(`/admin/applications/${applicationId}`, { status });
+  return response.data;
+};
+
+export const deleteApplication = async (applicationId) => {
+  const response = await api.delete(`/admin/applications/${applicationId}`);
+  return response.data;
+};
+
+// Contact Form
+export const submitContactForm = async (formData) => {
+  const response = await api.post('/contact', formData);
+  return response.data;
+};
+
+// Applications
+export const submitMentorApplication = async (formData) => {
+  const response = await api.post('/applications/mentor', formData);
+  return response.data;
+};
+
+export const submitBdaApplication = async (formData) => {
+  const response = await api.post('/applications/bda', formData);
+  return response.data;
+};
 
 export default api; 

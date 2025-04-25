@@ -432,7 +432,7 @@
 }
 
 /* Enhanced Popup styles */
-.popup-overlay {
+.popup-overlay, .confirmation-popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -446,7 +446,7 @@
   backdrop-filter: blur(4px);
 }
 
-.popup {
+.popup, .confirmation-popup {
   background-color: white;
   border-radius: 16px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);

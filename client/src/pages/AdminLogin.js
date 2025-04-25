@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { adminLogin } from '../utils/api';
 import './AdminLogin.css';
 
 const AdminLogin = () => {
@@ -38,34 +39,18 @@ const AdminLogin = () => {
     setLoading(true);
     setError('');
     
+    console.log('Attempting login with credentials:', { email: credentials.email });
+    
     try {
-      console.log('Sending login request with credentials:', {
-        email: credentials.email,
-        password: '*'.repeat(credentials.password.length) // Don't log actual password
-      });
+      // Send login request to API using our utility function
+      const data = await adminLogin(credentials);
+      console.log('Login response:', data);
       
-      // Send login request to API
-      const response = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password
-        }),
-        credentials: 'include' // Include cookies in the request
-      });
-      
-      console.log('Response status:', response.status);
-      const data = await response.json();
-      console.log('Server response:', data);
-      
-      if (response.ok && data.success) {
+      if (data && data.success) {
         // Set admin session
         localStorage.setItem('adminAuth', 'true');
-        localStorage.setItem('adminEmail', data.user.email);
-        localStorage.setItem('adminRole', data.user.role);
+        localStorage.setItem('adminEmail', data.user?.email);
+        localStorage.setItem('adminRole', data.user?.role);
         
         console.log('Login successful, redirecting to dashboard');
         // Redirect to dashboard
@@ -83,14 +68,14 @@ const AdminLogin = () => {
           return;
         }
         
-        setError(data.message || data.error || 'Invalid login credentials');
+        setError(data?.message || 'Invalid login credentials');
       }
     } catch (error) {
       console.error('Login error details:', error);
       
       // FALLBACK: If API is completely unavailable, try hardcoded credentials
       if (credentials.email === 'admin@acmyx.com' && credentials.password === 'admin123') {
-        console.log('Using hardcoded credentials as fallback due to API error');
+        console.log('Using hardcoded credentials due to API error');
         localStorage.setItem('adminAuth', 'true');
         localStorage.setItem('adminEmail', 'admin@acmyx.com');
         localStorage.setItem('adminRole', 'admin');
@@ -98,7 +83,7 @@ const AdminLogin = () => {
         return;
       }
       
-      setError('Error during login. Please try again.');
+      setError(`Error during login: ${error.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
