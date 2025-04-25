@@ -267,8 +267,11 @@ const AdminDashboard = () => {
     
     // Wait for animation to complete before redirecting
     setTimeout(() => {
-      // Redirect to admin page
-      window.location.href = '/admin';
+      // Get the base URL of the application to handle both development and production
+      const baseUrl = window.location.origin;
+      
+      // Force a hard navigation to the admin login page
+      window.location.href = `${baseUrl}/admin`;
     }, 800);
   };
 
