@@ -2,8 +2,8 @@ require('dotenv').config();
 const { neon } = require('@neondatabase/serverless');
 const bcrypt = require('bcryptjs');
 
-// Get the database URL from environment variables with fallback for local development
-const databaseUrl = process.env.DATABASE_URL || "postgresql://neondb_owner:npg_OSsZKqm1iTV3@ep-floral-silence-a18kxybn-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
+// Use hardcoded connection string for development
+const databaseUrl = "postgresql://neondb_owner:npg_OSsZKqm1iTV3@ep-floral-silence-a18kxybn-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
 
 // Create a SQL client
 const sql = neon(databaseUrl);
@@ -39,25 +39,15 @@ async function initDatabase() {
     
     console.log("Users table initialized");
     
-    // Check if admin user exists, if not create default admin using environment variables
-    const adminEmail = process.env.ADMIN_EMAIL;
-    
-    if (!adminEmail) {
-      console.error('ADMIN_EMAIL environment variable is not set. Admin user cannot be created.');
-      return;
-    }
+    // Use hardcoded admin credentials instead of environment variables
+    const adminEmail = "admin@acmyx.com";
     
     // Check if admin exists
     const adminUsers = await sql`SELECT * FROM users WHERE email = ${adminEmail} AND role = 'admin'`;
     
     if (adminUsers.length === 0) {
       // Only create if admin doesn't exist
-      const adminPassword = process.env.ADMIN_PASSWORD;
-      
-      if (!adminPassword) {
-        console.error('ADMIN_PASSWORD environment variable is not set. Admin user cannot be created.');
-        return;
-      }
+      const adminPassword = "admin123";
       
       // Hash the password before storing it
       const hashedPassword = await bcrypt.hash(adminPassword, 10);
@@ -86,11 +76,30 @@ async function initDatabase() {
         domains TEXT,
         resume_url TEXT,
         portfolio_url TEXT,
+        status VARCHAR(50) DEFAULT 'pending',
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `;
     
     console.log('Applications table initialized');
+    
+    // Check and update existing applications to have the status field
+    try {
+      // Check if any applications exist
+      const applications = await sql`SELECT COUNT(*) FROM applications`;
+      if (applications[0].count > 0) {
+        // Add status field to any applications that don't have it set
+        await sql`
+          UPDATE applications 
+          SET status = 'pending' 
+          WHERE status IS NULL
+        `;
+        console.log('Migrated existing applications to include status field');
+      }
+    } catch (error) {
+      console.error('Error during applications migration:', error);
+    }
+    
     console.log('Database initialization completed successfully');
   } catch (error) {
     console.error('Error initializing database:', error);

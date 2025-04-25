@@ -273,10 +273,10 @@ app.use((err, req, res, next) => {
 // Export the Express app for serverless
 module.exports = app;
 
-// Start server if not in production
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 5001;
+// Set the port
+const PORT = process.env.PORT || 5003;
+
+// Start the server
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
-} 

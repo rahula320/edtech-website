@@ -1,482 +1,571 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import moment from 'moment';
+import { toast } from 'react-toastify';
 import './AdminDashboard.css';
+import { 
+  FiUsers, FiUserCheck, FiBriefcase, FiRefreshCw, 
+  FiCalendar, FiMail, FiLink, FiGlobe, FiCheckCircle,
+  FiXCircle, FiTrash2, FiDownload, FiGrid, FiList,
+  FiLogOut, FiEye, FiChevronRight, FiAlertCircle,
+  FiFilter, FiSearch, FiMapPin, FiExternalLink, FiX
+} from 'react-icons/fi';
 
 const AdminDashboard = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminData, setAdminData] = useState({
-    email: '',
-    role: 'admin'
-  });
   const [applications, setApplications] = useState([]);
-  const [bdaApplications, setBdaApplications] = useState([]);
+  const [selectedApplications, setSelectedApplications] = useState([]);
   const [selectedApplication, setSelectedApplication] = useState(null);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [selectAll, setSelectAll] = useState(false);
-  const [activeTab, setActiveTab] = useState('mentor');
-  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('all');
+  const [isLoading, setIsLoading] = useState(true);
+  
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [viewMode, setViewMode] = useState('grid');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [stats, setStats] = useState({
+    total: 0,
+    mentors: 0,
+    bdas: 0,
+    pendingReview: 0
+  });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Check if admin is logged in using local storage
-    const adminAuth = localStorage.getItem('adminAuth');
-    if (!adminAuth) {
-      navigate('/admin');
-      return;
-    }
-    
-    setIsAdmin(true);
-    
-    // Get admin data from localStorage
-    setAdminData({
-      email: localStorage.getItem('adminEmail') || '',
-      role: localStorage.getItem('adminRole') || 'admin'
-    });
-    
-    // Fetch applications from API
-    fetchApplications();
-  }, [navigate]);
-
-  // Fetch applications from API
-  const fetchApplications = async () => {
-    setLoading(true);
+  const fetchApplications = useCallback(async () => {
+    setIsLoading(true);
     setError(null);
-    
     try {
-      const response = await fetch('/api/applications');
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch applications');
+      // Check if user is logged in as admin
+      if (!localStorage.getItem('adminAuth')) {
+        navigate('/admin');
+        return;
       }
       
-      const data = await response.json();
+      const response = await axios.get('/api/applications');
       
-      // Separate mentor and BDA applications
-      const mentorApps = data.filter(app => app.type === 'mentor');
-      const bdaApps = data.filter(app => app.type === 'bda');
+      const data = response.data;
+      setApplications(data);
       
-      setApplications(mentorApps);
-      setBdaApplications(bdaApps);
+      // Update stats
+      const mentorCount = data.filter(app => app.type === 'mentor').length;
+      const bdaCount = data.filter(app => app.type === 'bda').length;
+      const pendingCount = data.filter(app => app.status === 'pending').length;
+
+      setStats({
+        total: data.length,
+        mentors: mentorCount,
+        bdas: bdaCount,
+        pendingReview: pendingCount
+      });
+      
+      setIsLoading(false);
     } catch (err) {
+      setError('Failed to fetch applications. Please try again later.');
+      setIsLoading(false);
       console.error('Error fetching applications:', err);
-      setError('Failed to load applications. Please try again later.');
-      
-      // Fallback to empty arrays if API fails
-      setApplications([]);
-      setBdaApplications([]);
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [navigate]);
 
-  // Toggle active tab
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setSelectedApplication(null);
-    setSelectedItems([]);
-    setSelectAll(false);
-  };
-
-  // Toggle selection of an application
-  const toggleSelect = (index, event) => {
-    event.stopPropagation(); // Prevent opening the application detail view
-    
-    if (selectedItems.includes(index)) {
-      setSelectedItems(selectedItems.filter(item => item !== index));
-    } else {
-      setSelectedItems([...selectedItems, index]);
-    }
-  };
-
-  // Toggle selection of all applications
-  const toggleSelectAll = () => {
-    const currentApplications = activeTab === 'mentor' ? applications : bdaApplications;
-    
-    if (selectAll) {
-      setSelectedItems([]);
-    } else {
-      setSelectedItems(currentApplications.map((_, index) => index));
-    }
-    setSelectAll(!selectAll);
-  };
-
-  // Delete selected applications - Not implemented with real API to avoid data loss
-  const deleteSelected = () => {
-    if (selectedItems.length === 0) return;
-    
-    // Ask for confirmation
-    if (!window.confirm(`Are you sure you want to delete ${selectedItems.length} application(s)? This action cannot be undone.`)) {
-      return;
-    }
-    
-    // In a real implementation, you would make API calls to delete each selected application
-    alert("Delete functionality has been disabled in this demo to prevent data loss.");
-    
-    // Clear selections
-    setSelectedItems([]);
-    setSelectAll(false);
-  };
-
-  // Convert domains array to comma-separated string for CSV
-  const formatDomainsForCSV = (domains) => {
-    if (!domains) return '';
-    if (typeof domains === 'string') return domains;
-    if (Array.isArray(domains)) return domains.join(', ');
-    return '';
-  };
-
-  // Download applications as CSV
-  const downloadCSV = () => {
-    const currentApplications = activeTab === 'mentor' ? applications : bdaApplications;
-    
-    // Check if there are applications to download
-    if (currentApplications.length === 0) {
-      alert('No applications to download.');
-      return;
-    }
-    
-    if (activeTab === 'mentor') {
-      // Define CSV headers for mentor applications
-      const headers = ['Name', 'Email', 'Phone', 'Company', 'Designation', 'Experience', 'Domains', 'Date Applied'];
-      
-      // Convert applications to CSV format
-      const csvData = applications.map(app => [
-        app.full_name,
-        app.email,
-        app.phone,
-        app.company,
-        app.designation,
-        app.experience,
-        formatDomainsForCSV(app.domains),
-        new Date(app.timestamp).toLocaleString()
-      ]);
-      
-      // Add headers to the beginning
-      csvData.unshift(headers);
-      
-      // Generate and download CSV
-      generateAndDownloadCSV(csvData, 'mentor-applications');
-    } else {
-      // Define CSV headers for BDA applications
-      const headers = ['Full Name', 'Email', 'Phone', 'Education', 'Experience', 'LinkedIn Profile', 'Resume URL', 'Date Applied'];
-      
-      // Convert BDA applications to CSV format
-      const csvData = bdaApplications.map(app => [
-        app.full_name,
-        app.email,
-        app.phone,
-        app.education,
-        app.experience,
-        app.portfolio_url || 'Not provided',
-        app.resume_url || 'Not uploaded',
-        new Date(app.timestamp).toLocaleString()
-      ]);
-      
-      // Add headers to the beginning
-      csvData.unshift(headers);
-      
-      // Generate and download CSV
-      generateAndDownloadCSV(csvData, 'bda-applications');
-    }
-  };
-
-  // Download selected applications as CSV
-  const downloadSelectedCSV = () => {
-    if (selectedItems.length === 0) {
-      alert('No applications selected for download.');
-      return;
-    }
-    
-    if (activeTab === 'mentor') {
-      // Define CSV headers for mentor applications
-      const headers = ['Name', 'Email', 'Phone', 'Company', 'Designation', 'Experience', 'Domains', 'Date Applied'];
-      
-      // Convert selected applications to CSV format
-      const selectedApplications = selectedItems.map(index => applications[index]);
-      
-      const csvData = selectedApplications.map(app => [
-        app.full_name,
-        app.email,
-        app.phone,
-        app.company,
-        app.designation,
-        app.experience,
-        formatDomainsForCSV(app.domains),
-        new Date(app.timestamp).toLocaleString()
-      ]);
-      
-      // Add headers to the beginning
-      csvData.unshift(headers);
-      
-      // Generate and download CSV
-      generateAndDownloadCSV(csvData, 'selected-mentor-applications');
-    } else {
-      // Define CSV headers for BDA applications
-      const headers = ['Full Name', 'Email', 'Phone', 'Education', 'Experience', 'LinkedIn Profile', 'Resume URL', 'Date Applied'];
-      
-      // Convert selected BDA applications to CSV format
-      const selectedBdaApplications = selectedItems.map(index => bdaApplications[index]);
-      
-      const csvData = selectedBdaApplications.map(app => [
-        app.full_name,
-        app.email,
-        app.phone,
-        app.education,
-        app.experience,
-        app.portfolio_url || 'Not provided',
-        app.resume_url || 'Not uploaded',
-        new Date(app.timestamp).toLocaleString()
-      ]);
-      
-      // Add headers to the beginning
-      csvData.unshift(headers);
-      
-      // Generate and download CSV
-      generateAndDownloadCSV(csvData, 'selected-bda-applications');
-    }
-  };
-
-  // Helper function to generate and download CSV
-  const generateAndDownloadCSV = (csvData, fileNamePrefix) => {
-    // Convert to CSV string with proper escaping
-    const csvString = csvData.map(row => 
-      row.map(cell => {
-        // If the cell contains commas, quotes, or newlines, wrap it in quotes and escape any quotes
-        if (/[",\n\r]/.test(String(cell))) {
-          return `"${String(cell).replace(/"/g, '""')}"`;
-        }
-        return String(cell);
-      }).join(',')
-    ).join('\n');
-    
-    // Create a blob and download link
-    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `${fileNamePrefix}-${new Date().toISOString().slice(0, 10)}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  // Handle refresh button click
-  const handleRefresh = () => {
+  useEffect(() => {
     fetchApplications();
-  };
+  }, [fetchApplications]);
 
-  // Handle logout
   const handleLogout = () => {
-    // Clear admin authentication
     localStorage.removeItem('adminAuth');
     localStorage.removeItem('adminEmail');
     localStorage.removeItem('adminRole');
-    
-    // Redirect to login page
     navigate('/admin');
   };
 
-  if (!isAdmin) {
-    return <div className="admin-dashboard loading">Loading...</div>;
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const handleToggleSelect = (id) => {
+    setSelectedApplications(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(appId => appId !== id);
+    } else {
+        return [...prev, id];
+      }
+    });
+  };
+
+  const handleSelectAll = () => {
+    if (selectedApplications.length === filteredApplications.length) {
+      setSelectedApplications([]);
+    } else {
+      setSelectedApplications(filteredApplications.map(app => app._id));
+    }
+  };
+
+  const handleViewDetails = (application) => {
+    setSelectedApplication(application);
+    setShowModal(true);
+  };
+
+  const handleCloseDetails = () => {
+    setShowModal(false);
+    setSelectedApplication(null);
+  };
+
+  const handleDeleteSelected = async () => {
+    if (!selectedApplications.length) return;
+    
+    if (window.confirm(`Are you sure you want to delete ${selectedApplications.length} application(s)?`)) {
+      setIsLoading(true);
+      try {
+        await axios.delete('/api/applications/batch', {
+          data: { ids: selectedApplications }
+        });
+        fetchApplications();
+        setSelectedApplications([]);
+      } catch (err) {
+        toast.error('Failed to delete applications');
+        console.error('Error deleting applications:', err);
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handleUpdateStatus = async (id, status) => {
+    try {
+      await axios.patch(`/api/applications/${id}`, { status });
+      fetchApplications();
+      handleCloseDetails();
+    } catch (err) {
+      toast.error(`Failed to ${status} application. Please try again later.`);
+      console.error(`Error updating status to ${status}:`, err);
+    }
+  };
+
+  const filteredApplications = applications.filter(app => {
+    // Filter by tab
+    if (activeTab === 'pending' && app.status !== 'pending') return false;
+    if (activeTab === 'approved' && app.status !== 'approved') return false;
+    if (activeTab === 'rejected' && app.status !== 'rejected') return false;
+    if (activeTab === 'mentors' && app.type !== 'mentor') return false;
+    if (activeTab === 'bdas' && app.type !== 'bda') return false;
+    
+    // Filter by search term
+    if (searchTerm) {
+      const search = searchTerm.toLowerCase();
+      return (
+        app.name?.toLowerCase().includes(search) ||
+        app.email?.toLowerCase().includes(search) ||
+        app.company?.toLowerCase().includes(search) ||
+        app.domains?.some(domain => domain.toLowerCase().includes(search))
+      );
+    }
+    
+    return true;
+  });
+
+  const getInitials = (name) => {
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'approved': return 'status-approved';
+      case 'rejected': return 'status-rejected';
+      default: return 'status-pending';
+    }
+  };
+
+  if (isLoading && applications.length === 0) {
+    return (
+      <div className="admin-dashboard loading">
+        <div className="loading-spinner"></div>
+        <p>Loading dashboard...</p>
+      </div>
+    );
   }
 
   return (
     <div className="admin-dashboard">
       <div className="admin-header">
+        <div>
         <h1>Admin Dashboard</h1>
+          <p className="welcome-message">Welcome back! Here's what's happening with your applications.</p>
+        </div>
         <div className="admin-info">
           <div className="admin-user-info">
-            <span>Logged in as: <strong>{adminData.email}</strong></span>
-            <span className="admin-role">{adminData.role}</span>
+            <span>Admin User</span>
+            <span className="admin-role">Administrator</span>
           </div>
           <button className="logout-button" onClick={handleLogout}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-            Logout
+            <FiLogOut /> Logout
           </button>
+        </div>
+      </div>
+
+      <div className="dashboard-stats">
+        <div className="stat-card">
+          <div className="stat-icon total-icon">
+            <FiUsers size={20} />
+          </div>
+          <div className="stat-content">
+            <h2>{stats.total}</h2>
+            <p>Total Applications</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon mentor-icon">
+            <FiUserCheck size={20} />
+          </div>
+          <div className="stat-content">
+            <h2>{stats.mentors}</h2>
+            <p>Mentor Applications</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon bda-icon">
+            <FiBriefcase size={20} />
+          </div>
+          <div className="stat-content">
+            <h2>{stats.bdas}</h2>
+            <p>BDA Applications</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon refresh-icon">
+            <FiRefreshCw size={20} />
+          </div>
+          <div className="stat-content">
+            <h2>{stats.pendingReview}</h2>
+            <p>Pending Review</p>
+          </div>
         </div>
       </div>
       
       <div className="admin-tabs">
         <button 
-          className={`tab-button ${activeTab === 'mentor' ? 'active' : ''}`}
-          onClick={() => handleTabChange('mentor')}
+          className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
+          onClick={() => handleTabChange('all')}
         >
-          Mentor Applications
+          <FiGrid /> All Applications
         </button>
         <button 
-          className={`tab-button ${activeTab === 'bda' ? 'active' : ''}`}
-          onClick={() => handleTabChange('bda')}
+          className={`tab-button ${activeTab === 'pending' ? 'active' : ''}`}
+          onClick={() => handleTabChange('pending')}
         >
-          BDA Applications
+          Pending
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'approved' ? 'active' : ''}`}
+          onClick={() => handleTabChange('approved')}
+        >
+          Approved
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'rejected' ? 'active' : ''}`}
+          onClick={() => handleTabChange('rejected')}
+        >
+          Rejected
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'mentors' ? 'active' : ''}`}
+          onClick={() => handleTabChange('mentors')}
+        >
+          <FiUserCheck /> Mentors
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'bdas' ? 'active' : ''}`}
+          onClick={() => handleTabChange('bdas')}
+        >
+          <FiBriefcase /> BDAs
         </button>
       </div>
       
       <div className="admin-actions">
         <div className="select-actions">
-          <button className="action-button refresh-button" onClick={handleRefresh}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 2v6h-6"></path>
-              <path d="M3 12a9 9 0 0 1 15-6.7l3-3"></path>
-              <path d="M3 22v-6h6"></path>
-              <path d="M21 12a9 9 0 0 1-15 6.7l-3 3"></path>
-            </svg>
-            Refresh
-          </button>
           <label className="select-all-container">
             <input 
               type="checkbox" 
-              checked={selectAll} 
-              onChange={toggleSelectAll} 
+              checked={selectedApplications.length === filteredApplications.length && filteredApplications.length > 0} 
+              onChange={handleSelectAll}
+              disabled={filteredApplications.length === 0}
             />
-            <span className="checkbox-text">Select All</span>
+            <span>Select All</span>
           </label>
+          
           <button 
             className="action-button delete-button" 
-            onClick={deleteSelected}
-            disabled={selectedItems.length === 0}
+            onClick={handleDeleteSelected}
+            disabled={selectedApplications.length === 0}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 6h18"></path>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-            Delete {selectedItems.length ? `(${selectedItems.length})` : ''}
+            <FiTrash2 /> Delete Selected
+          </button>
+          
+          <button 
+            className="action-button refresh-button" 
+            onClick={fetchApplications}
+          >
+            <FiRefreshCw /> Refresh
           </button>
         </div>
-        <div className="download-actions">
-          <button className="action-button" onClick={downloadCSV}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            Download All
-          </button>
-          <button 
-            className="action-button" 
-            onClick={downloadSelectedCSV}
-            disabled={selectedItems.length === 0}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            Download Selected
-          </button>
+
+        <div className="search-filter-group">
+          <div className="search-input-wrapper">
+            <FiSearch className="search-icon" />
+            <input 
+              type="text" 
+              className="search-input" 
+              placeholder="Search applications..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          
+          <div className="view-toggle">
+            <button 
+              className={`view-button ${viewMode === 'grid' ? 'active' : ''}`}
+              onClick={() => setViewMode('grid')}
+              title="Grid View"
+            >
+              <FiGrid />
+            </button>
+            <button 
+              className={`view-button ${viewMode === 'list' ? 'active' : ''}`}
+              onClick={() => setViewMode('list')}
+              title="List View"
+            >
+              <FiList />
+            </button>
+          </div>
         </div>
       </div>
       
-      <div className="applications-container">
-        {loading ? (
+      {error && (
+        <div className="error-message">
+          <FiAlertCircle /> {error}
+        </div>
+      )}
+
+      {isLoading && (
           <div className="loading-indicator">
             <div className="loading-spinner"></div>
             <p>Loading applications...</p>
           </div>
-        ) : error ? (
-          <div className="error-message">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            {error}
+      )}
+
+      {!isLoading && filteredApplications.length === 0 && (
+        <div className="no-applications">
+          <FiAlertCircle size={48} />
+          <h2>No applications found</h2>
+          <p>Try adjusting your filters or search criteria.</p>
           </div>
-        ) : activeTab === 'mentor' ? (
-          applications.length === 0 ? (
-            <div className="no-applications">No mentor applications found.</div>
-          ) : (
-            <div className="applications-list">
-              {applications.map((app, index) => (
-                <div 
-                  key={index}
-                  className={`application-item ${selectedItems.includes(index) ? 'selected' : ''}`}
-                  onClick={() => setSelectedApplication(app)}
-                >
-                  <div className="select-checkbox">
+      )}
+
+      {!isLoading && filteredApplications.length > 0 && (
+        <div className={`applications-container ${viewMode === 'grid' ? 'applications-grid' : 'applications-list'}`}>
+          {filteredApplications.map(application => (
+            <div 
+              key={application._id} 
+              className={`application-card ${selectedApplications.includes(application._id) ? 'selected' : ''}`}
+            >
+              <div className="card-select">
                     <input 
                       type="checkbox" 
-                      checked={selectedItems.includes(index)} 
-                      onChange={(e) => toggleSelect(index, e)} 
-                    />
-                  </div>
-                  <div className="application-info">
-                    <h3>{app.full_name}</h3>
-                    <p><strong>Email:</strong> {app.email}</p>
-                    <p><strong>Company:</strong> {app.company}</p>
-                    <p><strong>Experience:</strong> {app.experience} years</p>
-                    <p><strong>Applied:</strong> {new Date(app.timestamp).toLocaleString()}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )
-        ) : (
-          bdaApplications.length === 0 ? (
-            <div className="no-applications">No BDA applications found.</div>
-          ) : (
-            <div className="applications-list">
-              {bdaApplications.map((app, index) => (
-                <div 
-                  key={index}
-                  className={`application-item ${selectedItems.includes(index) ? 'selected' : ''}`}
-                  onClick={() => setSelectedApplication(app)}
-                >
-                  <div className="select-checkbox">
-                    <input 
-                      type="checkbox" 
-                      checked={selectedItems.includes(index)} 
-                      onChange={(e) => toggleSelect(index, e)} 
-                    />
-                  </div>
-                  <div className="application-info">
-                    <h3>{app.full_name}</h3>
-                    <p><strong>Email:</strong> {app.email}</p>
-                    <p><strong>Education:</strong> {app.education}</p>
-                    <p><strong>Experience:</strong> {app.experience} years</p>
-                    <p><strong>Applied:</strong> {new Date(app.timestamp).toLocaleString()}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )
-        )}
-        
-        {selectedApplication && (
-          <div className="application-details">
-            <button className="close-button" onClick={() => setSelectedApplication(null)}>×</button>
-            <h2>Application Details</h2>
-            {activeTab === 'mentor' ? (
-              <div className="details-content">
-                <p><strong>Name</strong> {selectedApplication.full_name}</p>
-                <p><strong>Email</strong> {selectedApplication.email}</p>
-                <p><strong>Phone</strong> {selectedApplication.phone}</p>
-                <p><strong>Company</strong> {selectedApplication.company}</p>
-                <p><strong>Designation</strong> {selectedApplication.designation}</p>
-                <p><strong>Experience</strong> {selectedApplication.experience} years</p>
-                <p><strong>Domains</strong> {formatDomainsForCSV(selectedApplication.domains)}</p>
-                <p><strong>Applied</strong> {new Date(selectedApplication.timestamp).toLocaleString()}</p>
+                  className="select-checkbox"
+                  checked={selectedApplications.includes(application._id)}
+                  onChange={() => handleToggleSelect(application._id)}
+                />
               </div>
-            ) : (
+              
+              <div className={`application-avatar ${application.type}`}>
+                {getInitials(application.name)}
+              </div>
+              
+              <div className="application-info">
+                <h3>{application.name || 'Unnamed Applicant'}</h3>
+                
+                <div className="application-meta">
+                  <div className="meta-item">
+                    <FiMail size={14} />
+                    <span>{application.email}</span>
+                  </div>
+                  
+                  {application.company && (
+                    <div className="meta-item application-company">
+                      <FiBriefcase size={14} />
+                      <span>{application.company}</span>
+                    </div>
+                  )}
+                  
+                  <div className="meta-item">
+                    <FiCalendar size={14} />
+                    <span>{moment(application.createdAt).format('MMM D, YYYY')}</span>
+                  </div>
+                </div>
+                
+                {application.domains && application.domains.length > 0 && (
+                  <div className="application-domains">
+                    {application.domains.slice(0, 3).map((domain, index) => (
+                      <span key={index} className="domain-tag">{domain}</span>
+                    ))}
+                    {application.domains.length > 3 && (
+                      <span className="domain-tag more">+{application.domains.length - 3}</span>
+                    )}
+                  </div>
+                )}
+                
+                <div className="application-footer">
+                  <span className={`status-badge ${getStatusClass(application.status)}`}>
+                    {application.status ? application.status.charAt(0).toUpperCase() + application.status.slice(1) : 'Pending'}
+                  </span>
+                  
+                  <button 
+                    className="view-details-button"
+                    onClick={() => handleViewDetails(application)}
+                  >
+                    <span>View Details</span>
+                    <FiChevronRight />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {showModal && selectedApplication && (
+        <div className="application-modal-backdrop" onClick={handleCloseDetails}>
+          <div className="application-details" onClick={e => e.stopPropagation()}>
+            <div className="details-header">
+            <h2>Application Details</h2>
+              <button className="close-button" onClick={handleCloseDetails}>×</button>
+            </div>
+            
               <div className="details-content">
-                <p><strong>Full Name</strong> {selectedApplication.full_name}</p>
-                <p><strong>Email</strong> {selectedApplication.email}</p>
-                <p><strong>Phone</strong> {selectedApplication.phone}</p>
-                <p><strong>Education</strong> {selectedApplication.education}</p>
-                <p><strong>Experience</strong> {selectedApplication.experience} years</p>
-                <p><strong>LinkedIn</strong> {selectedApplication.portfolio_url || 'Not provided'}</p>
-                <p><strong>Resume URL</strong> {selectedApplication.resume_url || 'Not uploaded'}</p>
-                <p><strong>Applied</strong> {new Date(selectedApplication.timestamp).toLocaleString()}</p>
+              <div className="details-row">
+                <div className="details-col">
+                  <label>Applicant Type</label>
+                  <p className="application-type">
+                    {selectedApplication.type === 'mentor' ? (
+                      <><FiUserCheck /> Mentor</>
+                    ) : (
+                      <><FiBriefcase /> BDA</>
+                    )}
+                  </p>
+                </div>
+                
+                <div className="details-col">
+                  <label>Status</label>
+                  <p>
+                    <span className={`status-badge ${getStatusClass(selectedApplication.status)}`}>
+                      {selectedApplication.status ? selectedApplication.status.charAt(0).toUpperCase() + selectedApplication.status.slice(1) : 'Pending'}
+                    </span>
+                  </p>
+                </div>
+              </div>
+              
+              <div className="details-row">
+                <div className="details-col">
+                  <label>Full Name</label>
+                  <p>{selectedApplication.name || 'N/A'}</p>
+                </div>
+                
+                <div className="details-col">
+                  <label>Email</label>
+                  <p>{selectedApplication.email}</p>
+                </div>
+              </div>
+              
+              <div className="details-row">
+                <div className="details-col">
+                  <label>Company</label>
+                  <p>{selectedApplication.company || 'N/A'}</p>
+                </div>
+                
+                <div className="details-col">
+                  <label>Applied On</label>
+                  <p>{moment(selectedApplication.createdAt).format('MMM D, YYYY')}</p>
+                </div>
+              </div>
+              
+              {selectedApplication.website && (
+                <div className="details-row">
+                  <div className="details-col full-width">
+                    <label>Website</label>
+                    <p>
+                      <a href={selectedApplication.website} target="_blank" rel="noopener noreferrer" className="details-link">
+                        <FiLink /> {selectedApplication.website}
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              )}
+              
+              {selectedApplication.domains && selectedApplication.domains.length > 0 && (
+                <div className="details-row">
+                  <div className="details-col full-width">
+                    <label>Domains</label>
+                    <div className="details-domains">
+                      {selectedApplication.domains.map((domain, index) => (
+                        <span key={index} className="domain-tag">{domain}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {selectedApplication.experience && (
+                <div className="details-row">
+                  <div className="details-col full-width">
+                    <label>Experience</label>
+                    <p>{selectedApplication.experience}</p>
+                  </div>
+                </div>
+              )}
+              
+              {selectedApplication.skills && (
+                <div className="details-row">
+                  <div className="details-col full-width">
+                    <label>Skills</label>
+                    <p>{selectedApplication.skills}</p>
+                  </div>
               </div>
             )}
+              
+              {selectedApplication.motivation && (
+                <div className="details-row">
+                  <div className="details-col full-width">
+                    <label>Motivation</label>
+                    <p>{selectedApplication.motivation}</p>
+                  </div>
           </div>
         )}
       </div>
+            
+            <div className="details-actions">
+              {selectedApplication.status !== 'approved' && (
+                <button 
+                  className="action-button approve-button" 
+                  onClick={() => handleUpdateStatus(selectedApplication._id, 'approved')}
+                >
+                  Approve Application
+                </button>
+              )}
+              {selectedApplication.status !== 'rejected' && (
+                <button 
+                  className="action-button reject-button" 
+                  onClick={() => handleUpdateStatus(selectedApplication._id, 'rejected')}
+                >
+                  Reject Application
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

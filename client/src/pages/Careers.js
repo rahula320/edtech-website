@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Careers.css';
 
 function Careers() {
@@ -10,7 +10,9 @@ function Careers() {
     company: '',
     designation: '',
     experience: '',
-    domains: []
+    domains: [],
+    resumeUrl: '',
+    portfolioUrl: ''
   });
   
   // Form state for business development associate application
@@ -25,9 +27,6 @@ function Careers() {
     coverletter: '',
     resume: null
   });
-  
-  // Input focus states
-  const [focusedInput, setFocusedInput] = useState(null);
   
   // Form display states
   const [showMentorForm, setShowMentorForm] = useState(false);
@@ -61,14 +60,14 @@ function Careers() {
     { id: 'autocad', label: 'AutoCAD Designing' }
   ];
 
-  // Handle input focus
-  const handleFocus = (name) => {
-    setFocusedInput(name);
+  // Handle input focus - simplified to remove unused state
+  const handleFocus = () => {
+    // Focus handling if needed in the future
   };
 
-  // Handle input blur
+  // Handle input blur - simplified to remove unused state
   const handleBlur = () => {
-    setFocusedInput(null);
+    // Blur handling if needed in the future
   };
 
   // Handle input changes for mentor form
@@ -158,11 +157,6 @@ function Careers() {
     }
   };
 
-  // Check if input has value
-  const hasValue = (name) => {
-    return formData[name] && formData[name].trim() !== '';
-  };
-
   // Validate mentor form
   const validateForm = () => {
     const newErrors = {};
@@ -232,15 +226,18 @@ function Careers() {
     
     // Create application object for API
     const applicationData = {
-      type: 'mentor',
-      full_name: formData.name,
+      fullName: formData.name,
       email: formData.email,
       phone: formData.phone,
       company: formData.company,
       designation: formData.designation,
-      experience: formData.experience,
-      domains: domainLabels
+      experience: formData.experience || "0",
+      domains: domainLabels.length > 0 ? domainLabels.join(',') : '',
+      resumeUrl: formData.resumeUrl || '',
+      portfolioUrl: formData.portfolioUrl || ''
     };
+    
+    console.log('Submitting mentor application:', applicationData);
     
     // Send to API
     fetch('/api/applications/mentor', {
@@ -252,11 +249,15 @@ function Careers() {
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Failed to submit application');
+        return response.json().then(data => {
+          console.error('Server error response:', data);
+          throw new Error(data.error || 'Failed to submit application');
+        });
       }
       return response.json();
     })
     .then(data => {
+      console.log('Mentor application submitted successfully:', data);
       // Show success popup
       setShowPopup(true);
       setIsSubmitting(false);
@@ -269,7 +270,9 @@ function Careers() {
         company: '',
         designation: '',
         experience: '',
-        domains: []
+        domains: [],
+        resumeUrl: '',
+        portfolioUrl: ''
       });
       
       // Hide the success popup after 5 seconds
@@ -280,7 +283,7 @@ function Careers() {
     .catch(error => {
       console.error('Error submitting application:', error);
       setErrors({
-        submit: 'Failed to submit application. Please try again later.'
+        submit: 'Failed to submit application. Please try again later. Error: ' + error.message
       });
       setIsSubmitting(false);
     });
@@ -300,20 +303,6 @@ function Careers() {
     // Set submitting state
     setIsBdaSubmitting(true);
     
-    // Create FormData for file upload
-    const formDataObj = new FormData();
-    formDataObj.append('type', 'bda');
-    formDataObj.append('full_name', bdaFormData.fullName);
-    formDataObj.append('email', bdaFormData.email);
-    formDataObj.append('phone', bdaFormData.phone);
-    formDataObj.append('education', bdaFormData.education);
-    formDataObj.append('experience', bdaFormData.experience);
-    formDataObj.append('portfolio_url', bdaFormData.portfolio || '');
-    
-    if (bdaFormData.resume) {
-      formDataObj.append('resume', bdaFormData.resume);
-    }
-    
     // For now, we'll create a URL from the file since API doesn't support file upload
     let resumeUrl = '';
     if (bdaFormData.resume) {
@@ -322,15 +311,16 @@ function Careers() {
     
     // Create application object for API
     const applicationData = {
-      type: 'bda',
-      full_name: bdaFormData.fullName,
+      fullName: bdaFormData.fullName,
       email: bdaFormData.email,
       phone: bdaFormData.phone,
       education: bdaFormData.education,
-      experience: bdaFormData.experience,
-      portfolio_url: bdaFormData.portfolio || '',
-      resume_url: resumeUrl
+      experience: bdaFormData.experience || '',
+      portfolioUrl: bdaFormData.portfolio || '',
+      resumeUrl: resumeUrl
     };
+    
+    console.log('Submitting BDA application:', applicationData);
     
     // Send to API
     fetch('/api/applications/bda', {
@@ -342,11 +332,14 @@ function Careers() {
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Failed to submit application');
+        return response.json().then(data => {
+          throw new Error(data.error || 'Failed to submit application');
+        });
       }
       return response.json();
     })
     .then(data => {
+      console.log('BDA application submitted successfully:', data);
       // Show success popup
       setShowBdaPopup(true);
       setIsBdaSubmitting(false);
@@ -499,7 +492,7 @@ function Careers() {
                       name="name" 
                       value={formData.name}
                       onChange={handleInputChange}
-                      onFocus={() => handleFocus('name')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       className={errors.name ? 'error' : ''}
                       placeholder="Enter your full name"
@@ -517,7 +510,7 @@ function Careers() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      onFocus={() => handleFocus('email')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       className={errors.email ? 'error' : ''}
                       placeholder="Enter your email address"
@@ -537,7 +530,7 @@ function Careers() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      onFocus={() => handleFocus('phone')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       className={errors.phone ? 'error' : ''}
                       placeholder="Enter your phone number"
@@ -555,7 +548,7 @@ function Careers() {
                       name="company"
                       value={formData.company}
                       onChange={handleInputChange}
-                      onFocus={() => handleFocus('company')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       className={errors.company ? 'error' : ''}
                       placeholder="Enter your company name"
@@ -575,7 +568,7 @@ function Careers() {
                       name="designation"
                       value={formData.designation}
                       onChange={handleInputChange}
-                      onFocus={() => handleFocus('designation')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       className={errors.designation ? 'error' : ''}
                       placeholder="Enter your current job title"
@@ -594,7 +587,7 @@ function Careers() {
                       min="0"
                       value={formData.experience}
                       onChange={handleInputChange}
-                      onFocus={() => handleFocus('experience')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       placeholder="Optional"
                     />
@@ -672,7 +665,7 @@ function Careers() {
                       name="fullName" 
                       value={bdaFormData.fullName}
                       onChange={handleBdaInputChange}
-                      onFocus={() => handleFocus('fullName')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       className={bdaErrors.fullName ? 'error' : ''}
                       placeholder="Enter your full name"
@@ -690,7 +683,7 @@ function Careers() {
                       name="email"
                       value={bdaFormData.email}
                       onChange={handleBdaInputChange}
-                      onFocus={() => handleFocus('bdaEmail')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       className={bdaErrors.email ? 'error' : ''}
                       placeholder="Enter your email address"
@@ -710,7 +703,7 @@ function Careers() {
                       name="phone"
                       value={bdaFormData.phone}
                       onChange={handleBdaInputChange}
-                      onFocus={() => handleFocus('bdaPhone')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       className={bdaErrors.phone ? 'error' : ''}
                       placeholder="Enter your phone number"
@@ -728,7 +721,7 @@ function Careers() {
                       name="education"
                       value={bdaFormData.education}
                       onChange={handleBdaInputChange}
-                      onFocus={() => handleFocus('education')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       className={bdaErrors.education ? 'error' : ''}
                       placeholder="E.g., MBA in Marketing from XYZ University"
@@ -749,7 +742,7 @@ function Careers() {
                       min="0"
                       value={bdaFormData.experience}
                       onChange={handleBdaInputChange}
-                      onFocus={() => handleFocus('bdaExperience')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       placeholder="Optional"
                     />
@@ -765,7 +758,7 @@ function Careers() {
                       name="portfolio"
                       value={bdaFormData.portfolio}
                       onChange={handleBdaInputChange}
-                      onFocus={() => handleFocus('portfolio')}
+                      onFocus={() => handleFocus()}
                       onBlur={handleBlur}
                       placeholder="https://linkedin.com/in/yourprofile"
                     />

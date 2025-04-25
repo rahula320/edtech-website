@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Programs from './pages/Programs';
@@ -13,9 +13,12 @@ import './App.css';
 import { programsData } from './data/programsData';
 
 function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
   return (
     <div className="App">
-      <Navbar />
+      {!isAdminRoute && <Navbar />}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -26,6 +29,7 @@ function App() {
           <Route path="/programs/:programId" element={<ProgramDetail programsData={programsData} />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/login" element={<Navigate to="/admin" replace />} />
         </Routes>
       </main>
     </div>

@@ -22,12 +22,21 @@
     "concurrently": "^8.2.1"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "path": "^0.12.7",
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "@neondatabase/serverless": "^0.9.0",
-    "dotenv": "^16.4.5",
     "bcryptjs": "^2.4.3",
-    "express-session": "^1.17.3"
-  }
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "path": "^0.12.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rk2319/edtech-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rk2319/edtech-website/issues"
+  },
+  "homepage": "https://github.com/rk2319/edtech-website#readme"
 }
