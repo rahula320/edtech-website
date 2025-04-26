@@ -51,6 +51,7 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/login" element={<Navigate to="/admin" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
       {!isAdminRoute && !isPaymentConfirmationRoute && <Footer />}

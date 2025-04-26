@@ -37,9 +37,26 @@ function PaymentPage() {
     if (!program) {
       const fetchProgram = async () => {
         try {
-          // Try to get data from programsData in localStorage or another source
-          // This is a fallback if navigation state is lost (e.g. on page refresh)
-          setError('Program data not available. Please go back and try again.');
+          // Try to get data from localStorage as a fallback
+          const storedProgramId = localStorage.getItem('programId');
+          const storedPlan = localStorage.getItem('selectedPlan');
+          
+          if (storedPlan) {
+            setSelectedPlan(storedPlan);
+          }
+          
+          // If we have programsData available, use it
+          if (window.programsData && window.programsData[programId || storedProgramId]) {
+            setProgram(window.programsData[programId || storedProgramId]);
+            return;
+          }
+
+          // Create a simple dummy program as a last resort
+          setProgram({
+            id: programId || storedProgramId,
+            title: "Selected Program",
+            description: "Please complete your payment to access this program."
+          });
         } catch (error) {
           setError(error.message);
         }

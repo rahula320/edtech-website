@@ -52,6 +52,10 @@ function ProgramDetail({ programsData }) {
   }, [selectedTab]); // Re-run when selected tab changes
 
   const handleEnrollNow = () => {
+    // Store the selected plan in localStorage for retrieval if state is lost
+    localStorage.setItem('selectedPlan', selectedPricingPlan);
+    localStorage.setItem('programId', programId);
+    
     navigate(`/payment/${programId}`, { 
       state: { 
         plan: selectedPricingPlan,
