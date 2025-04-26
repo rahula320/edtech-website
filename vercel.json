@@ -2,21 +2,41 @@
   "version": 2,
   "builds": [
     { "src": "server.js", "use": "@vercel/node" },
-    { "src": "client/build/**", "use": "@vercel/static" }
+    { "src": "client/package.json", "use": "@vercel/static-build", "config": { "distDir": "build" } }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "server.js" },
-    { "src": "^/static/(.*)", "dest": "client/build/static/$1" },
-    { "src": "^/admin$", "dest": "client/build/index.html" },
-    { "src": "^/admin/dashboard", "dest": "client/build/index.html" },
-    { "src": "^/[^.]+$", "dest": "client/build/index.html" },
     { "src": "/(.*)", "dest": "client/build/$1" }
   ],
   "env": {
     "NODE_ENV": "production",
-    "DATABASE_URL": "postgresql://neondb_owner:npg_OSsZKqm1iTV3@ep-floral-silence-a18kxybn-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require",
-    "ADMIN_EMAIL": "admin@acmyx.com",
-    "ADMIN_PASSWORD": "admin123",
-    "SESSION_SECRET": "acmyx-session-secret-key"
+    "DATABASE_URL": "@database-url",
+    "ADMIN_EMAIL": "@admin-email",
+    "ADMIN_PASSWORD": "@admin-password",
+    "SESSION_SECRET": "@session-secret",
+    "CASHFREE_API_KEY": "@cashfree-api-key",
+    "CASHFREE_API_SECRET": "@cashfree-api-secret",
+    "CASHFREE_BASE_URL": "https://api.cashfree.com/pg",
+    "CASHFREE_WEBHOOK_SECRET": "@cashfree-webhook-secret",
+    "CALLBACK_URL": "@callback-url"
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": "client/build",
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Credentials", "value": "true" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
+      ]
+    }
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
   }
 } 

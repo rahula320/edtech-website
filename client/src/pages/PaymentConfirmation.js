@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import './PaymentConfirmation.css';
 
 function PaymentConfirmation() {
   const { orderId } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const location = useLocation();
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
-  const [downloadReady, setDownloadReady] = useState(false);
-
-  // Get query parameters
-  const searchParams = new URLSearchParams(location.search);
-  const paymentStatus = searchParams.get('status');
-  const paymentId = searchParams.get('payment_id');
 
   useEffect(() => {
+    const paymentStatus = searchParams.get('status');
+    const paymentId = searchParams.get('payment_id');
+    
     const verifyPayment = async () => {
       try {
         setLoading(true);
@@ -33,75 +32,105 @@ function PaymentConfirmation() {
             status: paymentStatus
           }),
         });
-
-        if (!response.ok) {
-          throw new Error('Failed to verify payment');
-        }
-
-        const data = await response.json();
-        setOrderDetails(data.orderDetails);
         
-        // Simulate receipt generation delay
-        setTimeout(() => {
-          setDownloadReady(true);
-        }, 2000);
-      } catch (err) {
-        setError(err.message);
-      } finally {
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to verify payment');
+        }
+        
+        // Get order details
+        const orderResponse = await fetch(`/api/orders/${orderId}`);
+        const orderData = await orderResponse.json();
+        
+        if (!orderResponse.ok) {
+          throw new Error(orderData.message || 'Failed to fetch order details');
+        }
+        
+        setOrderDetails(orderData.order);
+        setSuccess(data.success);
+        setLoading(false);
+      } catch (error) {
+        console.error('Verification error:', error);
+        setError(error.message);
         setLoading(false);
       }
     };
-
+    
     if (orderId && paymentStatus && paymentId) {
       verifyPayment();
     } else {
       setError('Invalid payment confirmation URL');
       setLoading(false);
     }
-  }, [orderId, paymentStatus, paymentId]);
+  }, [orderId, searchParams]);
 
-  const handleDownloadReceipt = () => {
-    // In a real application, this would generate and download a PDF receipt
-    // For now, we'll just show an alert
-    alert('Receipt downloaded!');
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleString('en-IN', { 
+      day: 'numeric', 
+      month: 'short', 
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
-  const goToDashboard = () => {
-    navigate('/student-portal');
+  const handleDownloadReceipt = () => {
+    // In a real app, this would generate a PDF receipt
+    window.print();
   };
 
   if (loading) {
     return (
-      <div className="confirmation-loading">
-        <div className="loading-spinner"></div>
-        <h2>Verifying Payment...</h2>
-        <p>Please wait while we confirm your payment</p>
+      <div className="payment-confirmation loading">
+        <div className="confirmation-container">
+          <div className="loader"></div>
+          <h2>Verifying Payment...</h2>
+          <p>Please wait while we confirm your payment</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="confirmation-error">
-        <div className="error-icon">❌</div>
-        <h2>Payment Verification Failed</h2>
-        <p>{error}</p>
-        <div className="confirmation-actions">
-          <button onClick={() => navigate(-1)}>Go Back</button>
-          <button onClick={() => navigate('/')}>Go to Home</button>
+      <div className="payment-confirmation error">
+        <div className="confirmation-container">
+          <div className="error-icon">❌</div>
+          <h2>Payment Verification Failed</h2>
+          <p>{error}</p>
+          <button onClick={() => navigate('/programs')}>Browse Programs</button>
         </div>
       </div>
     );
   }
 
+  const paymentStatus = searchParams.get('status');
   if (paymentStatus !== 'SUCCESS') {
     return (
-      <div className="confirmation-error">
-        <div className="error-icon">⚠️</div>
-        <h2>Payment Was Not Successful</h2>
-        <p>Your payment could not be processed. Please try again or contact support if the issue persists.</p>
-        <div className="confirmation-actions">
-          <button onClick={() => navigate(-1)}>Try Again</button>
+      <div className="payment-confirmation failed">
+        <div className="confirmation-container">
+          <div className="failed-icon">⚠️</div>
+          <h2>Payment Was Not Successful</h2>
+          <p>Your payment could not be processed. Please try again or contact support if the issue persists.</p>
+          <div className="action-buttons">
+            <button onClick={() => navigate(-1)}>Try Again</button>
+            <button onClick={() => navigate('/contact')}>Contact Support</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!orderDetails) {
+    return (
+      <div className="payment-confirmation error">
+        <div className="confirmation-container">
+          <div className="error-icon">❓</div>
+          <h2>Order Details Not Found</h2>
+          <p>We couldn't retrieve your order details. Please contact support.</p>
           <button onClick={() => navigate('/contact')}>Contact Support</button>
         </div>
       </div>
@@ -109,119 +138,112 @@ function PaymentConfirmation() {
   }
 
   return (
-    <div className="confirmation-page">
-      <div className="confirmation-container">
-        <div className="confirmation-header">
-          <div className="success-icon">✅</div>
-          <h1>Payment Successful!</h1>
-          <p>Your enrollment is now complete</p>
-        </div>
+    <div className="payment-confirmation success">
+      <div className="confirmation-container receipt">
+        <div className="success-icon">✅</div>
+        <h1>Payment Successful!</h1>
+        <p>Thank you for enrolling. Your payment has been confirmed and your course access is now active.</p>
 
-        <div className="confirmation-content">
-          <div className="order-info">
-            <h2>Order Details</h2>
-            <div className="order-details-grid">
-              <div className="detail-item">
-                <span className="detail-label">Order ID:</span>
-                <span className="detail-value">{orderDetails?.orderId}</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Transaction ID:</span>
-                <span className="detail-value">{paymentId}</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Date:</span>
-                <span className="detail-value">{new Date().toLocaleDateString()}</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Program:</span>
-                <span className="detail-value">{orderDetails?.program?.title}</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Plan:</span>
-                <span className="detail-value">
-                  {orderDetails?.planType === 'self' ? 'Self-Paced' : 
-                   orderDetails?.planType === 'mentor' ? 'Mentor-Led' : 'Advanced'}
-                </span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Payment Option:</span>
-                <span className="detail-value">
-                  {orderDetails?.paymentType === 'full' ? 'Full Payment' : 'Partial Payment'}
-                </span>
-              </div>
-              <div className="detail-item highlight">
-                <span className="detail-label">Amount Paid:</span>
-                <span className="detail-value">₹{orderDetails?.amount}</span>
-              </div>
-              {orderDetails?.paymentType === 'partial' && (
-                <div className="detail-item highlight remaining">
-                  <span className="detail-label">Remaining Amount:</span>
-                  <span className="detail-value">₹{orderDetails?.remainingAmount}</span>
-                </div>
-              )}
+        <div className="receipt-content">
+          <div className="receipt-header">
+            <h2>Payment Receipt</h2>
+            <div className="receipt-actions">
+              <button onClick={handleDownloadReceipt} className="download-button">
+                <i className="fas fa-download"></i> Download
+              </button>
             </div>
           </div>
 
-          <div className="next-steps">
-            <h2>Next Steps</h2>
-            <div className="steps-list">
-              <div className="step-item">
-                <div className="step-icon">📧</div>
-                <div className="step-content">
-                  <h3>Check Your Email</h3>
-                  <p>We've sent a confirmation email to {orderDetails?.user?.email} with all the details of your enrollment.</p>
-                </div>
-              </div>
-              <div className="step-item">
-                <div className="step-icon">🎓</div>
-                <div className="step-content">
-                  <h3>Access Your Course</h3>
-                  <p>You can now access your course materials from your student dashboard.</p>
-                </div>
-              </div>
-              {orderDetails?.paymentType === 'partial' && (
-                <div className="step-item">
-                  <div className="step-icon">💰</div>
-                  <div className="step-content">
-                    <h3>Remaining Payment</h3>
-                    <p>Your remaining payment of ₹{orderDetails?.remainingAmount} will be due within 30 days.</p>
-                  </div>
-                </div>
-              )}
+          <div className="receipt-details">
+            <div className="detail-row">
+              <span className="detail-label">Order ID:</span>
+              <span className="detail-value">{orderDetails.order_id}</span>
+            </div>
+            
+            <div className="detail-row">
+              <span className="detail-label">Transaction ID:</span>
+              <span className="detail-value">{searchParams.get('payment_id')}</span>
+            </div>
+            
+            <div className="detail-row">
+              <span className="detail-label">Date:</span>
+              <span className="detail-value">{formatDate(orderDetails.payment_date)}</span>
+            </div>
+            
+            <div className="detail-row">
+              <span className="detail-label">Program:</span>
+              <span className="detail-value">{orderDetails.program_id}</span>
+            </div>
+            
+            <div className="detail-row">
+              <span className="detail-label">Plan:</span>
+              <span className="detail-value">
+                {orderDetails.plan_type === 'self' ? 'Self-Paced' : 
+                 orderDetails.plan_type === 'mentor' ? 'Mentor-Led' : 'Advanced'}
+              </span>
+            </div>
+            
+            <div className="detail-row">
+              <span className="detail-label">Payment Option:</span>
+              <span className="detail-value">
+                {orderDetails.payment_type === 'full' ? 'Full Payment' : 'Partial Payment'}
+              </span>
+            </div>
+            
+            <div className="detail-row">
+              <span className="detail-label">Customer:</span>
+              <span className="detail-value">{orderDetails.user_name}</span>
+            </div>
+            
+            <div className="detail-row">
+              <span className="detail-label">Email:</span>
+              <span className="detail-value">{orderDetails.user_email}</span>
             </div>
           </div>
 
-          <div className="confirmation-actions">
-            <button 
-              className="receipt-button"
-              onClick={handleDownloadReceipt}
-              disabled={!downloadReady}
-            >
-              {downloadReady ? (
-                <>
-                  <i className="fas fa-download"></i> Download Receipt
-                </>
-              ) : (
-                <>
-                  <div className="button-spinner"></div> Preparing Receipt...
-                </>
-              )}
-            </button>
-            <button 
-              className="dashboard-button"
-              onClick={goToDashboard}
-            >
-              <i className="fas fa-graduation-cap"></i> Go to Student Dashboard
-            </button>
+          <div className="receipt-divider"></div>
+
+          <div className="payment-breakdown">
+            <h3>Payment Details</h3>
+            
+            <div className="breakdown-row">
+              <span className="breakdown-label">Amount Paid:</span>
+              <span className="breakdown-value">₹{orderDetails.amount}</span>
+            </div>
+
+            {orderDetails.payment_type === 'partial' && (
+              <>
+                <div className="breakdown-row">
+                  <span className="breakdown-label">Remaining Amount:</span>
+                  <span className="breakdown-value">₹{orderDetails.remaining_amount}</span>
+                </div>
+                
+                <div className="breakdown-row">
+                  <span className="breakdown-label">Due Date:</span>
+                  <span className="breakdown-value">{formatDate(orderDetails.remaining_payment_due_date)}</span>
+                </div>
+              </>
+            )}
+            
+            <div className="breakdown-row total">
+              <span className="breakdown-label">Total Course Fee:</span>
+              <span className="breakdown-value">
+                ₹{parseFloat(orderDetails.amount) + parseFloat(orderDetails.remaining_amount || 0)}
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="confirmation-footer">
-          <div className="support-info">
-            <h3>Need Help?</h3>
-            <p>If you have any questions or need assistance, please contact our support team.</p>
-            <button onClick={() => navigate('/contact')}>Contact Support</button>
+        <div className="next-steps">
+          <h3>What's Next?</h3>
+          <ul>
+            <li>Check your email for course access details</li>
+            <li>Access your course from the student portal</li>
+            <li>Set up your profile and get started with your learning journey</li>
+          </ul>
+          <div className="action-buttons">
+            <button onClick={() => navigate('/portal')} className="primary-button">Go to Student Portal</button>
+            <button onClick={() => navigate('/programs')} className="secondary-button">Browse More Programs</button>
           </div>
         </div>
       </div>

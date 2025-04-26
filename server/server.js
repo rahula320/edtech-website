@@ -20,7 +20,6 @@ const { createTables } = require('./config/create-tables');
 // Import routes
 const apiRoutes = require('./routes/api');
 const adminRoutes = require('./routes/admin');
-const paymentRoutes = require('./routes/payment');
 
 const app = express();
 
@@ -112,7 +111,6 @@ transporter.verify((error, success) => {
 // Use routes
 app.use('/api', apiRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api', paymentRoutes);
 
 // Routes
 app.post('/api/contact', async (req, res) => {

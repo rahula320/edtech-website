@@ -254,31 +254,32 @@ function PaymentPage() {
                 <input 
                   type="text" 
                   id="name" 
-                  name="name"
+                  name="name" 
+                  placeholder="Enter your full name"
                   value={userData.name}
                   onChange={handleInputChange}
                   required
                 />
               </div>
-              
               <div className="form-group">
                 <label htmlFor="email">Email Address</label>
                 <input 
                   type="email" 
                   id="email" 
-                  name="email"
+                  name="email" 
+                  placeholder="Enter your email address"
                   value={userData.email}
                   onChange={handleInputChange}
                   required
                 />
               </div>
-              
               <div className="form-group">
                 <label htmlFor="phone">Phone Number</label>
                 <input 
                   type="tel" 
                   id="phone" 
-                  name="phone"
+                  name="phone" 
+                  placeholder="Enter your phone number"
                   value={userData.phone}
                   onChange={handleInputChange}
                   required
@@ -288,21 +289,21 @@ function PaymentPage() {
               <div className="payment-summary">
                 <h3>Payment Summary</h3>
                 <div className="summary-item">
-                  <span>Selected Plan:</span>
-                  <span>{selectedPlan === 'self' ? 'Self-Paced' : selectedPlan === 'mentor' ? 'Mentor-Led' : 'Advanced'}</span>
+                  <span className="item-name">Plan</span>
+                  <span className="item-value">{selectedPlan === 'self' ? 'Self-Paced' : selectedPlan === 'mentor' ? 'Mentor-Led' : 'Advanced'}</span>
                 </div>
                 <div className="summary-item">
-                  <span>Payment Option:</span>
-                  <span>{paymentOption === 'full' ? 'Full Payment' : 'Partial Payment'}</span>
+                  <span className="item-name">Payment Option</span>
+                  <span className="item-value">{paymentOption === 'full' ? 'Full Payment' : 'Partial Payment'}</span>
                 </div>
                 <div className="summary-item total">
-                  <span>Amount to Pay Now:</span>
-                  <span>₹{calculatePrice()}</span>
+                  <span className="item-name">Amount to Pay Now</span>
+                  <span className="item-value">₹{calculatePrice()}</span>
                 </div>
                 {paymentOption === 'partial' && (
                   <div className="summary-item remaining">
-                    <span>Remaining Due:</span>
-                    <span>₹{calculateRemainingAmount()}</span>
+                    <span className="item-name">Remaining Payment (due in 30 days)</span>
+                    <span className="item-value">₹{calculateRemainingAmount()}</span>
                   </div>
                 )}
               </div>
@@ -310,14 +311,14 @@ function PaymentPage() {
               <div className="payment-actions">
                 <button 
                   type="button" 
-                  className="btn-secondary"
+                  className="back-button"
                   onClick={() => navigate(-1)}
                 >
-                  Cancel
+                  Back
                 </button>
                 <button 
                   type="submit" 
-                  className="btn-primary"
+                  className="proceed-button"
                   disabled={loading}
                 >
                   {loading ? 'Processing...' : 'Proceed to Payment'}

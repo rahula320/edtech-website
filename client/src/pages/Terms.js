@@ -140,13 +140,9 @@ function Terms() {
               </div>
               
               <div className="terms-section" id="refunds">
-                <h2>Refunds</h2>
+                <h2>Program Participation</h2>
                 <p>
-                  You shall be entitled to claim a refund of the payment made by you in case we are not able to
-                  provide the Service. The timelines for such return and refund will be according to the specific
-                  Service you have availed or within the time period provided in our policies (as applicable). In case
-                  you do not raise a refund claim within the stipulated time, than this would make you ineligible for
-                  a refund.
+                  We strive to provide high-quality educational services. If you have any concerns about the program or services provided, please contact our support team who will assist you with your queries. We value your feedback and continuously work to improve our offerings.
                 </p>
               </div>
               

@@ -1,33 +1,31 @@
 .payment-page {
-  padding: 40px 0;
-  background-color: #f7f9fc;
   min-height: 100vh;
+  background-color: #f9fafc;
+  padding: 40px 0;
 }
 
 .payment-container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
-  background-color: #fff;
+  background-color: white;
   border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
 
 .payment-header {
-  background: linear-gradient(135deg, #2a2a72 0%, #4545a5 100%);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
   color: white;
   padding: 30px;
   text-align: center;
 }
 
 .payment-header h1 {
-  margin: 0;
   font-size: 28px;
-  font-weight: 700;
+  margin-bottom: 10px;
 }
 
 .payment-header p {
-  margin-top: 10px;
   font-size: 16px;
   opacity: 0.9;
 }
@@ -37,82 +35,97 @@
   justify-content: center;
   align-items: center;
   padding: 30px;
-  background-color: #f7f9fc;
+  background-color: #f1f5f9;
 }
 
 .step {
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
+  width: 120px;
 }
 
 .step-number {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: #e0e0e0;
-  color: #757575;
+  background-color: #cbd5e1;
+  color: #334155;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 700;
+  font-weight: bold;
   margin-bottom: 8px;
 }
 
 .step.active .step-number {
-  background-color: #4545a5;
+  background-color: #2563eb;
   color: white;
 }
 
 .step-text {
   font-size: 14px;
-  color: #757575;
+  color: #64748b;
 }
 
 .step.active .step-text {
-  color: #4545a5;
+  color: #1e40af;
   font-weight: 600;
 }
 
 .step-connector {
-  width: 80px;
+  flex-grow: 1;
   height: 2px;
-  background-color: #e0e0e0;
-  margin: 0 15px;
+  background-color: #cbd5e1;
+  max-width: 100px;
+  margin: 0 10px;
 }
 
 .payment-content {
   padding: 30px;
 }
 
+.plan-selection,
+.payment-options,
+.user-details {
+  margin-bottom: 40px;
+}
+
 .plan-selection h2,
 .payment-options h2,
 .user-details h2 {
-  font-size: 22px;
+  font-size: 20px;
+  color: #0f172a;
   margin-bottom: 20px;
-  color: #333;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
 }
 
 .plan-options {
   display: flex;
   gap: 20px;
-  margin-bottom: 40px;
+  flex-wrap: wrap;
 }
 
 .plan-option {
   flex: 1;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
+  min-width: 200px;
   padding: 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+}
+
+.plan-option:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .plan-option.selected {
-  border-color: #4545a5;
-  background-color: rgba(69, 69, 165, 0.05);
+  border-color: #2563eb;
+  background-color: #eff6ff;
 }
 
 .plan-icon {
@@ -122,34 +135,41 @@
 
 .plan-name {
   font-weight: 600;
-  margin-bottom: 5px;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
 .plan-price {
-  color: #4545a5;
+  font-size: 22px;
+  color: #2563eb;
   font-weight: 700;
 }
 
 .payment-toggles {
   display: flex;
   gap: 20px;
-  margin-bottom: 40px;
+  flex-wrap: wrap;
 }
 
 .payment-toggle {
   flex: 1;
+  min-width: 250px;
   display: flex;
   align-items: center;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 15px;
+  padding: 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+}
+
+.payment-toggle:hover {
+  background-color: #f8fafc;
 }
 
 .payment-toggle.selected {
-  border-color: #4545a5;
-  background-color: rgba(69, 69, 165, 0.05);
+  border-color: #2563eb;
+  background-color: #eff6ff;
 }
 
 .toggle-icon {
@@ -158,22 +178,23 @@
 }
 
 .toggle-content {
-  flex: 1;
+  flex-grow: 1;
 }
 
 .toggle-title {
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .toggle-desc {
   font-size: 14px;
-  color: #757575;
+  color: #64748b;
 }
 
 .toggle-price {
+  font-size: 18px;
   font-weight: 700;
-  color: #4545a5;
+  color: #2563eb;
 }
 
 .form-group {
@@ -184,152 +205,172 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  color: #333;
+  color: #334155;
 }
 
 .form-group input {
   width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
   border-radius: 6px;
   font-size: 16px;
-  transition: border-color 0.3s;
+  transition: border-color 0.2s ease;
 }
 
 .form-group input:focus {
-  border-color: #4545a5;
+  border-color: #2563eb;
   outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .payment-summary {
-  margin: 30px 0;
+  background-color: #f8fafc;
   padding: 20px;
-  background-color: #f7f9fc;
-  border-radius: 10px;
+  border-radius: 8px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .payment-summary h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
   font-size: 18px;
-  color: #333;
+  margin-bottom: 15px;
+  color: #0f172a;
 }
 
 .summary-item {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 15px;
 }
 
 .summary-item:last-child {
   border-bottom: none;
 }
 
+.item-name {
+  color: #64748b;
+}
+
+.item-value {
+  font-weight: 600;
+  color: #334155;
+}
+
 .summary-item.total {
-  font-weight: 700;
-  color: #4545a5;
-  padding-top: 15px;
   margin-top: 10px;
-  border-top: 1px solid #ddd;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.summary-item.total .item-value {
+  color: #2563eb;
 }
 
 .summary-item.remaining {
-  color: #ff6b6b;
+  font-size: 14px;
+  background-color: #fffbeb;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.summary-item.remaining .item-value {
+  color: #d97706;
 }
 
 .payment-actions {
   display: flex;
   justify-content: space-between;
-  margin-top: 30px;
+  gap: 20px;
 }
 
-.btn-secondary,
-.btn-primary {
-  padding: 12px 25px;
+.back-button,
+.proceed-button {
+  padding: 12px 24px;
   border-radius: 6px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-secondary {
-  background-color: #f1f1f1;
-  color: #555;
+  transition: all 0.2s ease;
   border: none;
 }
 
-.btn-secondary:hover {
-  background-color: #e0e0e0;
+.back-button {
+  background-color: #f1f5f9;
+  color: #334155;
 }
 
-.btn-primary {
-  background-color: #4545a5;
+.back-button:hover {
+  background-color: #e2e8f0;
+}
+
+.proceed-button {
+  background-color: #2563eb;
   color: white;
-  border: none;
+  flex-grow: 1;
 }
 
-.btn-primary:hover {
-  background-color: #3a3a8a;
+.proceed-button:hover {
+  background-color: #1d4ed8;
 }
 
-.btn-primary:disabled {
-  background-color: #a6a6da;
+.proceed-button:disabled {
+  background-color: #93c5fd;
   cursor: not-allowed;
 }
 
 .payment-error,
 .payment-loading {
-  max-width: 600px;
-  margin: 100px auto;
-  padding: 30px;
   text-align: center;
+  padding: 50px;
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  margin: 40px auto;
 }
 
 .payment-error h2 {
-  color: #ff6b6b;
+  color: #ef4444;
+  margin-bottom: 15px;
 }
 
 .payment-error button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #4545a5;
+  background-color: #2563eb;
   color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
   border: none;
-  border-radius: 5px;
+  font-weight: 600;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .payment-loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
+  padding: 100px;
   font-size: 18px;
-  color: #4545a5;
+  color: #64748b;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .plan-options,
+  .payment-container {
+    margin: 0 15px;
+  }
+  
   .payment-toggles {
     flex-direction: column;
   }
   
   .payment-actions {
     flex-direction: column;
-    gap: 15px;
   }
   
-  .btn-secondary,
-  .btn-primary {
+  .back-button,
+  .proceed-button {
     width: 100%;
-  }
-  
-  .payment-container {
-    margin: 0 15px;
   }
 } 

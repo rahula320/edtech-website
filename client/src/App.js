@@ -25,7 +25,7 @@ function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isPaymentConfirmationRoute = location.pathname.startsWith('/payment-confirmation');
-
+  
   return (
     <div className="App">
       {!isAdminRoute && <Navbar />}

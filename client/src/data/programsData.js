@@ -274,12 +274,12 @@ export const programsData = {
         answer: "Our career support includes resume reviews, LinkedIn profile optimization, interview preparation, and connections to hiring partners. We also provide guidance on building a portfolio that showcases your skills to potential employers."
       },
       {
-        question: "Can I pay for the program in installments?",
-        answer: "Yes, we offer flexible payment options including monthly installments. You can also explore our scholarship opportunities and income share agreements for eligible candidates."
+        question: "How do I enroll in this program?",
+        answer: "You can enroll in the program by clicking the 'Enroll Now' button and following the registration process. Once registered, you'll receive further instructions on how to access the course materials."
       },
       {
         question: "Is there a refund policy if I'm not satisfied?",
-        answer: "We offer a 7-day money-back guarantee after the program starts. If you're not satisfied with the quality of instruction, you can request a full refund within this period."
+        answer: "We strive to provide high-quality education. If you have any concerns about the program, please contact our support team who will assist you with your queries."
       }
     ],
     
@@ -1179,7 +1179,7 @@ export const programsData = {
       {
         icon: "fas fa-shopping-cart",
         title: "E-Commerce Platform",
-        description: "Build a fully functional online store with product listings, shopping cart, and payment processing"
+        description: "Build a fully functional online store with product listings and shopping cart functionality"
       },
       {
         icon: "fas fa-tasks",

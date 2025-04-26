@@ -14,6 +14,7 @@ const db = require('./server/config/db');
 
 // Import API routes
 const apiRoutes = require('./server/routes/api');
+const paymentRoutes = require('./server/routes/payment');
 
 // Create Express app
 const app = express();
@@ -55,6 +56,7 @@ app.use(session({
 
 // Use API routes
 app.use('/api', apiRoutes);
+app.use('/api', paymentRoutes);
 
 // Admin login endpoint
 app.post('/api/admin/login', async (req, res) => {
