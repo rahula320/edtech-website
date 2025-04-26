@@ -467,62 +467,37 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
-// Start server
-const PORT = process.env.PORT || 5001;
+// Start the server
+const PORT = process.env.PORT || 5003;
 
-// Initialize database before starting server
-db.testConnection()
-  .then(connected => {
-    if (connected) {
-      console.log('Successfully connected to Neon DB');
-      return db.initDatabase();
-    } else {
-      console.error('Failed to connect to database. Server will start but may not function correctly.');
-    }
-  })
-  .then(() => {
-    // Create necessary tables
-    console.log('Database initialized, creating tables...');
-    return createTables();
-  })
-  .then(() => {
-    console.log('Tables created successfully, starting server...');
-    const server = app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
+// Only initialize database if INIT_DB environment variable is set to 'true'
+const shouldInitializeDb = process.env.INIT_DB === 'true';
 
-    // Handle server errors
-    server.on('error', (error) => {
-      if (error.code === 'EADDRINUSE') {
-        console.error(`Port ${PORT} is already in use`);
-        process.exit(1);
-      } else {
-        console.error('Server error:', error);
-      }
-    });
-
-    // Graceful shutdown
-    process.on('SIGTERM', () => {
-      console.log('Received SIGTERM. Performing graceful shutdown...');
-      server.close(() => {
-        console.log('Server connections closed.');
-        process.exit(0);
-      });
-    });
-
-    process.on('SIGINT', () => {
-      console.log('Received SIGINT. Performing graceful shutdown...');
-      server.close(() => {
-        console.log('Server connections closed.');
-        process.exit(0);
-      });
-    });
-  })
-  .catch(err => {
-    console.error('Failed to initialize database:', err);
-    console.log('Starting server without database initialization...');
+// Function to start the server
+async function startServer() {
+  try {
+    // Test DB connection but don't initialize tables by default
+    await db.testConnection();
     
-    const server = app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT} (without database)`);
+    // Only run initialization if explicitly enabled
+    if (shouldInitializeDb) {
+      await db.initDatabase();
+      
+      // Also create tables if we're initializing the database
+      console.log('Creating database tables...');
+      await createTables();
+      console.log('Tables created successfully');
+    } else {
+      console.log('Skipping database initialization. Set INIT_DB=true to initialize tables.');
+    }
+    
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
     });
-  }); 
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+}
+
+startServer(); 
