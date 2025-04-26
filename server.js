@@ -22,7 +22,7 @@ const app = express();
 // Enable CORS for all routes
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://acmyx.vercel.app', 'https://acmyx-clt6afshw-edtechrk2319.vercel.app', /\.vercel\.app$/] 
+    ? ['https://acmyx.vercel.app', 'https://acmyx-2s3fwl1p0-edtechrk2319.vercel.app', /\.vercel\.app$/] 
     : 'http://localhost:3000',
   credentials: true
 }));
