@@ -16,7 +16,8 @@ router.get('/health', (req, res) => {
       '/api/health',
       '/api/applications',
       '/api/applications/mentor',
-      '/api/applications/bda'
+      '/api/applications/bda',
+      '/api/applications/campus-ambassador'
     ]
   });
 });
@@ -68,6 +69,19 @@ router.get('/applications/bda', async (req, res) => {
   } catch (error) {
     console.error('Error fetching BDA applications:', error);
     res.status(500).json({ error: 'Failed to fetch BDA applications' });
+  }
+});
+
+// Get Campus Ambassador applications
+router.get('/applications/campus-ambassador', async (req, res) => {
+  try {
+    const applications = await sql`
+      SELECT *, 'campus-ambassador' as type FROM campus_ambassador_applications ORDER BY timestamp DESC
+    `;
+    res.status(200).json(applications);
+  } catch (error) {
+    console.error('Error fetching Campus Ambassador applications:', error);
+    res.status(500).json({ error: 'Failed to fetch Campus Ambassador applications' });
   }
 });
 
@@ -211,6 +225,55 @@ router.post('/applications/bda', async (req, res) => {
     });
   } catch (error) {
     console.error('Error submitting BDA application:', error);
+    res.status(500).json({ error: 'Failed to submit application', message: error.message });
+  }
+});
+
+// Submit a Campus Ambassador application
+router.post('/applications/campus-ambassador', async (req, res) => {
+  try {
+    const {
+      fullName,
+      email,
+      phone,
+      collegeName,
+      yearOfStudy,
+      branch,
+      department
+    } = req.body;
+
+    // Validate required fields
+    if (!fullName || !email || !phone || !collegeName || !yearOfStudy || !branch || !department) {
+      return res.status(400).json({ 
+        error: 'All fields are required', 
+        body: req.body 
+      });
+    }
+
+    const result = await sql`
+      INSERT INTO campus_ambassador_applications (
+        full_name, email, phone, college_name, 
+        year_of_study, branch, department
+      ) VALUES (
+        ${fullName}, 
+        ${email}, 
+        ${phone}, 
+        ${collegeName}, 
+        ${yearOfStudy}, 
+        ${branch},
+        ${department}
+      ) RETURNING id
+    `;
+
+    console.log('Campus Ambassador application saved successfully:', result[0].id);
+
+    res.status(201).json({
+      success: true,
+      message: 'Campus Ambassador application submitted successfully',
+      applicationId: result[0].id
+    });
+  } catch (error) {
+    console.error('Error submitting Campus Ambassador application:', error);
     res.status(500).json({ error: 'Failed to submit application', message: error.message });
   }
 });
@@ -448,6 +511,102 @@ router.patch('/applications/:id', async (req, res) => {
   } catch (error) {
     console.error(`Error updating application status:`, error);
     res.status(500).json({ error: 'Failed to update application status', message: error.message });
+  }
+});
+
+// Delete mentor application by ID
+router.delete('/applications/mentor/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!id) {
+      return res.status(400).json({ error: 'Application ID is required' });
+    }
+    
+    console.log(`Deleting mentor application with ID: ${id}`);
+    
+    const deletedApplication = await sql`
+      DELETE FROM mentor_applications
+      WHERE id = ${id}
+      RETURNING *
+    `;
+    
+    if (deletedApplication.length === 0) {
+      return res.status(404).json({ error: 'Mentor application not found' });
+    }
+    
+    res.status(200).json({
+      success: true,
+      message: 'Mentor application deleted successfully',
+      deletedApplication: deletedApplication[0]
+    });
+  } catch (error) {
+    console.error('Error deleting mentor application:', error);
+    res.status(500).json({ error: 'Failed to delete mentor application', message: error.message });
+  }
+});
+
+// Delete BDA application by ID
+router.delete('/applications/bda/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!id) {
+      return res.status(400).json({ error: 'Application ID is required' });
+    }
+    
+    console.log(`Deleting BDA application with ID: ${id}`);
+    
+    const deletedApplication = await sql`
+      DELETE FROM bda_applications
+      WHERE id = ${id}
+      RETURNING *
+    `;
+    
+    if (deletedApplication.length === 0) {
+      return res.status(404).json({ error: 'BDA application not found' });
+    }
+    
+    res.status(200).json({
+      success: true,
+      message: 'BDA application deleted successfully',
+      deletedApplication: deletedApplication[0]
+    });
+  } catch (error) {
+    console.error('Error deleting BDA application:', error);
+    res.status(500).json({ error: 'Failed to delete BDA application', message: error.message });
+  }
+});
+
+// Delete Campus Ambassador application by ID
+router.delete('/applications/campus-ambassador/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!id) {
+      return res.status(400).json({ error: 'Application ID is required' });
+    }
+    
+    console.log(`Deleting Campus Ambassador application with ID: ${id}`);
+    
+    const deletedApplication = await sql`
+      DELETE FROM campus_ambassador_applications
+      WHERE id = ${id}
+      RETURNING *
+    `;
+    
+    if (deletedApplication.length === 0) {
+      return res.status(404).json({ error: 'Campus Ambassador application not found' });
+    }
+    
+    res.status(200).json({
+      success: true,
+      message: 'Campus Ambassador application deleted successfully',
+      deletedApplication: deletedApplication[0]
+    });
+  } catch (error) {
+    console.error('Error deleting Campus Ambassador application:', error);
+    res.status(500).json({ error: 'Failed to delete Campus Ambassador application', message: error.message });
   }
 });
 

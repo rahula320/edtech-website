@@ -102,6 +102,25 @@ async function initDatabase() {
     
     console.log('BDA applications table initialized');
     
+    // Create campus_ambassador_applications table if it doesn't exist
+    await sql`
+      CREATE TABLE IF NOT EXISTS campus_ambassador_applications (
+        id SERIAL PRIMARY KEY,
+        full_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(20) NOT NULL,
+        college_name VARCHAR(255) NOT NULL,
+        year_of_study VARCHAR(50) NOT NULL,
+        branch VARCHAR(255) NOT NULL,
+        department VARCHAR(255) NOT NULL,
+        status VARCHAR(50) DEFAULT 'pending',
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP
+      )
+    `;
+    
+    console.log('Campus Ambassador applications table initialized');
+    
     // Removed migration logic since the old applications table has been dropped
     
     console.log('Database initialization completed successfully');

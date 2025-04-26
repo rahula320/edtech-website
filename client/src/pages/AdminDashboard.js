@@ -12,7 +12,7 @@ import {
   FiFilter, FiSearch, FiMapPin, FiExternalLink, FiX,
   FiHome, FiSettings, FiTrendingUp, FiPieChart,
   FiDollarSign, FiDatabase, FiFileText, FiArrowDown,
-  FiArrowUp, FiServer, FiActivity, FiClipboard, FiBarChart2, FiChevronDown, FiChevronLeft, FiClock, FiArrowRight, FiEdit, FiInbox, FiAlertTriangle, FiMenu, FiTrash, FiBox, FiChevronsRight, FiChevronsLeft
+  FiArrowUp, FiServer, FiActivity, FiClipboard, FiBarChart2, FiChevronDown, FiChevronLeft, FiClock, FiArrowRight, FiEdit, FiInbox, FiAlertTriangle, FiMenu, FiTrash, FiBox, FiChevronsRight, FiChevronsLeft, FiUserPlus, FiUser
 } from 'react-icons/fi';
 import axios from 'axios';
 
@@ -22,6 +22,8 @@ const AdminDashboard = () => {
   // State for applications
   const [mentorApplications, setMentorApplications] = useState([]);
   const [bdaApplications, setBdaApplications] = useState([]);
+  const [campusAmbassadorApplications, setCampusAmbassadorApplications] = useState([]);
+  const [registrations, setRegistrations] = useState([]);
   const [currentApplication, setCurrentApplication] = useState(null);
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -32,7 +34,6 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [applicationType, setApplicationType] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   
   // State for metrics
@@ -40,9 +41,11 @@ const AdminDashboard = () => {
     totalApplications: 0,
     mentorApplications: 0,
     bdaApplications: 0,
+    campusAmbassadorApplications: 0,
     pendingApplications: 0,
     approvedApplications: 0,
-    rejectedApplications: 0
+    rejectedApplications: 0,
+    registrations: 0
   });
 
   // Add notification state
@@ -114,11 +117,13 @@ const AdminDashboard = () => {
       } catch (bdaErr) {
         console.warn('Failed to fetch BDA applications with /api prefix:', bdaErr);
         try {
+          // Try without the /api prefix
           const fallbackResponse = await api.get('/applications/bda');
           console.log('BDA applications (fallback):', fallbackResponse.data);
           bdaData = fallbackResponse.data;
         } catch (fallbackErr) {
           console.error('All BDA application fetch attempts failed:', fallbackErr);
+          // Try admin routes as last resort
           try {
             const adminResponse = await api.get('/admin/applications/bda');
             console.log('BDA applications (admin route):', adminResponse.data);
@@ -129,93 +134,65 @@ const AdminDashboard = () => {
         }
       }
       
-      // TEMPORARY: If both API calls fail, use mock data for testing UI
-      if (mentorData.length === 0) {
-        console.warn('Using mock mentor data for testing');
-        mentorData = [
-          {
-            id: 'm1',
-            full_name: 'Jane Smith',
-            email: 'jane.smith@example.com',
-            phone: '+1 (555) 123-4567',
-            status: 'pending',
-            type: 'mentor',
-            timestamp: '2023-11-15T14:32:00Z',
-            company: 'Google',
-            designation: 'Senior Software Engineer',
-            experience: 5,
-            domains: ['Web Development', 'AI/ML', 'Data Science']
-          },
-          {
-            id: 'm2',
-            full_name: 'Michael Johnson',
-            email: 'michael.j@example.com',
-            phone: '+1 (555) 987-6543',
-            status: 'approved',
-            type: 'mentor',
-            timestamp: '2023-11-10T09:45:00Z',
-            company: 'Tesla',
-            designation: 'Engineering Manager',
-            experience: 8,
-            domains: ['IoT', 'Hardware Design', 'Robotics']
+      // Fetch Campus Ambassador applications with similar fallback approach
+      let campusAmbassadorData = [];
+      try {
+        const campusResponse = await axios.get('/api/applications/campus-ambassador');
+        console.log('Campus Ambassador applications (direct):', campusResponse.data);
+        campusAmbassadorData = campusResponse.data;
+      } catch (campusErr) {
+        console.warn('Failed to fetch Campus Ambassador applications with /api prefix:', campusErr);
+        try {
+          // Try without the /api prefix
+          const fallbackResponse = await api.get('/applications/campus-ambassador');
+          console.log('Campus Ambassador applications (fallback):', fallbackResponse.data);
+          campusAmbassadorData = fallbackResponse.data;
+        } catch (fallbackErr) {
+          console.error('All Campus Ambassador application fetch attempts failed:', fallbackErr);
+          // Try admin routes as last resort
+          try {
+            const adminResponse = await api.get('/admin/applications/campus-ambassador');
+            console.log('Campus Ambassador applications (admin route):', adminResponse.data);
+            campusAmbassadorData = adminResponse.data;
+          } catch (adminErr) {
+            console.error('Admin Campus Ambassador route also failed:', adminErr);
           }
-        ];
-      }
-      
-      if (bdaData.length === 0) {
-        console.warn('Using mock BDA data for testing');
-        bdaData = [
-          {
-            id: 'b1',
-            full_name: 'Robert Chen',
-            email: 'robert.c@example.com',
-            phone: '+1 (555) 345-6789',
-            status: 'pending',
-            type: 'bda',
-            timestamp: '2023-11-18T11:15:00Z',
-            education: 'MBA, Harvard University',
-            experience: 3
-          },
-          {
-            id: 'b2',
-            full_name: 'Sarah Miller',
-            email: 'sarah.m@example.com',
-            phone: '+1 (555) 456-7890',
-            status: 'approved',
-            type: 'bda',
-            timestamp: '2023-11-12T10:30:00Z',
-            education: 'Marketing, Columbia University',
-            experience: 2
-          }
-        ];
+        }
       }
       
       // Update states with fetched data
       setMentorApplications(mentorData);
       setBdaApplications(bdaData);
+      setCampusAmbassadorApplications(campusAmbassadorData);
       
       // Calculate metrics
       const totalMentorApps = mentorData.length;
       const totalBDAApps = bdaData.length;
+      const totalCampusApps = campusAmbassadorData.length;
       
       const pendingMentorApps = mentorData.filter(app => app.status === 'pending').length;
       const pendingBDAApps = bdaData.filter(app => app.status === 'pending').length;
+      const pendingCampusApps = campusAmbassadorData.filter(app => app.status === 'pending').length;
 
       const approvedMentorApps = mentorData.filter(app => app.status === 'approved').length;
       const approvedBDAApps = bdaData.filter(app => app.status === 'approved').length;
+      const approvedCampusApps = campusAmbassadorData.filter(app => app.status === 'approved').length;
       
       const rejectedMentorApps = mentorData.filter(app => app.status === 'rejected').length;
       const rejectedBDAApps = bdaData.filter(app => app.status === 'rejected').length;
+      const rejectedCampusApps = campusAmbassadorData.filter(app => app.status === 'rejected').length;
       
       // Update metrics state
-      setMetrics({
-        totalApplications: totalMentorApps + totalBDAApps,
-        pendingApplications: pendingMentorApps + pendingBDAApps,
-        approvedApplications: approvedMentorApps + approvedBDAApps,
-        rejectedApplications: rejectedMentorApps + rejectedBDAApps,
+      setMetrics(prevMetrics => ({
+        totalApplications: totalMentorApps + totalBDAApps + totalCampusApps,
+        pendingApplications: pendingMentorApps + pendingBDAApps + pendingCampusApps,
+        approvedApplications: approvedMentorApps + approvedBDAApps + approvedCampusApps,
+        rejectedApplications: rejectedMentorApps + rejectedBDAApps + rejectedCampusApps,
         mentorApplications: totalMentorApps,
-        bdaApplications: totalBDAApps
-      });
+        bdaApplications: totalBDAApps,
+        campusAmbassadorApplications: totalCampusApps,
+        registrations: prevMetrics.registrations // Preserve the registrations count
+      }));
       
     } catch (err) {
       console.error('Error fetching applications:', err);
@@ -224,6 +201,59 @@ const AdminDashboard = () => {
       // Set empty arrays for applications if fetch fails
       setMentorApplications([]);
       setBdaApplications([]);
+      setCampusAmbassadorApplications([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch registrations data
+  const fetchRegistrations = async () => {
+    setIsLoading(true);
+    setError(null);
+    
+    // Setup authentication
+    setupAuth();
+    
+    try {
+      // Try with /api prefix first
+      let registrationsData = [];
+      try {
+        const registrationsResponse = await axios.get('/api/registrations');
+        console.log('Registrations (direct):', registrationsResponse.data);
+        registrationsData = registrationsResponse.data;
+      } catch (regErr) {
+        console.warn('Failed to fetch registrations with /api prefix:', regErr);
+        try {
+          // Try without the /api prefix
+          const fallbackResponse = await api.get('/registrations');
+          console.log('Registrations (fallback):', fallbackResponse.data);
+          registrationsData = fallbackResponse.data;
+        } catch (fallbackErr) {
+          console.error('All registration fetch attempts failed:', fallbackErr);
+          // Try admin routes as last resort
+          try {
+            const adminResponse = await api.get('/admin/registrations');
+            console.log('Registrations (admin route):', adminResponse.data);
+            registrationsData = adminResponse.data;
+          } catch (adminErr) {
+            console.error('Admin registrations route also failed:', adminErr);
+          }
+        }
+      }
+      
+      // Update state with fetched data
+      setRegistrations(registrationsData);
+      
+      // Update metrics for registrations
+      setMetrics(prevMetrics => ({
+        ...prevMetrics,
+        registrations: registrationsData.length
+      }));
+    } catch (err) {
+      console.error('Error fetching registrations:', err);
+      setError('Failed to fetch registration data. Please try again later.');
+      setRegistrations([]);
     } finally {
       setIsLoading(false);
     }
@@ -231,11 +261,13 @@ const AdminDashboard = () => {
 
   // Make fetchApplications useCallback to avoid dependency issues
   const memoizedFetchApplications = useCallback(fetchApplications, []);
+  const memoizedFetchRegistrations = useCallback(fetchRegistrations, []);
 
   // Initial data load
   useEffect(() => {
     memoizedFetchApplications();
-  }, [memoizedFetchApplications]);
+    memoizedFetchRegistrations();
+  }, [memoizedFetchApplications, memoizedFetchRegistrations]);
 
   // Add a separate useEffect to handle tab changes and auto-select application type
   useEffect(() => {
@@ -346,28 +378,61 @@ const AdminDashboard = () => {
     }
   };
 
-  // Delete application
-  const handleDeleteApplication = async (id) => {
+  // Handle delete application
+  const handleDeleteApplication = async (id, type = applicationType) => {
     if (window.confirm('Are you sure you want to delete this application? This action cannot be undone.')) {
       try {
         setIsLoading(true);
         
-        const endpoint = applicationType === 'mentor' 
-          ? `/applications/mentor/${id}` 
-          : `/applications/bda/${id}`;
+        // Determine the correct API endpoint for deleting
+        let endpoint;
+        if (type === 'mentor') {
+          endpoint = `/api/applications/mentor/${id}`;
+        } else if (type === 'bda') {
+          endpoint = `/api/applications/bda/${id}`;
+        } else if (type === 'campus-ambassador') {
+          endpoint = `/api/applications/campus-ambassador/${id}`;
+        }
+
+        console.log(`Deleting ${type} application with ID: ${id}`);
         
+        // Make API call to delete the application
         try {
-          const response = await api.delete(endpoint);
-          console.log('Delete response:', response.data);
+          // Try different API patterns to ensure it reaches the correct endpoint
+          const deleteResponse = await api.delete(endpoint);
+          console.log('Delete API response:', deleteResponse.data);
         } catch (apiErr) {
-          console.error('API error deleting application:', apiErr);
+          console.error(`First delete attempt failed for ${type} application:`, apiErr);
+          
+          // Try alternate API patterns
+          try {
+            const alternateEndpoint = `/api/applications/${type}/${id}`;
+            const alternateResponse = await api.delete(alternateEndpoint);
+            console.log('Alternate delete API response:', alternateResponse.data);
+          } catch (altErr) {
+            console.error(`Alternate delete attempt failed for ${type} application:`, altErr);
+            
+            // Try admin endpoint as last resort
+            try {
+              const adminEndpoint = `/admin/applications/${id}`;
+              const adminResponse = await api.delete(adminEndpoint, { 
+                data: { type } 
+              });
+              console.log('Admin delete API response:', adminResponse.data);
+            } catch (adminErr) {
+              console.error(`Admin delete attempt failed for ${type} application:`, adminErr);
+              throw new Error('All delete attempts failed');
+            }
+          }
         }
         
         // Remove the application from the state
-        if (applicationType === 'mentor') {
+        if (type === 'mentor') {
           setMentorApplications(mentorApplications.filter(app => (app.id || app._id) !== id));
-        } else {
+        } else if (type === 'bda') {
           setBdaApplications(bdaApplications.filter(app => (app.id || app._id) !== id));
+        } else if (type === 'campus-ambassador') {
+          setCampusAmbassadorApplications(campusAmbassadorApplications.filter(app => (app.id || app._id) !== id));
         }
         
         // Close modals and refresh metrics
@@ -387,13 +452,169 @@ const AdminDashboard = () => {
         // Show error notification
         setNotification({
           show: true,
-          message: 'Failed to delete application',
+          message: 'Failed to delete application: ' + error.message,
           type: 'error'
         });
       } finally {
         setIsLoading(false);
       }
     }
+  };
+
+  // Handle delete registration
+  const handleDeleteRegistration = async (id) => {
+    if (window.confirm('Are you sure you want to delete this registration? This action cannot be undone.')) {
+      try {
+        setIsLoading(true);
+        
+        // Try different API patterns to ensure it reaches the correct endpoint
+        let deleted = false;
+        
+        try {
+          const deleteResponse = await api.delete(`/api/registrations/${id}`);
+          console.log('Delete API response:', deleteResponse.data);
+          deleted = true;
+        } catch (apiErr) {
+          console.error('First delete attempt failed for registration:', apiErr);
+          
+          try {
+            const alternateResponse = await api.delete(`/registrations/${id}`);
+            console.log('Alternate delete API response:', alternateResponse.data);
+            deleted = true;
+          } catch (altErr) {
+            console.error('Alternate delete attempt failed for registration:', altErr);
+            
+            try {
+              const adminResponse = await api.delete(`/admin/registrations/${id}`);
+              console.log('Admin delete API response:', adminResponse.data);
+              deleted = true;
+            } catch (adminErr) {
+              console.error('Admin delete attempt failed for registration:', adminErr);
+            }
+          }
+        }
+        
+        if (deleted) {
+          // Update state by removing the deleted item
+          setRegistrations(registrations.filter(reg => (reg.id || reg._id) !== id));
+          
+          // Show success notification
+          setNotification({
+            show: true,
+            message: 'Registration deleted successfully',
+            type: 'success'
+          });
+        } else {
+          throw new Error('All delete attempts failed');
+        }
+      } catch (error) {
+        console.error('Error deleting registration:', error);
+        
+        // Show error notification
+        setNotification({
+          show: true,
+          message: 'Failed to delete registration',
+          type: 'error'
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  // Export applications to CSV
+  const exportToCSV = (apps, type) => {
+    // Define headers based on application type
+    let headers = [];
+    
+    if (type === 'mentor') {
+      headers = [
+        'Full Name', 
+        'Email', 
+        'Phone', 
+        'Company', 
+        'Designation', 
+        'Experience', 
+        'Domains', 
+        'Application Date'
+      ];
+    } else if (type === 'bda') {
+      headers = [
+        'Full Name', 
+        'Email', 
+        'Phone', 
+        'Education', 
+        'Experience', 
+        'Application Date'
+      ];
+    } else if (type === 'campus-ambassador') {
+      headers = [
+        'Full Name', 
+        'Email', 
+        'Phone', 
+        'College Name', 
+        'Year of Study', 
+        'Branch', 
+        'Department', 
+        'Application Date'
+      ];
+    }
+    
+    // Create CSV header row
+    let csvContent = headers.join(',') + '\n';
+    
+    // Add rows based on application type
+    apps.forEach(app => {
+      let row = [];
+      
+      if (type === 'mentor') {
+        row = [
+          `"${app.full_name || ''}"`,
+          `"${app.email || ''}"`,
+          `"${app.phone || ''}"`,
+          `"${app.company || ''}"`,
+          `"${app.designation || ''}"`,
+          `"${app.experience || ''}"`,
+          `"${Array.isArray(app.domains) ? app.domains.join('; ') : app.domains || ''}"`,
+          `"${app.timestamp ? moment(app.timestamp).format('YYYY-MM-DD') : ''}"`
+        ];
+      } else if (type === 'bda') {
+        row = [
+          `"${app.full_name || ''}"`,
+          `"${app.email || ''}"`,
+          `"${app.phone || ''}"`,
+          `"${app.education || ''}"`,
+          `"${app.experience || ''}"`,
+          `"${app.timestamp ? moment(app.timestamp).format('YYYY-MM-DD') : ''}"`
+        ];
+      } else if (type === 'campus-ambassador') {
+        row = [
+          `"${app.full_name || ''}"`,
+          `"${app.email || ''}"`,
+          `"${app.phone || ''}"`,
+          `"${app.college_name || ''}"`,
+          `"${app.year_of_study || ''}"`,
+          `"${app.branch || ''}"`,
+          `"${app.department || ''}"`,
+          `"${app.timestamp ? moment(app.timestamp).format('YYYY-MM-DD') : ''}"`
+        ];
+      }
+      
+      csvContent += row.join(',') + '\n';
+    });
+    
+    // Create a blob and download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${type}-applications.csv`);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   // Helper functions
@@ -427,7 +648,7 @@ const AdminDashboard = () => {
     return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
-  // Filter applications based on search and status
+  // Filter applications based on search
   const filterApplications = (applications) => {
     return applications.filter(app => {
       // Search filter
@@ -437,10 +658,7 @@ const AdminDashboard = () => {
         app.full_name?.toLowerCase().includes(searchLower) || 
         app.email?.toLowerCase().includes(searchLower);
       
-      // Status filter
-      const matchesStatus = statusFilter === 'all' || app.status === statusFilter;
-      
-      return matchesSearch && matchesStatus;
+      return matchesSearch;
     });
   };
 
@@ -450,6 +668,8 @@ const AdminDashboard = () => {
       return filterApplications(mentorApplications);
     } else if (applicationType === 'bda') {
       return filterApplications(bdaApplications);
+    } else if (applicationType === 'campus-ambassador') {
+      return filterApplications(campusAmbassadorApplications);
     }
     return [];
   };
@@ -517,12 +737,14 @@ const AdminDashboard = () => {
     if (!currentApplication) return null;
     
     const isMentor = applicationType === 'mentor';
+    const isBDA = applicationType === 'bda';
+    const isCampusAmbassador = applicationType === 'campus-ambassador';
 
-  return (
+    return (
       <div className="modal-overlay" onClick={() => setShowDetailsModal(false)}>
         <div className="modal-container details-modal" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h3>{isMentor ? 'Mentor' : 'BDA'} Application Details</h3>
+            <h3>{isMentor ? 'Mentor' : isBDA ? 'BDA' : 'Campus Ambassador'} Application Details</h3>
             <button className="close-btn" onClick={() => setShowDetailsModal(false)}>&times;</button>
           </div>
           
@@ -534,9 +756,6 @@ const AdminDashboard = () => {
               <div className="applicant-info-details">
                 <h4>{currentApplication?.full_name || currentApplication?.name || 'Anonymous'}</h4>
                 <p>{currentApplication?.email || 'No email provided'}</p>
-                <span className={`status-badge ${getStatusClass(currentApplication?.status)}`}>
-                  {capitalizeStatus(currentApplication?.status || 'pending')}
-                </span>
               </div>
             </div>
             
@@ -562,148 +781,137 @@ const AdminDashboard = () => {
                       {currentApplication?.timestamp ? moment(currentApplication.timestamp).format('MMMM D, YYYY') : 'Unknown'}
                     </span>
                   </div>
-        </div>
-      </div>
+                </div>
+              </div>
 
-              {/* Conditional sections based on application type */}
+              {/* Mentor specific details */}
               {isMentor && (
-                <>
-                  <div className="details-section">
-                    <h5>Professional Information</h5>
-                    <div className="details-grid">
-                      <div className="detail-item">
-                        <span className="detail-label">Company</span>
-                        <span className="detail-value">{currentApplication?.company || 'Not provided'}</span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="detail-label">Designation</span>
-                        <span className="detail-value">{currentApplication?.designation || 'Not provided'}</span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="detail-label">Experience</span>
-                        <span className="detail-value">{currentApplication?.experience || 'Not provided'}</span>
-          </div>
-                      <div className="detail-item">
-                        <span className="detail-label">LinkedIn</span>
-                        <span className="detail-value">
-                          {currentApplication?.linkedin ? (
-                            <a href={currentApplication.linkedin} target="_blank" rel="noopener noreferrer">
-                              View Profile <FiExternalLink />
-                            </a>
-                          ) : 'Not provided'}
-                        </span>
-          </div>
-        </div>
-          </div>
-                  
-                  <div className="details-section">
-                    <h5>Mentoring Preferences</h5>
-                    <div className="details-grid">
-                      <div className="detail-item full-width">
-                        <span className="detail-label">Domains</span>
-                        <div className="domains-list">
-                          {currentApplication?.domains && currentApplication.domains.length > 0 ? (
-                            currentApplication.domains.map((domain, idx) => (
-                              <span key={idx} className="domain-tag">{domain}</span>
-                            ))
-                          ) : (
-                            <span>No domains specified</span>
-                          )}
-          </div>
-        </div>
-                      <div className="detail-item full-width">
-                        <span className="detail-label">Why do you want to mentor?</span>
-                        <p className="detail-text">{currentApplication?.why_mentor || 'Not provided'}</p>
-                      </div>
-                      <div className="detail-item full-width">
-                        <span className="detail-label">Previous mentoring experience</span>
-                        <p className="detail-text">{currentApplication?.previous_experience || 'Not provided'}</p>
-          </div>
-          </div>
-        </div>
-                </>
-              )}
-              
-              {!isMentor && (
-                <>
-                  <div className="details-section">
-                    <h5>Educational Background</h5>
-                    <div className="details-grid">
-                      <div className="detail-item">
-                        <span className="detail-label">Education</span>
-                        <span className="detail-value">{currentApplication?.education || 'Not provided'}</span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="detail-label">Institution</span>
-                        <span className="detail-value">{currentApplication?.institution || 'Not provided'}</span>
-                      </div>
-                      <div className="detail-item">
-                        <span className="detail-label">Graduation Year</span>
-                        <span className="detail-value">{currentApplication?.graduation_year || 'Not provided'}</span>
-          </div>
-                      <div className="detail-item">
-                        <span className="detail-label">LinkedIn</span>
-                        <span className="detail-value">
-                          {currentApplication?.linkedin ? (
-                            <a href={currentApplication.linkedin} target="_blank" rel="noopener noreferrer">
-                              View Profile <FiExternalLink />
-                            </a>
-                          ) : 'Not provided'}
-                        </span>
-          </div>
-        </div>
-      </div>
-      
-                  <div className="details-section">
-                    <h5>BDA Position Information</h5>
-                    <div className="details-grid">
-                      <div className="detail-item full-width">
-                        <span className="detail-label">Skills</span>
-                        <div className="domains-list">
-                          {currentApplication?.skills && currentApplication.skills.length > 0 ? (
-                            currentApplication.skills.map((skill, idx) => (
-                              <span key={idx} className="domain-tag">{skill}</span>
-                            ))
-                          ) : (
-                            <span>No skills specified</span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="detail-item full-width">
-                        <span className="detail-label">Why do you want to join as a BDA?</span>
-                        <p className="detail-text">{currentApplication?.why_bda || 'Not provided'}</p>
-                      </div>
-                      <div className="detail-item full-width">
-                        <span className="detail-label">Previous experience</span>
-                        <p className="detail-text">{currentApplication?.previous_experience || 'Not provided'}</p>
+                <div className="details-section">
+                  <h5>Mentor Information</h5>
+                  <div className="details-grid">
+                    <div className="detail-item">
+                      <span className="detail-label">Company</span>
+                      <span className="detail-value">{currentApplication?.company || 'Not provided'}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Designation</span>
+                      <span className="detail-value">{currentApplication?.designation || 'Not provided'}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Experience</span>
+                      <span className="detail-value">{currentApplication?.experience || 'Not provided'}</span>
+                    </div>
+                    <div className="detail-item full-width">
+                      <span className="detail-label">Domains</span>
+                      <div className="domains-list">
+                        {currentApplication?.domains && currentApplication.domains.length > 0 ? (
+                          currentApplication.domains.map((domain, idx) => (
+                            <span key={idx} className="domain-tag">{domain}</span>
+                          ))
+                        ) : (
+                          <span>No domains specified</span>
+                        )}
                       </div>
                     </div>
+                    {currentApplication?.resume_url && (
+                      <div className="detail-item">
+                        <span className="detail-label">Resume</span>
+                        <span className="detail-value">
+                          <a href={currentApplication.resume_url} target="_blank" rel="noopener noreferrer">
+                            View Resume <FiExternalLink />
+                          </a>
+                        </span>
+                      </div>
+                    )}
+                    {currentApplication?.portfolio_url && (
+                      <div className="detail-item">
+                        <span className="detail-label">Portfolio</span>
+                        <span className="detail-value">
+                          <a href={currentApplication.portfolio_url} target="_blank" rel="noopener noreferrer">
+                            View Portfolio <FiExternalLink />
+                          </a>
+                        </span>
+                      </div>
+                    )}
                   </div>
-                </>
+                </div>
+              )}
+              
+              {/* BDA specific details */}
+              {isBDA && (
+                <div className="details-section">
+                  <h5>BDA Information</h5>
+                  <div className="details-grid">
+                    <div className="detail-item">
+                      <span className="detail-label">Education</span>
+                      <span className="detail-value">{currentApplication?.education || 'Not provided'}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Experience</span>
+                      <span className="detail-value">{currentApplication?.experience || 'Not provided'}</span>
+                    </div>
+                    {currentApplication?.resume_url && (
+                      <div className="detail-item">
+                        <span className="detail-label">Resume</span>
+                        <span className="detail-value">
+                          <a href={currentApplication.resume_url} target="_blank" rel="noopener noreferrer">
+                            View Resume <FiExternalLink />
+                          </a>
+                        </span>
+                      </div>
+                    )}
+                    {currentApplication?.portfolio_url && (
+                      <div className="detail-item">
+                        <span className="detail-label">Portfolio</span>
+                        <span className="detail-value">
+                          <a href={currentApplication.portfolio_url} target="_blank" rel="noopener noreferrer">
+                            View Portfolio <FiExternalLink />
+                          </a>
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              {/* Campus Ambassador specific details */}
+              {isCampusAmbassador && (
+                <div className="details-section">
+                  <h5>Campus Ambassador Information</h5>
+                  <div className="details-grid">
+                    <div className="detail-item">
+                      <span className="detail-label">College Name</span>
+                      <span className="detail-value">{currentApplication?.college_name || 'Not provided'}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Year of Study</span>
+                      <span className="detail-value">{currentApplication?.year_of_study || 'Not provided'}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Branch</span>
+                      <span className="detail-value">{currentApplication?.branch || 'Not provided'}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Department</span>
+                      <span className="detail-value">{currentApplication?.department || 'Not provided'}</span>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
             
             <div className="modal-actions">
-        <button 
-                className="action-btn edit-btn"
-                onClick={() => {
-                  setShowDetailsModal(false);
-                  handleUpdateStatus(currentApplication);
-                }}
-              >
-                <FiEdit /> Change Status
-        </button>
-        <button 
+              <button 
                 className="action-btn delete-btn"
                 onClick={() => {
-                  if (window.confirm(`Are you sure you want to delete this ${isMentor ? 'mentor' : 'BDA'} application?`)) {
-                    handleDeleteApplication(currentApplication.id || currentApplication._id);
+                  if (window.confirm(`Are you sure you want to delete this ${isMentor ? 'mentor' : isBDA ? 'BDA' : 'Campus Ambassador'} application?`)) {
+                    handleDeleteApplication(currentApplication.id || currentApplication._id, applicationType);
                     setShowDetailsModal(false);
                   }
                 }}
-        >
+              >
                 <FiTrash /> Delete
-        </button>
+              </button>
             </div>
           </div>
         </div>
@@ -713,7 +921,7 @@ const AdminDashboard = () => {
 
   // Sidebar component
   const Sidebar = ({ activePage, setActivePage, isCollapsed, setIsCollapsed }) => {
-    const [showApplicationsDropdown, setShowApplicationsDropdown] = useState(false);
+    const [showApplicationsDropdown, setShowApplicationsDropdown] = useState(true);
     
     const handleApplicationsClick = (type) => {
       setActiveTab('applications');
@@ -738,37 +946,52 @@ const AdminDashboard = () => {
             {!isCollapsed && <span>Dashboard</span>}
           </button>
           
-          <div className="dropdown-container">
-            <button 
-              className={`dropdown-trigger ${activePage.includes('applications') ? 'active' : ''}`}
+          <div className="app-section">
+            <div 
+              className="section-header-sidebar"
               onClick={() => setShowApplicationsDropdown(!showApplicationsDropdown)}
             >
-              <FiClipboard />
-              {!isCollapsed && (
-                <>
-                  <span>Applications</span>
-                  <FiChevronDown className={showApplicationsDropdown ? 'rotated' : ''} />
-                </>
-              )}
-            </button>
+              <div className="section-title">
+                <FiUsers />
+                {!isCollapsed && <span>Applications</span>}
+              </div>
+              {!isCollapsed && <FiChevronDown className={`dropdown-arrow ${showApplicationsDropdown ? 'open' : ''}`} />}
+            </div>
             
             {showApplicationsDropdown && (
-              <div className="dropdown-menu">
-                <button 
-                  className={applicationType === 'bda' && activePage === 'applications' ? 'active' : ''} 
-                  onClick={() => handleApplicationsClick('bda')}
-                >
-                  {!isCollapsed && <span>BDA Applications</span>}
-                </button>
+              <div className="app-links">
                 <button 
                   className={applicationType === 'mentor' && activePage === 'applications' ? 'active' : ''} 
                   onClick={() => handleApplicationsClick('mentor')}
                 >
+                  <FiUser />
                   {!isCollapsed && <span>Mentor Applications</span>}
+                </button>
+                <button 
+                  className={applicationType === 'bda' && activePage === 'applications' ? 'active' : ''} 
+                  onClick={() => handleApplicationsClick('bda')}
+                >
+                  <FiBriefcase />
+                  {!isCollapsed && <span>BDA Applications</span>}
+                </button>
+                <button 
+                  className={applicationType === 'campus-ambassador' && activePage === 'applications' ? 'active' : ''} 
+                  onClick={() => handleApplicationsClick('campus-ambassador')}
+                >
+                  <FiUserPlus />
+                  {!isCollapsed && <span>Campus Ambassador</span>}
                 </button>
               </div>
             )}
           </div>
+          
+          <button 
+            className={activePage === 'registrations' ? 'active' : ''} 
+            onClick={() => setActivePage('registrations')}
+          >
+            <FiClipboard />
+            {!isCollapsed && <span>Registrations</span>}
+          </button>
           
           <button 
             className={activePage === 'settings' ? 'active' : ''} 
@@ -785,36 +1008,58 @@ const AdminDashboard = () => {
   // Applications content component
   const Applications = () => {
     // Filter applications based on current filters
-    const filteredApplications = applicationType === 'mentor' 
-      ? filterApplications(mentorApplications)
-      : filterApplications(bdaApplications);
+    const filteredApplications = getFilteredApplications();
+    
+    let typeLabel = "Applications";
+    if (applicationType === 'mentor') {
+      typeLabel = "Mentor Applications";
+    } else if (applicationType === 'bda') {
+      typeLabel = "BDA Applications";
+    } else if (applicationType === 'campus-ambassador') {
+      typeLabel = "Campus Ambassador Applications";
+    }
+    
+    // Get the appropriate applications array
+    const allApplications = applicationType === 'mentor' 
+      ? mentorApplications 
+      : applicationType === 'bda' 
+        ? bdaApplications 
+        : campusAmbassadorApplications;
 
     return (
       <div className="applications-content">
         <div className="section-header">
-          <h2>{applicationType === 'mentor' ? 'Mentor' : 'BDA'} Applications</h2>
-          <div className="filter-controls">
-            <select 
-              value={statusFilter} 
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="status-filter"
-            >
-              <option value="all">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
-            </select>
-            <div className="search-box">
-              <FiSearch />
-            <input 
-              type="text" 
-                placeholder="Search by name or email..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+          <h2>{typeLabel}</h2>
+          <div className="action-section">
+            <div className="search-container">
+              <div className="search-box">
+                <FiSearch />
+                <input 
+                  type="text" 
+                  placeholder="Search by name or email..." 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                {searchTerm && (
+                  <button 
+                    className="clear-search" 
+                    onClick={() => setSearchTerm('')}
+                  >
+                    <FiX />
+                  </button>
+                )}
+              </div>
             </div>
+            
+            <button 
+              className="export-btn" 
+              onClick={() => exportToCSV(allApplications, applicationType)}
+              disabled={allApplications.length === 0}
+            >
+              <FiDownload /> Export to CSV
+            </button>
           </div>
-          </div>
+        </div>
           
         <div className="applications-table">
           <table>
@@ -822,8 +1067,26 @@ const AdminDashboard = () => {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Phone</th>
+                {applicationType === 'mentor' && (
+                  <>
+                    <th>Company</th>
+                    <th>Designation</th>
+                  </>
+                )}
+                {applicationType === 'bda' && (
+                  <>
+                    <th>Education</th>
+                  </>
+                )}
+                {applicationType === 'campus-ambassador' && (
+                  <>
+                    <th>College</th>
+                    <th>Year</th>
+                    <th>Branch</th>
+                  </>
+                )}
                 <th>Date</th>
-                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -840,12 +1103,26 @@ const AdminDashboard = () => {
                       </div>
                     </td>
                     <td>{app.email || '-'}</td>
+                    <td>{app.phone || '-'}</td>
+                    {applicationType === 'mentor' && (
+                      <>
+                        <td>{app.company || '-'}</td>
+                        <td>{app.designation || '-'}</td>
+                      </>
+                    )}
+                    {applicationType === 'bda' && (
+                      <>
+                        <td>{app.education || '-'}</td>
+                      </>
+                    )}
+                    {applicationType === 'campus-ambassador' && (
+                      <>
+                        <td>{app.college_name || '-'}</td>
+                        <td>{app.year_of_study || '-'}</td>
+                        <td>{app.branch || '-'}</td>
+                      </>
+                    )}
                     <td>{app.timestamp ? moment(app.timestamp).format('MMM D, YYYY') : '-'}</td>
-                    <td>
-                      <span className={`status-badge ${getStatusClass(app.status)}`}>
-                        {capitalizeStatus(app.status || 'pending')}
-                      </span>
-                    </td>
                     <td>
                       <div className="action-buttons">
                         <button 
@@ -855,30 +1132,137 @@ const AdminDashboard = () => {
                         >
                           <FiEye />
                         </button>
-            <button 
-                          className="action-btn edit-btn" 
-                          title="Edit Status"
-                          onClick={() => handleUpdateStatus(app)}
-            >
-                          <FiEdit />
-            </button>
-            <button 
+                        <button 
                           className="action-btn delete-btn" 
                           title="Delete"
-                          onClick={() => handleDeleteApplication(app.id || app._id)}
-            >
+                          onClick={() => handleDeleteApplication(app.id || app._id, applicationType)}
+                        >
                           <FiTrash />
-            </button>
-          </div>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="no-applications">
+                  <td colSpan="7" className="no-applications">
                     <div className="empty-state">
                       <FiInbox />
                       <p>No applications found</p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  };
+
+  // Registrations content component
+  const Registrations = () => {
+    // Filter registrations based on search term
+    const filteredRegistrations = registrations.filter(reg => {
+      const searchable = 
+        `${reg.name || ''} 
+         ${reg.email || ''} 
+         ${reg.phone || ''} 
+         ${reg.college || ''} 
+         ${reg.event_name || ''}`.toLowerCase();
+      
+      return searchTerm === '' || searchable.includes(searchTerm.toLowerCase());
+    });
+    
+    // Export registrations to CSV
+    const exportRegistrationsToCSV = () => {
+      exportToCSV(registrations, 'registrations');
+    };
+    
+    return (
+      <div className="registrations-content">
+        <div className="section-header">
+          <h2>Event Registrations</h2>
+          <div className="action-section">
+            <div className="search-container">
+              <div className="search-box">
+                <FiSearch />
+                <input 
+                  type="text" 
+                  placeholder="Search by name or email..." 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                {searchTerm && (
+                  <button 
+                    className="clear-search" 
+                    onClick={() => setSearchTerm('')}
+                  >
+                    <FiX />
+                  </button>
+                )}
+              </div>
+            </div>
+            
+            <button 
+              className="export-btn" 
+              onClick={exportRegistrationsToCSV}
+              disabled={registrations.length === 0}
+            >
+              <FiDownload /> Export to CSV
+            </button>
+          </div>
+        </div>
+          
+        <div className="registrations-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Event</th>
+                <th>College</th>
+                <th>Registration Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRegistrations.length > 0 ? (
+                filteredRegistrations.map(reg => (
+                  <tr key={reg.id || reg._id}>
+                    <td>
+                      <div className="applicant-info">
+                        <div className="applicant-avatar">
+                          {getInitials(reg.name || 'Anonymous')}
+                        </div>
+                        <span>{reg.name || 'Anonymous'}</span>
+                      </div>
+                    </td>
+                    <td>{reg.email || '-'}</td>
+                    <td>{reg.phone || '-'}</td>
+                    <td>{reg.event_name || '-'}</td>
+                    <td>{reg.college || '-'}</td>
+                    <td>{reg.timestamp ? moment(reg.timestamp).format('MMM D, YYYY') : '-'}</td>
+                    <td>
+                      <div className="action-buttons">
+                        <button 
+                          className="action-btn delete-btn" 
+                          title="Delete"
+                          onClick={() => handleDeleteRegistration(reg.id || reg._id)}
+                        >
+                          <FiTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7} className="no-registrations">
+                    <div className="empty-state">
+                      <FiInbox />
+                      <p>No registrations found</p>
                     </div>
                   </td>
                 </tr>
@@ -939,11 +1323,13 @@ const AdminDashboard = () => {
             {activeTab === 'dashboard' && <h1><FiPieChart /> Dashboard</h1>}
             {activeTab === 'applications' && applicationType === 'mentor' && <h1><FiUserCheck /> Mentor Applications</h1>}
             {activeTab === 'applications' && applicationType === 'bda' && <h1><FiBriefcase /> BDA Applications</h1>}
+            {activeTab === 'applications' && applicationType === 'campus-ambassador' && <h1><FiUserPlus /> Campus Ambassador</h1>}
+            {activeTab === 'registrations' && <h1><FiClipboard /> Event Registrations</h1>}
             {activeTab === 'settings' && <h1><FiSettings /> Settings</h1>}
           </div>
           
           <div className="header-actions">
-            <button className="refresh-btn" onClick={memoizedFetchApplications}>
+            <button className="refresh-btn" onClick={activeTab === 'registrations' ? memoizedFetchRegistrations : memoizedFetchApplications}>
               <FiRefreshCw /> {isLoading ? 'Refreshing...' : 'Refresh'}
             </button>
             <button className="logout-btn" onClick={handleLogout}>
@@ -977,75 +1363,35 @@ const AdminDashboard = () => {
                 
             <div className="metrics-grid">
               <div className="metric-card">
-                <div className="metric-icon"><FiUsers /></div>
-                <div className="metric-info">
-                  <h3>Total Applications</h3>
-                  <p className="metric-value">{metrics.totalApplications || '-'}</p>
-                </div>
-              </div>
-              
-              <div className="metric-card">
-                <div className="metric-icon"><FiFileText /></div>
-                <div className="metric-info">
-                  <h3>Pending</h3>
-                  <p className="metric-value">{metrics.pendingApplications || '-'}</p>
-                </div>
-              </div>
-              
-              <div className="metric-card">
-                <div className="metric-icon"><FiCheckCircle /></div>
-                <div className="metric-info">
-                  <h3>Approved</h3>
-                  <p className="metric-value">{metrics.approvedApplications || '-'}</p>
-                </div>
-              </div>
-              
-              <div className="metric-card">
-                <div className="metric-icon"><FiXCircle /></div>
-                <div className="metric-info">
-                  <h3>Rejected</h3>
-                  <p className="metric-value">{metrics.rejectedApplications || '-'}</p>
-                  </div>
-                </div>
-              
-              <div className="metric-card">
                 <div className="metric-icon"><FiUserCheck /></div>
                 <div className="metric-info">
                   <h3>Mentor Applications</h3>
                   <p className="metric-value">{metrics.mentorApplications || '-'}</p>
-                  </div>
                 </div>
+              </div>
               
               <div className="metric-card">
                 <div className="metric-icon"><FiBriefcase /></div>
                 <div className="metric-info">
                   <h3>BDA Applications</h3>
                   <p className="metric-value">{metrics.bdaApplications || '-'}</p>
-                  </div>
+                </div>
               </div>
-      </div>
-            
-            <div className="recent-applications">
-              <h3>Recent Applications</h3>
-              <div className="tabs">
-                <button 
-                  className={applicationType === 'mentor' ? 'active' : ''}
-                  onClick={() => {
-                    setActiveTab('applications');
-                    setApplicationType('mentor');
-                  }}
-                >
-                  Mentor Applications
-                </button>
-                <button 
-                  className={applicationType === 'bda' ? 'active' : ''}
-                  onClick={() => {
-                    setActiveTab('applications');
-                    setApplicationType('bda');
-                  }}
-                >
-                  BDA Applications
-                </button>
+              
+              <div className="metric-card">
+                <div className="metric-icon"><FiUserPlus /></div>
+                <div className="metric-info">
+                  <h3>Campus Ambassador</h3>
+                  <p className="metric-value">{metrics.campusAmbassadorApplications || '-'}</p>
+                </div>
+              </div>
+              
+              <div className="metric-card">
+                <div className="metric-icon"><FiClipboard /></div>
+                <div className="metric-info">
+                  <h3>Event Registrations</h3>
+                  <p className="metric-value">{metrics.registrations || '-'}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -1054,6 +1400,11 @@ const AdminDashboard = () => {
         {/* Applications View */}
         {!isLoading && !error && activeTab === 'applications' && applicationType && (
           <Applications />
+        )}
+        
+        {/* Registrations View */}
+        {!isLoading && !error && activeTab === 'registrations' && (
+          <Registrations />
         )}
         
         {/* Settings View */}

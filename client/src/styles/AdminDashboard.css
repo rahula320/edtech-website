@@ -217,8 +217,8 @@
 
 .header-actions {
   display: flex;
+  gap: 12px;
   align-items: center;
-  gap: 1rem;
 }
 
 .refresh-btn, .logout-btn {
@@ -262,6 +262,29 @@
   align-items: center;
   justify-content: center;
   font-weight: 600;
+}
+
+.export-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.export-btn:hover {
+  background-color: #388E3C;
+}
+
+.export-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 /* Loading and Error States */
@@ -907,11 +930,12 @@
 
 .section-header {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .section-header h2 {
@@ -935,6 +959,16 @@
 .applications-table table {
   width: 100%;
   border-collapse: collapse;
+  white-space: nowrap;
+  table-layout: auto;
+}
+
+.applications-table th,
+.applications-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 .applications-table th {
@@ -944,7 +978,6 @@
   font-weight: 500;
   color: var(--text-secondary);
   border-bottom: 1px solid var(--border-color);
-  white-space: nowrap;
 }
 
 .applications-table td {
@@ -1060,4 +1093,264 @@
     opacity: 0;
     transform: scale(0.97);
   }
+}
+
+/* App Section in Sidebar */
+.app-section {
+  margin-bottom: 8px;
+}
+
+.section-header-sidebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: background-color 0.3s;
+}
+
+.section-header-sidebar:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  color: var(--text-primary);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title svg {
+  font-size: 1.25rem;
+  min-width: 1.25rem;
+}
+
+.app-links {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-arrow {
+  transition: transform 0.3s;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* Search Container */
+.action-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  flex-wrap: nowrap;
+}
+
+.search-container {
+  display: inline-block;
+  vertical-align: middle;
+  min-width: 250px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px 12px;
+  width: 100%;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0 8px;
+  font-size: 14px;
+}
+
+.search-box svg {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.clear-search {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s;
+}
+
+.clear-search:hover {
+  color: var(--text-primary);
+}
+
+/* Improved Table Styling */
+.applications-table {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+}
+
+.applications-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.applications-table th {
+  background-color: #f8f9fa;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.applications-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.95rem;
+}
+
+.applications-table tr:last-child td {
+  border-bottom: none;
+}
+
+.applications-table tr:hover td {
+  background-color: #f8f9fa;
+}
+
+/* Action Buttons Styling */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: white;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.action-btn.view-btn:hover {
+  background-color: #e6f4ff;
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+.action-btn.delete-btn:hover {
+  background-color: #fff1f0;
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+/* Export Button */
+.export-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+}
+
+.export-btn:hover {
+  background-color: #388E3C;
+}
+
+.export-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Additional styles to fix search layout */
+.section-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.action-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  flex-wrap: nowrap;
+}
+
+.search-container {
+  flex-grow: 1;
+  max-width: 400px;
+  width: auto;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  width: 100%;
+  transition: all 0.3s;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .action-section {
+    width: 100%;
+    margin-top: 15px;
+    justify-content: space-between;
+  }
+  
+  .search-container {
+    width: 70%;
+  }
+}
+
+/* Force table to not wrap text */
+.applications-table {
+  overflow-x: auto;
+  max-width: 100%;
 } 

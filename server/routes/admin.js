@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { isAdmin } = require('../middleware/auth');
+const { sql } = require('../config/db');
 
 // Mock data for applications (replace with database operations in production)
 let mentorApplications = [
@@ -138,11 +139,44 @@ const calculateMetrics = () => {
 // Apply isAdmin middleware to all admin routes
 router.use(isAdmin);
 
-// Get all applications (both mentor and BDA)
-router.get('/applications', (req, res) => {
+// Get all applications (mentor, BDA, and Campus Ambassador)
+router.get('/applications', async (req, res) => {
   try {
-    const applications = [...mentorApplications, ...bdaApplications];
-    const metrics = calculateMetrics();
+    // Fetch applications from the database
+    const mentorApplications = await sql`
+      SELECT *, 'mentor' as type FROM mentor_applications ORDER BY timestamp DESC
+    `;
+    
+    const bdaApplications = await sql`
+      SELECT *, 'bda' as type FROM bda_applications ORDER BY timestamp DESC
+    `;
+    
+    const campusAmbassadorApplications = await sql`
+      SELECT *, 'campus-ambassador' as type FROM campus_ambassador_applications ORDER BY timestamp DESC
+    `;
+    
+    // Combine all applications
+    const applications = [
+      ...mentorApplications, 
+      ...bdaApplications,
+      ...campusAmbassadorApplications
+    ];
+    
+    // Calculate metrics
+    const totalApplications = applications.length;
+    const pendingApplications = applications.filter(app => app.status === 'pending').length;
+    const approvedApplications = applications.filter(app => app.status === 'approved').length;
+    const rejectedApplications = applications.filter(app => app.status === 'rejected').length;
+    
+    const metrics = {
+      totalApplications,
+      pendingApplications,
+      approvedApplications,
+      rejectedApplications,
+      mentorApplications: mentorApplications.length,
+      bdaApplications: bdaApplications.length,
+      campusAmbassadorApplications: campusAmbassadorApplications.length
+    };
     
     res.status(200).json({
       success: true,
@@ -152,6 +186,7 @@ router.get('/applications', (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Error fetching applications:', error);
     res.status(500).json({
       success: false,
       error: error.message || 'Server error'
@@ -160,13 +195,18 @@ router.get('/applications', (req, res) => {
 });
 
 // Get mentor applications
-router.get('/applications/mentor', (req, res) => {
+router.get('/applications/mentor', async (req, res) => {
   try {
+    const applications = await sql`
+      SELECT *, 'mentor' as type FROM mentor_applications ORDER BY timestamp DESC
+    `;
+    
     res.status(200).json({
       success: true,
-      data: mentorApplications
+      data: applications
     });
   } catch (error) {
+    console.error('Error fetching mentor applications:', error);
     res.status(500).json({
       success: false,
       error: error.message || 'Server error'
@@ -175,13 +215,38 @@ router.get('/applications/mentor', (req, res) => {
 });
 
 // Get BDA applications
-router.get('/applications/bda', (req, res) => {
+router.get('/applications/bda', async (req, res) => {
   try {
+    const applications = await sql`
+      SELECT *, 'bda' as type FROM bda_applications ORDER BY timestamp DESC
+    `;
+    
     res.status(200).json({
       success: true,
-      data: bdaApplications
+      data: applications
     });
   } catch (error) {
+    console.error('Error fetching BDA applications:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Server error'
+    });
+  }
+});
+
+// Get Campus Ambassador applications 
+router.get('/applications/campus-ambassador', async (req, res) => {
+  try {
+    const applications = await sql`
+      SELECT *, 'campus-ambassador' as type FROM campus_ambassador_applications ORDER BY timestamp DESC
+    `;
+    
+    res.status(200).json({
+      success: true,
+      data: applications
+    });
+  } catch (error) {
+    console.error('Error fetching Campus Ambassador applications:', error);
     res.status(500).json({
       success: false,
       error: error.message || 'Server error'
@@ -207,10 +272,10 @@ router.get('/metrics', (req, res) => {
 });
 
 // Update application status
-router.put('/applications/:id', (req, res) => {
+router.put('/applications/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, type } = req.body;
     
     if (!['pending', 'approved', 'rejected'].includes(status)) {
       return res.status(400).json({
@@ -220,37 +285,54 @@ router.put('/applications/:id', (req, res) => {
     }
     
     let application;
-    let applications;
     
-    // Check if the application is a mentor application
-    const mentorIndex = mentorApplications.findIndex(app => app.id === id);
-    if (mentorIndex !== -1) {
-      mentorApplications[mentorIndex].status = status;
-      application = mentorApplications[mentorIndex];
-      applications = 'mentor';
+    if (type === 'mentor') {
+      // Update mentor application
+      application = await sql`
+        UPDATE mentor_applications 
+        SET status = ${status}, updated_at = NOW() 
+        WHERE id = ${id} 
+        RETURNING *
+      `;
+    } else if (type === 'bda') {
+      // Update BDA application
+      application = await sql`
+        UPDATE bda_applications 
+        SET status = ${status}, updated_at = NOW() 
+        WHERE id = ${id} 
+        RETURNING *
+      `;
+    } else if (type === 'campus-ambassador') {
+      // Update Campus Ambassador application
+      application = await sql`
+        UPDATE campus_ambassador_applications 
+        SET status = ${status}, updated_at = NOW() 
+        WHERE id = ${id} 
+        RETURNING *
+      `;
     } else {
-      // Check if the application is a BDA application
-      const bdaIndex = bdaApplications.findIndex(app => app.id === id);
-      if (bdaIndex !== -1) {
-        bdaApplications[bdaIndex].status = status;
-        application = bdaApplications[bdaIndex];
-        applications = 'bda';
-      } else {
-        return res.status(404).json({
-          success: false,
-          error: 'Application not found'
-        });
-      }
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid application type'
+      });
+    }
+    
+    if (application.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Application not found'
+      });
     }
     
     res.status(200).json({
       success: true,
       data: {
-        application,
-        applications
+        application: application[0],
+        type
       }
     });
   } catch (error) {
+    console.error('Error updating application status:', error);
     res.status(500).json({
       success: false,
       error: error.message || 'Server error'
@@ -259,45 +341,57 @@ router.put('/applications/:id', (req, res) => {
 });
 
 // Delete application
-router.delete('/applications/:id', (req, res) => {
+router.delete('/applications/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const { type } = req.body;
     
-    // Check if the application is a mentor application
-    const mentorIndex = mentorApplications.findIndex(app => app.id === id);
-    if (mentorIndex !== -1) {
-      const deletedApplication = mentorApplications[mentorIndex];
-      mentorApplications = mentorApplications.filter(app => app.id !== id);
-      
-      return res.status(200).json({
-        success: true,
-        data: {
-          deletedApplication,
-          type: 'mentor'
-        }
+    let deletedApplication;
+    
+    if (type === 'mentor') {
+      // Delete mentor application
+      deletedApplication = await sql`
+        DELETE FROM mentor_applications 
+        WHERE id = ${id} 
+        RETURNING *
+      `;
+    } else if (type === 'bda') {
+      // Delete BDA application
+      deletedApplication = await sql`
+        DELETE FROM bda_applications 
+        WHERE id = ${id} 
+        RETURNING *
+      `;
+    } else if (type === 'campus-ambassador') {
+      // Delete Campus Ambassador application
+      deletedApplication = await sql`
+        DELETE FROM campus_ambassador_applications 
+        WHERE id = ${id} 
+        RETURNING *
+      `;
+    } else {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid application type'
       });
     }
     
-    // Check if the application is a BDA application
-    const bdaIndex = bdaApplications.findIndex(app => app.id === id);
-    if (bdaIndex !== -1) {
-      const deletedApplication = bdaApplications[bdaIndex];
-      bdaApplications = bdaApplications.filter(app => app.id !== id);
-      
-      return res.status(200).json({
-        success: true,
-        data: {
-          deletedApplication,
-          type: 'bda'
-        }
+    if (deletedApplication.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Application not found'
       });
     }
     
-    return res.status(404).json({
-      success: false,
-      error: 'Application not found'
+    res.status(200).json({
+      success: true,
+      data: {
+        deletedApplication: deletedApplication[0],
+        type
+      }
     });
   } catch (error) {
+    console.error('Error deleting application:', error);
     res.status(500).json({
       success: false,
       error: error.message || 'Server error'
