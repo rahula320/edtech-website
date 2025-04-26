@@ -1,17 +1,39 @@
-require('dotenv').config();
-const { neon } = require('@neondatabase/serverless');
-const bcrypt = require('bcryptjs');
+import 'dotenv/config';
+import { neon } from '@neondatabase/serverless';
+import bcrypt from 'bcryptjs';
 
 // Use hardcoded connection string for development
 const databaseUrl = "postgresql://neondb_owner:npg_OSsZKqm1iTV3@ep-floral-silence-a18kxybn-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
 
+// Log database connection
+console.log(`Connecting to database with URL: ${databaseUrl.split('@')[1]}`);
+
 // Create a SQL client
 const sql = neon(databaseUrl);
+
+// Add query wrapper with better error handling
+const safeQuery = async (query, params = []) => {
+  try {
+    console.log(`Executing query: ${query.toString().slice(0, 100)}...`);
+    const result = await query;
+    console.log(`Query successful with ${result?.length || 0} results`);
+    return result;
+  } catch (error) {
+    console.error('Database query error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      stack: error.stack
+    });
+    throw error;
+  }
+};
 
 // Test database connection
 async function testConnection() {
   try {
-    const result = await sql`SELECT NOW()`;
+    console.log('Testing database connection...');
+    const result = await safeQuery(sql`SELECT NOW()`);
     console.log(`Database connected! Server time: ${result[0].now}`);
     return true;
   } catch (error) {
@@ -24,7 +46,7 @@ async function testConnection() {
 async function initDatabase() {
   try {
     // Create users table if it doesn't exist
-    await sql`
+    await safeQuery(sql`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
         username VARCHAR(255),
@@ -35,7 +57,7 @@ async function initDatabase() {
         role VARCHAR(50) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
-    `;
+    `);
     
     console.log("Users table initialized");
     
@@ -43,7 +65,7 @@ async function initDatabase() {
     const adminEmail = "admin@acmyx.com";
     
     // Check if admin exists
-    const adminUsers = await sql`SELECT * FROM users WHERE email = ${adminEmail} AND role = 'admin'`;
+    const adminUsers = await safeQuery(sql`SELECT * FROM users WHERE email = ${adminEmail} AND role = 'admin'`);
     
     if (adminUsers.length === 0) {
       // Only create if admin doesn't exist
@@ -52,17 +74,17 @@ async function initDatabase() {
       // Hash the password before storing it
       const hashedPassword = await bcrypt.hash(adminPassword, 10);
       
-      await sql`
+      await safeQuery(sql`
         INSERT INTO users (email, password, role, username, first_name, last_name, created_at)
         VALUES (${adminEmail}, ${hashedPassword}, 'admin', 'admin', 'Admin', 'User', ${new Date().toISOString()})
-      `;
+      `);
       console.log(`Admin user created with email: ${adminEmail}`);
     } else {
       console.log(`Admin user already exists with email: ${adminEmail}`);
     }
     
     // Create mentor_applications table if it doesn't exist
-    await sql`
+    await safeQuery(sql`
       CREATE TABLE IF NOT EXISTS mentor_applications (
         id SERIAL PRIMARY KEY,
         full_name VARCHAR(255) NOT NULL,
@@ -79,12 +101,12 @@ async function initDatabase() {
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP
       )
-    `;
+    `);
     
     console.log('Mentor applications table initialized');
     
     // Create bda_applications table if it doesn't exist
-    await sql`
+    await safeQuery(sql`
       CREATE TABLE IF NOT EXISTS bda_applications (
         id SERIAL PRIMARY KEY,
         full_name VARCHAR(255) NOT NULL,
@@ -98,12 +120,12 @@ async function initDatabase() {
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP
       )
-    `;
+    `);
     
     console.log('BDA applications table initialized');
     
     // Create campus_ambassador_applications table if it doesn't exist
-    await sql`
+    await safeQuery(sql`
       CREATE TABLE IF NOT EXISTS campus_ambassador_applications (
         id SERIAL PRIMARY KEY,
         full_name VARCHAR(255) NOT NULL,
@@ -117,11 +139,9 @@ async function initDatabase() {
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP
       )
-    `;
+    `);
     
     console.log('Campus Ambassador applications table initialized');
-    
-    // Removed migration logic since the old applications table has been dropped
     
     console.log('Database initialization completed successfully');
   } catch (error) {
@@ -134,16 +154,15 @@ async function initDatabase() {
 async function updateAdminPassword(email, newPassword) {
   try {
     // Hash the new password
-    const bcrypt = require('bcryptjs');
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     
     // Update the password for the admin user
-    const result = await sql`
+    const result = await safeQuery(sql`
       UPDATE users 
       SET password = ${hashedPassword} 
       WHERE email = ${email} AND role = 'admin'
       RETURNING id
-    `;
+    `);
     
     if (result.length > 0) {
       console.log(`Admin password updated successfully for: ${email}`);
@@ -158,9 +177,12 @@ async function updateAdminPassword(email, newPassword) {
   }
 }
 
-module.exports = {
+// Export as ES modules
+export default {
   sql,
   testConnection,
   initDatabase,
   updateAdminPassword
-}; 
+};
+
+export { sql, safeQuery, testConnection, initDatabase, updateAdminPassword }; 

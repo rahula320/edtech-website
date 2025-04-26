@@ -15,10 +15,12 @@ const bcrypt = require('bcryptjs');
 
 // Import database connection
 const db = require('./config/db');
+const { createTables } = require('./config/create-tables');
 
 // Import routes
 const apiRoutes = require('./routes/api');
 const adminRoutes = require('./routes/admin');
+const paymentRoutes = require('./routes/payment');
 
 const app = express();
 
@@ -110,6 +112,7 @@ transporter.verify((error, success) => {
 // Use routes
 app.use('/api', apiRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api', paymentRoutes);
 
 // Routes
 app.post('/api/contact', async (req, res) => {
@@ -471,12 +474,19 @@ const PORT = process.env.PORT || 5001;
 db.testConnection()
   .then(connected => {
     if (connected) {
+      console.log('Successfully connected to Neon DB');
       return db.initDatabase();
     } else {
       console.error('Failed to connect to database. Server will start but may not function correctly.');
     }
   })
   .then(() => {
+    // Create necessary tables
+    console.log('Database initialized, creating tables...');
+    return createTables();
+  })
+  .then(() => {
+    console.log('Tables created successfully, starting server...');
     const server = app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });

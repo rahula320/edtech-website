@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import './ProgramDetail.css';
 
 function ProgramDetail({ programsData }) {
   const { programId } = useParams();
+  const navigate = useNavigate();
   const [program, setProgram] = useState(null);
   const [selectedTab, setSelectedTab] = useState('overview');
   const [selectedPricingPlan, setSelectedPricingPlan] = useState('advanced');
@@ -50,6 +51,15 @@ function ProgramDetail({ programsData }) {
     };
   }, [selectedTab]); // Re-run when selected tab changes
 
+  const handleEnrollNow = () => {
+    navigate(`/payment/${programId}`, { 
+      state: { 
+        plan: selectedPricingPlan,
+        program: program
+      } 
+    });
+  };
+
   if (!program) {
     return (
       <div className="program-not-found">
@@ -84,7 +94,12 @@ function ProgramDetail({ programsData }) {
               </div>
             </div>
             <div className="program-hero-cta">
-              <button className="cta-button primary">Enroll Now</button>
+              <button 
+                className="cta-button primary"
+                onClick={handleEnrollNow}
+              >
+                Enroll Now
+              </button>
               <button className="cta-button secondary">Download Brochure</button>
             </div>
           </div>
@@ -124,7 +139,10 @@ function ProgramDetail({ programsData }) {
                 <i className="fas fa-question-circle"></i> FAQs
               </button>
             </div>
-            <button className="nav-enroll-button">
+            <button 
+              className="nav-enroll-button"
+              onClick={handleEnrollNow}
+            >
               <i className="fas fa-graduation-cap"></i> Enroll Now
             </button>
           </div>
@@ -485,6 +503,15 @@ function ProgramDetail({ programsData }) {
                 </li>
               </ul>
             </div>
+          </div>
+          
+          <div className="pricing-cta">
+            <button 
+              className="proceed-button"
+              onClick={handleEnrollNow}
+            >
+              Proceed with Selected Plan
+            </button>
           </div>
         </div>
       </section>

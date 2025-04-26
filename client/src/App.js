@@ -11,6 +11,8 @@ import BdaForm from './pages/BdaForm';
 import CampusAmbassadorForm from './pages/CampusAmbassadorForm';
 import StudentPortal from './pages/StudentPortal';
 import ProgramDetail from './pages/ProgramDetail';
+import PaymentPage from './pages/PaymentPage';
+import PaymentConfirmation from './pages/PaymentConfirmation';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -22,6 +24,7 @@ import { programsData } from './data/programsData';
 function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const isPaymentConfirmationRoute = location.pathname.startsWith('/payment-confirmation');
 
   return (
     <div className="App">
@@ -37,6 +40,8 @@ function App() {
           <Route path="/careers/campus-ambassador" element={<CampusAmbassadorForm />} />
           <Route path="/portal" element={<StudentPortal />} />
           <Route path="/programs/:programId" element={<ProgramDetail programsData={programsData} />} />
+          <Route path="/payment/:programId" element={<PaymentPage />} />
+          <Route path="/payment-confirmation/:orderId" element={<PaymentConfirmation />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin" element={<AdminLogin />} />
@@ -48,7 +53,7 @@ function App() {
           <Route path="/login" element={<Navigate to="/admin" replace />} />
         </Routes>
       </main>
-      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && !isPaymentConfirmationRoute && <Footer />}
     </div>
   );
 }
