@@ -17,18 +17,6 @@
     },
     { "src": "/(.*)", "dest": "client/build/$1" }
   ],
-  "env": {
-    "NODE_ENV": "production",
-    "DATABASE_URL": "@database-url",
-    "ADMIN_EMAIL": "@admin-email",
-    "ADMIN_PASSWORD": "@admin-password",
-    "SESSION_SECRET": "@session-secret",
-    "CASHFREE_API_KEY": "@cashfree-api-key",
-    "CASHFREE_API_SECRET": "@cashfree-api-secret",
-    "CASHFREE_BASE_URL": "https://api.cashfree.com/pg",
-    "CASHFREE_WEBHOOK_SECRET": "@cashfree-webhook-secret",
-    "CALLBACK_URL": "@callback-url"
-  },
   "buildCommand": "npm run build",
   "outputDirectory": "client/build"
 } 
