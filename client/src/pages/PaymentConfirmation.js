@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import './PaymentConfirmation.css';
 
+// Get base API URL from environment or use current hostname
+const getApiBaseUrl = () => {
+  // In production, use the same hostname
+  if (window.location.hostname.includes('vercel.app') || window.location.hostname === 'acmyx.vercel.app') {
+    return `${window.location.origin}`;
+  }
+  // In development
+  return 'http://localhost:5001';
+};
+
 function PaymentConfirmation() {
   const { orderId } = useParams();
   const [searchParams] = useSearchParams();
@@ -21,7 +31,7 @@ function PaymentConfirmation() {
         setLoading(true);
         
         // Verify payment status with server
-        const response = await fetch(`/api/payment/verify`, {
+        const response = await fetch(`${getApiBaseUrl()}/api/payment/verify`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -40,7 +50,7 @@ function PaymentConfirmation() {
         }
         
         // Get order details
-        const orderResponse = await fetch(`/api/orders/${orderId}`);
+        const orderResponse = await fetch(`${getApiBaseUrl()}/api/orders/${orderId}`);
         const orderData = await orderResponse.json();
         
         if (!orderResponse.ok) {

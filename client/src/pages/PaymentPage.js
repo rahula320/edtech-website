@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import './PaymentPage.css';
 
+// Get base API URL from environment or use current hostname
+const getApiBaseUrl = () => {
+  // In production, use the same hostname
+  if (window.location.hostname.includes('vercel.app') || window.location.hostname === 'acmyx.vercel.app') {
+    return `${window.location.origin}`;
+  }
+  // In development
+  return 'http://localhost:5001';
+};
+
 function PaymentPage() {
   const { programId } = useParams();
   const location = useLocation();
@@ -79,7 +89,7 @@ function PaymentPage() {
 
     try {
       // Create order in our system
-      const orderResponse = await fetch('/api/orders', {
+      const orderResponse = await fetch(`${getApiBaseUrl()}/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +126,7 @@ function PaymentPage() {
       }
 
       // Initiate Cashfree payment
-      const paymentResponse = await fetch('/api/payment/initiate', {
+      const paymentResponse = await fetch(`${getApiBaseUrl()}/api/payment/initiate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
