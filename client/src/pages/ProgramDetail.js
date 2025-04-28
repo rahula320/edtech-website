@@ -371,7 +371,10 @@ function ProgramDetail({ programsData }) {
                 <span className="current-price">₹8,999</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
-              <button className="pricing-button">
+              <button 
+                className="pricing-button"
+                onClick={handleEnrollNow}
+              >
                 Enroll Now
               </button>
               <ul className="plan-features">
@@ -413,7 +416,10 @@ function ProgramDetail({ programsData }) {
                 <span className="current-price">₹4,999</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
-              <button className="pricing-button">
+              <button 
+                className="pricing-button"
+                onClick={handleEnrollNow}
+              >
                 Enroll Now
               </button>
               <ul className="plan-features">
@@ -455,7 +461,10 @@ function ProgramDetail({ programsData }) {
                 <span className="current-price">₹3,499</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
-              <button className="pricing-button">
+              <button 
+                className="pricing-button"
+                onClick={handleEnrollNow}
+              >
                 Enroll Now
               </button>
               <ul className="plan-features">
