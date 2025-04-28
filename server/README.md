@@ -7,7 +7,6 @@ Backend server for the EdTech website with MongoDB integration.
 - Express.js backend
 - MongoDB database with Mongoose ODM
 - User authentication with Passport.js
-- Email notifications with Nodemailer
 - Session management
 - RESTful API endpoints
 
@@ -50,9 +49,6 @@ The following models are defined:
    MONGODB_PASSWORD=
    MONGODB_DATABASE=edtech
    SESSION_SECRET=your-secret-key-change-this-in-production
-   EMAIL_USER=your-email@gmail.com
-   EMAIL_PASS=your-app-specific-password
-   ADMIN_EMAIL=admin@example.com
    ```
 
 ### Installation
@@ -98,7 +94,7 @@ In production, use the complete connection string with authentication in the `MO
 - `POST /api/courses` - Create a new course (instructors only)
 
 ### Contact
-- `POST /api/contact` - Submit contact form
+- `POST /api/contact` - Submit contact form (logs message to console)
 
 ## Docker Deployment
 
