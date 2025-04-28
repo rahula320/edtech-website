@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './ProgramDetail.css';
 
@@ -6,6 +6,8 @@ function ProgramDetail({ programsData }) {
   const { programId } = useParams();
   const [program, setProgram] = useState(null);
   const [selectedTab, setSelectedTab] = useState('overview');
+  const [selectedPricingPlan, setSelectedPricingPlan] = useState('advanced');
+  const pricingRef = useRef(null);
 
   useEffect(() => {
     // In a real app, this would fetch data from an API
@@ -49,6 +51,23 @@ function ProgramDetail({ programsData }) {
     };
   }, [selectedTab]); // Re-run when selected tab changes
 
+  const handleEnrollNow = () => {
+    // Scroll to pricing plans section
+    pricingRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handlePaymentRedirect = (plan) => {
+    // Direct links to Cashfree payment pages
+    const paymentLinks = {
+      'self': 'https://payments.cashfree.com/forms/selfpacedcomplete',
+      'mentor': 'https://payments.cashfree.com/forms/mentorledcomplete',
+      'advanced': 'https://payments.cashfree.com/forms/advancecomplete'
+    };
+    
+    // Open payment link in new tab
+    window.open(paymentLinks[plan], '_blank');
+  };
+
   if (!program) {
     return (
       <div className="program-not-found">
@@ -83,7 +102,12 @@ function ProgramDetail({ programsData }) {
               </div>
             </div>
             <div className="program-hero-cta">
-              <a href="/contact" className="cta-button primary">Contact Us</a>
+              <button 
+                className="cta-button primary"
+                onClick={handleEnrollNow}
+              >
+                Enroll Now
+              </button>
               <button className="cta-button secondary">Download Brochure</button>
             </div>
           </div>
@@ -123,9 +147,12 @@ function ProgramDetail({ programsData }) {
                 <i className="fas fa-question-circle"></i> FAQs
               </button>
             </div>
-            <a href="/contact" className="nav-enroll-button">
-              <i className="fas fa-envelope"></i> Contact Us
-            </a>
+            <button 
+              className="nav-enroll-button"
+              onClick={handleEnrollNow}
+            >
+              <i className="fas fa-graduation-cap"></i> Enroll Now
+            </button>
           </div>
         </div>
       </section>
@@ -340,6 +367,161 @@ function ProgramDetail({ programsData }) {
             </div>
           </div>
         )}
+      </section>
+
+      {/* Pricing Plans */}
+      <section className="pricing-plans" ref={pricingRef}>
+        <div className="container">
+          <h2>Choose Your Pricing Plan</h2>
+          <p className="pricing-intro">Choose from our flexible plans to suit your learning needs and budget</p>
+          
+          <div className="pricing-cards">
+            <div className={`pricing-card ${selectedPricingPlan === 'advanced' ? 'selected' : ''}`}>
+              <div className="plan-tag">Best Value</div>
+              <h3>🎓 Advanced Program</h3>
+              <div className="price">
+                <span className="original-price">₹12,999</span>
+                <span className="current-price">₹8,999</span>
+              </div>
+              <div className="duration">Valid for {program.duration}</div>
+              <button 
+                className="pricing-button"
+                onClick={() => setSelectedPricingPlan('advanced')}
+              >
+                {selectedPricingPlan === 'advanced' ? 'Selected' : 'Select'}
+              </button>
+              <ul className="plan-features">
+                <li>
+                  <span className="feature-text">💡 Real-Time Projects (Industry Capstone Projects)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🕒 Live Sessions (Extended sessions + Guest Experts)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">❓ One-on-One Doubt Sessions (Priority access)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🏆 Certifications (Co-branded with industry partners)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🏅 Mentor Support (Dedicated mentor)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🚀 Placement Guidance (Exclusive referrals + 1:1 coaching)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🤝 Interview Assistance (Mock interviews with HR)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+              </ul>
+            </div>
+            
+            <div className={`pricing-card ${selectedPricingPlan === 'mentor' ? 'selected' : ''}`}>
+              <h3>👨‍🏫 Mentor-Led Plan</h3>
+              <div className="price">
+                <span className="original-price">₹7,499</span>
+                <span className="current-price">₹4,999</span>
+              </div>
+              <div className="duration">Valid for {program.duration}</div>
+              <button 
+                className="pricing-button"
+                onClick={() => setSelectedPricingPlan('mentor')}
+              >
+                {selectedPricingPlan === 'mentor' ? 'Selected' : 'Select'}
+              </button>
+              <ul className="plan-features">
+                <li>
+                  <span className="feature-text">💡 Real-Time Projects (Guided with mentor feedback)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🕒 Live Sessions - 24hrs+</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">❓ One-on-One Doubt Sessions</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🏆 Certifications (Industry Certified)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🏅 Mentor Support</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🚀 Placement Guidance (Resume & Mock Interviews)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🤝 Interview Assistance</span>
+                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
+                </li>
+              </ul>
+            </div>
+            
+            <div className={`pricing-card ${selectedPricingPlan === 'self' ? 'selected' : ''}`}>
+              <h3>⏱️ Self-Paced Plan</h3>
+              <div className="price">
+                <span className="original-price">₹4,999</span>
+                <span className="current-price">₹3,499</span>
+              </div>
+              <div className="duration">Valid for {program.duration}</div>
+              <button 
+                className="pricing-button"
+                onClick={() => setSelectedPricingPlan('self')}
+              >
+                {selectedPricingPlan === 'self' ? 'Selected' : 'Select'}
+              </button>
+              <ul className="plan-features">
+                <li>
+                  <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🕒 Live Sessions - 16hrs+</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">❓ One-on-One Doubt Sessions</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🏆 Certifications (Mentor Certified)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🏅 Mentor Support</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🚀 Placement Guidance</span>
+                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
+                </li>
+                <li>
+                  <span className="feature-text">🤝 Interview Assistance</span>
+                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="pricing-cta">
+            <button 
+              className="proceed-button"
+              onClick={() => handlePaymentRedirect(selectedPricingPlan)}
+            >
+              Proceed with Selected Plan
+            </button>
+          </div>
+        </div>
       </section>
 
       {/* Related Programs */}
