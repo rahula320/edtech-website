@@ -6,7 +6,6 @@ function ProgramDetail({ programsData }) {
   const { programId } = useParams();
   const [program, setProgram] = useState(null);
   const [selectedTab, setSelectedTab] = useState('overview');
-  const [selectedPricingPlan, setSelectedPricingPlan] = useState('advanced');
   const pricingRef = useRef(null);
 
   useEffect(() => {
@@ -54,18 +53,6 @@ function ProgramDetail({ programsData }) {
   const handleEnrollNow = () => {
     // Scroll to pricing plans section
     pricingRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handlePaymentRedirect = (plan) => {
-    // Direct links to Cashfree payment pages
-    const paymentLinks = {
-      'self': 'https://payments.cashfree.com/forms/selfpacedcomplete',
-      'mentor': 'https://payments.cashfree.com/forms/mentorledcomplete',
-      'advanced': 'https://payments.cashfree.com/forms/advancecomplete'
-    };
-    
-    // Open payment link in new tab
-    window.open(paymentLinks[plan], '_blank');
   };
 
   if (!program) {
@@ -376,7 +363,7 @@ function ProgramDetail({ programsData }) {
           <p className="pricing-intro">Choose from our flexible plans to suit your learning needs and budget</p>
           
           <div className="pricing-cards">
-            <div className={`pricing-card ${selectedPricingPlan === 'advanced' ? 'selected' : ''}`}>
+            <div className="pricing-card">
               <div className="plan-tag">Best Value</div>
               <h3>🎓 Advanced Program</h3>
               <div className="price">
@@ -384,10 +371,7 @@ function ProgramDetail({ programsData }) {
                 <span className="current-price">₹8,999</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
-              <button 
-                className="pricing-button"
-                onClick={() => handlePaymentRedirect('advanced')}
-              >
+              <button className="pricing-button">
                 Enroll Now
               </button>
               <ul className="plan-features">
@@ -422,17 +406,14 @@ function ProgramDetail({ programsData }) {
               </ul>
             </div>
             
-            <div className={`pricing-card ${selectedPricingPlan === 'mentor' ? 'selected' : ''}`}>
+            <div className="pricing-card">
               <h3>👨‍🏫 Mentor-Led Plan</h3>
               <div className="price">
                 <span className="original-price">₹7,499</span>
                 <span className="current-price">₹4,999</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
-              <button 
-                className="pricing-button"
-                onClick={() => handlePaymentRedirect('mentor')}
-              >
+              <button className="pricing-button">
                 Enroll Now
               </button>
               <ul className="plan-features">
@@ -467,22 +448,19 @@ function ProgramDetail({ programsData }) {
               </ul>
             </div>
             
-            <div className={`pricing-card ${selectedPricingPlan === 'self' ? 'selected' : ''}`}>
+            <div className="pricing-card">
               <h3>⏱️ Self-Paced Plan</h3>
               <div className="price">
                 <span className="original-price">₹4,999</span>
                 <span className="current-price">₹3,499</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
-              <button 
-                className="pricing-button"
-                onClick={() => handlePaymentRedirect('self')}
-              >
+              <button className="pricing-button">
                 Enroll Now
               </button>
               <ul className="plan-features">
                 <li>
-                  <span className="feature-text">�� Real-Time Projects (Basic level)</span>
+                  <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
