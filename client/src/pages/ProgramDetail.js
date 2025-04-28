@@ -386,9 +386,9 @@ function ProgramDetail({ programsData }) {
               <div className="duration">Valid for {program.duration}</div>
               <button 
                 className="pricing-button"
-                onClick={() => setSelectedPricingPlan('advanced')}
+                onClick={() => handlePaymentRedirect('advanced')}
               >
-                {selectedPricingPlan === 'advanced' ? 'Selected' : 'Select'}
+                Enroll Now
               </button>
               <ul className="plan-features">
                 <li>
@@ -431,9 +431,9 @@ function ProgramDetail({ programsData }) {
               <div className="duration">Valid for {program.duration}</div>
               <button 
                 className="pricing-button"
-                onClick={() => setSelectedPricingPlan('mentor')}
+                onClick={() => handlePaymentRedirect('mentor')}
               >
-                {selectedPricingPlan === 'mentor' ? 'Selected' : 'Select'}
+                Enroll Now
               </button>
               <ul className="plan-features">
                 <li>
@@ -476,13 +476,13 @@ function ProgramDetail({ programsData }) {
               <div className="duration">Valid for {program.duration}</div>
               <button 
                 className="pricing-button"
-                onClick={() => setSelectedPricingPlan('self')}
+                onClick={() => handlePaymentRedirect('self')}
               >
-                {selectedPricingPlan === 'self' ? 'Selected' : 'Select'}
+                Enroll Now
               </button>
               <ul className="plan-features">
                 <li>
-                  <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
+                  <span className="feature-text">�� Real-Time Projects (Basic level)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
@@ -511,15 +511,6 @@ function ProgramDetail({ programsData }) {
                 </li>
               </ul>
             </div>
-          </div>
-          
-          <div className="pricing-cta">
-            <button 
-              className="proceed-button"
-              onClick={() => handlePaymentRedirect(selectedPricingPlan)}
-            >
-              Proceed with Selected Plan
-            </button>
           </div>
         </div>
       </section>
