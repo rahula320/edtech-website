@@ -21,7 +21,7 @@ The project is organized into two main directories:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/rk2319/edtech-website.git
+   git clone https://github.com/rahula320/edtech-website.git
    cd edtech-website
    ```
 
