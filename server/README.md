@@ -1,11 +1,10 @@
 # EdTech Website Server
 
-Backend server for the EdTech website with MongoDB integration.
+Backend server for the EdTech website.
 
 ## Features
 
 - Express.js backend
-- MongoDB database with Mongoose ODM
 - User authentication with Passport.js
 - Session management
 - RESTful API endpoints
@@ -31,7 +30,6 @@ The following models are defined:
 ### Prerequisites
 
 - Node.js (v14 or newer)
-- MongoDB (local or Atlas)
 
 ### Environment Setup
 
@@ -44,10 +42,6 @@ The following models are defined:
    ```
    PORT=5001
    NODE_ENV=development
-   MONGODB_URI=mongodb://localhost:27017/edtech
-   MONGODB_USER=
-   MONGODB_PASSWORD=
-   MONGODB_DATABASE=edtech
    SESSION_SECRET=your-secret-key-change-this-in-production
    ```
 
@@ -58,27 +52,10 @@ The following models are defined:
    npm install
    ```
 
-2. Seed the database with initial data:
-   ```
-   npm run seed
-   ```
-
-3. Start the development server:
+2. Start the development server:
    ```
    npm run dev
    ```
-
-## Database Connection
-
-The server connects to MongoDB using Mongoose. The connection is established in `config/db.js` with automatic retry logic for better reliability.
-
-### Local Development
-
-For local development, MongoDB should be running on your machine or accessible via network. The default connection string is `mongodb://localhost:27017/edtech`.
-
-### Production
-
-In production, use the complete connection string with authentication in the `MONGODB_URI` environment variable. When using Docker, the MongoDB service is automatically configured.
 
 ## API Endpoints
 
@@ -98,7 +75,7 @@ In production, use the complete connection string with authentication in the `MO
 
 ## Docker Deployment
 
-The server can be deployed using Docker with the included Dockerfile and docker-compose.yml. The MongoDB service is included in the Docker Compose configuration.
+The server can be deployed using Docker with the included Dockerfile and docker-compose.yml.
 
 ```
 docker-compose up -d

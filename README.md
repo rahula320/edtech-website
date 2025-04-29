@@ -76,7 +76,7 @@ The application uses simple in-memory authentication:
 ## 💻 Technologies Used
 
 - **Frontend:** React, React Router, CSS
-- **Backend:** Node.js, Express, MongoDB
+- **Backend:** Node.js, Express
 - **Authentication:** Passport.js, Express Session
 
 ## 📄 License
