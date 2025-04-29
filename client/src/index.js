@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { programsData } from './data/programsData';
+import { Analytics } from '@vercel/analytics/react';
 
 // Make programsData globally available for direct access scenarios
 window.programsData = programsData;
@@ -14,6 +15,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <App />
+      <Analytics />
     </BrowserRouter>
   </React.StrictMode>
 ); 
