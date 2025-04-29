@@ -10,7 +10,7 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 
 // Import database configuration
-const { testConnection } = require('./config/db');
+const { testConnection, sequelize } = require('./config/db');
 const Contact = require('./models/Contact');
 
 // Import routes
@@ -20,7 +20,15 @@ const app = express();
 
 // Middleware
 const corsOptions = {
-  origin: ['http://localhost:3000'],
+  origin: [
+    'http://localhost:3000', 
+    'http://localhost:5000',
+    'http://127.0.0.1:3000',
+    'https://edtech-website.vercel.app',
+    'https://acmyx.vercel.app',
+    'https://acmyx.com',
+    'https://www.acmyx.com'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -301,30 +309,33 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
-// Start the server
-const PORT = process.env.PORT || 5001;
-
 // Function to start the server
 async function startServer() {
   try {
     // Test database connection
-    await testConnection();
-    
-    // Start the server (only if not in Vercel serverless environment)
-    if (process.env.VERCEL !== '1') {
-      app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-      });
+    const isConnected = await testConnection();
+    if (!isConnected) {
+      console.error('Database connection failed, server may not function correctly.');
     }
+    
+    // Sync database models with database
+    await sequelize.sync();
+    console.log('Database synchronized successfully.');
+    
+    // Get port from environment or default to 3001
+    const PORT = process.env.PORT || 3001;
+    
+    // Start listening
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
   } catch (error) {
     console.error('Failed to start server:', error);
-    if (process.env.VERCEL !== '1') {
-      process.exit(1);
-    }
   }
 }
 
-// Run the server
+// Start the server
 startServer();
 
 // Export the Express app for Vercel
