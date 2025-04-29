@@ -1,23 +1,36 @@
 import axios from 'axios';
 
-// In development, React will proxy requests to the URL in package.json's "proxy" field
-// In production, use the environment variable or fallback to relative path
-const isDevelopment = process.env.NODE_ENV === 'development';
-// For production, try environment variable first, then specific URLs, and finally relative path
-const baseURL = isDevelopment 
-  ? '' 
-  : (process.env.REACT_APP_API_URL || 
-     (window.location.hostname === 'edtech-website.vercel.app' 
-       ? 'https://edtech-website.vercel.app/api' 
-       : window.location.hostname === 'acmyx.com' || window.location.hostname === 'www.acmyx.com'
-         ? 'https://acmyx.com/api'
-         : '/api'));
+// Get the base URL for API calls depending on environment and hostname
+const getApiUrl = () => {
+  if (process.env.NODE_ENV === 'development') {
+    return '';
+  }
+  
+  // Production environment - determine the API URL based on hostname
+  const hostname = window.location.hostname;
+  console.log('Current hostname:', hostname);
+  
+  if (hostname === 'edtech-website.vercel.app') {
+    return 'https://api-edtech-website.vercel.app'; // Separate API deployment
+  } else if (hostname === 'acmyx.com' || hostname === 'www.acmyx.com') {
+    return 'https://api.acmyx.com';
+  } else {
+    // Fallback to same-origin API
+    return '';
+  }
+};
 
-console.log('API baseURL:', baseURL, 'Environment:', process.env.NODE_ENV, 'Hostname:', window.location.hostname);
+const baseURL = getApiUrl();
+console.log('API baseURL:', baseURL, 'Environment:', process.env.NODE_ENV);
 
 const api = axios.create({
   baseURL,
   withCredentials: true,
+  timeout: 15000, // 15 second timeout
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
 });
 
 // Add request interceptor for logging

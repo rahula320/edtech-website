@@ -66,18 +66,50 @@ function Home() {
     e.preventDefault();
     setContactStatus({ type: 'loading', message: 'Sending message...' });
 
+    // Check for network connectivity first
+    if (!navigator.onLine) {
+      setContactStatus({ 
+        type: 'error', 
+        message: 'You appear to be offline. Please check your internet connection and try again.' 
+      });
+      return;
+    }
+
     try {
+      console.log('Submitting contact form data:', contactFormData);
       const response = await ContactService.submitContactForm(contactFormData);
+      console.log('Contact form submission response:', response);
 
       if (response.success) {
         setContactStatus({ type: 'success', message: 'Message sent successfully!' });
         setContactFormData({ name: '', email: '', phone: '', college: '', domain: '', message: '' });
       } else {
-        setContactStatus({ type: 'error', message: response.message || 'Something went wrong' });
+        setContactStatus({ 
+          type: 'error', 
+          message: response.message || 'Something went wrong. Please try again later.'
+        });
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      setContactStatus({ type: 'error', message: 'Failed to send message. Please try again later.' });
+      
+      // Determine if it's a network error
+      const isNetworkError = error.message && (
+        error.message.includes('Network Error') || 
+        error.message.includes('timeout') ||
+        error.message.includes('abort')
+      );
+      
+      if (isNetworkError) {
+        setContactStatus({ 
+          type: 'error', 
+          message: 'Network error. Please check your connection and try again.'
+        });
+      } else {
+        setContactStatus({ 
+          type: 'error', 
+          message: 'Failed to send message. Please try again later.'
+        });
+      }
     }
   };
   

@@ -21,11 +21,18 @@ const app = express();
 // Middleware
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://edtech-website.vercel.app', 'https://acmyx.com', 'https://www.acmyx.com'] 
+    ? [
+        'https://edtech-website.vercel.app', 
+        'https://acmyx.com', 
+        'https://www.acmyx.com',
+        'https://api-edtech-website.vercel.app',
+        'https://api.acmyx.com'
+      ] 
     : ['http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:3000', '0.0.0.0'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
 app.use(express.json());
