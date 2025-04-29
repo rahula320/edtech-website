@@ -568,11 +568,11 @@ function Home() {
           </button>
         </div>
         <nav>
-          <a href="#" onClick={toggleMobileMenu}>Home</a>
-          <a href="#" onClick={toggleMobileMenu}>Programs</a>
-          <a href="#" onClick={toggleMobileMenu}>About Us</a>
-          <a href="#" onClick={toggleMobileMenu}>Testimonials</a>
-          <a href="#" onClick={toggleMobileMenu}>Contact</a>
+          <Link to="/" onClick={toggleMobileMenu}>Home</Link>
+          <Link to="/programs" onClick={toggleMobileMenu}>Programs</Link>
+          <Link to="/about" onClick={toggleMobileMenu}>About Us</Link>
+          <Link to="/testimonials" onClick={toggleMobileMenu}>Testimonials</Link>
+          <Link to="/contact" onClick={toggleMobileMenu}>Contact</Link>
         </nav>
       </div>
 
@@ -1235,10 +1235,10 @@ function Home() {
               </div>
               
               <div className="home-social-icons">
-                <a href="#" className="social-icon" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
-                <a href="#" className="social-icon" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
-                <a href="#" className="social-icon" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
-                <a href="#" className="social-icon" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+                <button className="social-icon" aria-label="Facebook"><i className="fab fa-facebook-f"></i></button>
+                <button className="social-icon" aria-label="Twitter"><i className="fab fa-twitter"></i></button>
+                <button className="social-icon" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></button>
+                <button className="social-icon" aria-label="Instagram"><i className="fab fa-instagram"></i></button>
               </div>
             </div>
             

@@ -11,7 +11,7 @@ const getApiUrl = () => {
   console.log('Current hostname:', hostname);
   
   if (hostname === 'edtech-website.vercel.app') {
-    return 'https://api-edtech-website.vercel.app'; // Separate API deployment
+    return 'https://server-eta-weld.vercel.app'; // Your primary deployment URL
   } else if (hostname === 'acmyx.com' || hostname === 'www.acmyx.com') {
     return 'https://api.acmyx.com';
   } else {
