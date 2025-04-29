@@ -310,14 +310,22 @@ async function startServer() {
     // Test database connection
     await testConnection();
     
-    // Start the server
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+    // Start the server (only if not in Vercel serverless environment)
+    if (process.env.VERCEL !== '1') {
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    }
   } catch (error) {
     console.error('Failed to start server:', error);
-    process.exit(1);
+    if (process.env.VERCEL !== '1') {
+      process.exit(1);
+    }
   }
 }
 
-startServer(); 
+// Run the server
+startServer();
+
+// Export the Express app for Vercel
+module.exports = app; 
