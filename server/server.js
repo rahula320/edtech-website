@@ -27,7 +27,8 @@ const corsOptions = {
     'https://edtech-website.vercel.app',
     'https://acmyx.vercel.app',
     'https://acmyx.com',
-    'https://www.acmyx.com'
+    'https://www.acmyx.com',
+    '0.0.0.0',
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
