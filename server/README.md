@@ -1,6 +1,45 @@
-# EdTech Website Server
+# ACMYX API Server
 
-Backend server for the EdTech website.
+Backend API for the ACMYX education platform.
+
+## Deployment Instructions
+
+### Deploy on Vercel
+
+1. Create a new project on Vercel
+2. Import from GitHub repository
+3. Configure the following environment variables:
+   - `DATABASE_URL`: Your PostgreSQL connection string
+   - `SESSION_SECRET`: A secure random string for session management
+   - `NODE_ENV`: Set to "production"
+
+### Required Domain Setup
+
+This API should be deployed with one of the following domains:
+- `api-edtech-website.vercel.app` (for the main site at edtech-website.vercel.app)
+- `api.acmyx.com` (for the main site at acmyx.com)
+
+### API Endpoints
+
+- `POST /api/contact` - Submit contact form
+- `GET /api/health` - Check server health
+- `POST /api/applications/mentor` - Submit mentor application
+- `POST /api/applications/bda` - Submit BDA application
+- `POST /api/applications/campus-ambassador` - Submit campus ambassador application
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run in development with environment variables
+DATABASE_URL=your-database-url SESSION_SECRET=your-secret node server.js
+```
+
+## Database
+
+The API uses PostgreSQL with Sequelize ORM. Make sure your database connection string is correctly set in the environment variables.
 
 ## Features
 
