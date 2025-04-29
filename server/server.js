@@ -103,15 +103,26 @@ app.use('/api', apiRoutes);
 // Routes
 app.post('/api/contact', async (req, res) => {
   try {
-    const { name, email, message } = req.body;
+    const { name, email, phone, college, domain, message } = req.body;
     
     // Log the contact request
-    console.log('Contact form submission:', { name, email, message });
+    console.log('Contact form submission:', { name, email, phone, college, domain, message });
+    
+    // Validate required fields
+    if (!name || !email || !phone || !college || !domain || !message) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'All fields are required' 
+      });
+    }
     
     // Save to database
     const newContact = await Contact.create({
       name,
       email,
+      phone,
+      college,
+      domain,
       message,
       status: 'new'
     });

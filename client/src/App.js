@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -14,17 +14,13 @@ import CampusAmbassadorForm from './pages/CampusAmbassadorForm';
 import ProgramDetail from './pages/ProgramDetail';
 import Terms from './pages/Terms';
 import Contact from './pages/Contact';
-import AdminContacts from './pages/AdminContacts';
 import './App.css';
 import { programsData } from './data/programsData';
 
 function App() {
-  const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin');
-  
   return (
     <div className="App">
-      {!isAdminRoute && <Navbar />}
+      <Navbar />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -39,14 +35,10 @@ function App() {
           <Route path="/programs/:programId" element={<ProgramDetail programsData={programsData} />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/contact" element={<Contact />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin/contacts" element={<AdminContacts />} />
-          
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
-      {!isAdminRoute && <Footer />}
+      <Footer />
     </div>
   );
 }

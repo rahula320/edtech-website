@@ -24,8 +24,7 @@ router.get('/health', (req, res) => {
       '/api/applications',
       '/api/applications/mentor',
       '/api/applications/bda',
-      '/api/applications/campus-ambassador',
-      '/api/contacts'
+      '/api/applications/campus-ambassador'
     ]
   });
 });
@@ -341,56 +340,6 @@ router.put('/applications/campus-ambassador/:id/status', (req, res) => {
   } catch (error) {
     console.error('Error updating application status:', error);
     res.status(500).json({ error: 'Failed to update application status' });
-  }
-});
-
-// Get all contacts
-router.get('/contacts', async (req, res) => {
-  try {
-    const contacts = await Contact.findAll({
-      order: [['createdAt', 'DESC']]
-    });
-    
-    res.status(200).json(contacts);
-  } catch (error) {
-    console.error('Error fetching contacts:', error);
-    res.status(500).json({ error: 'Failed to fetch contacts' });
-  }
-});
-
-// Get contact by ID
-router.get('/contacts/:id', async (req, res) => {
-  try {
-    const contact = await Contact.findByPk(req.params.id);
-    
-    if (!contact) {
-      return res.status(404).json({ error: 'Contact not found' });
-    }
-    
-    res.status(200).json(contact);
-  } catch (error) {
-    console.error('Error fetching contact:', error);
-    res.status(500).json({ error: 'Failed to fetch contact' });
-  }
-});
-
-// Update contact status
-router.put('/contacts/:id', async (req, res) => {
-  try {
-    const { status } = req.body;
-    const contact = await Contact.findByPk(req.params.id);
-    
-    if (!contact) {
-      return res.status(404).json({ error: 'Contact not found' });
-    }
-    
-    contact.status = status;
-    await contact.save();
-    
-    res.status(200).json({ success: true, message: 'Contact updated successfully' });
-  } catch (error) {
-    console.error('Error updating contact:', error);
-    res.status(500).json({ error: 'Failed to update contact' });
   }
 });
 
