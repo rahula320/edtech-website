@@ -112,29 +112,52 @@ app.post('/api/contact', async (req, res) => {
     
     // Validate required fields
     if (!name || !email || !phone || !college || !domain || !message) {
+      console.log('Missing required fields:', { 
+        name: !!name, 
+        email: !!email, 
+        phone: !!phone, 
+        college: !!college, 
+        domain: !!domain, 
+        message: !!message 
+      });
       return res.status(400).json({ 
         success: false, 
         message: 'All fields are required' 
       });
     }
     
-    // Save to database
-    const newContact = await Contact.create({
-      name,
-      email,
-      phone,
-      college,
-      domain,
-      message,
-      status: 'new'
-    });
+    console.log('Contact form validation passed, creating record...');
     
-    console.log('Contact saved to database with ID:', newContact.id);
-    
-    res.json({ success: true, message: 'Message received and saved successfully' });
+    try {
+      // Save to database
+      const newContact = await Contact.create({
+        name,
+        email,
+        phone,
+        college,
+        domain,
+        message,
+        status: 'new'
+      });
+      
+      console.log('Contact saved to database with ID:', newContact.id);
+      
+      res.json({ success: true, message: 'Message received and saved successfully' });
+    } catch (dbError) {
+      console.error('Database error while saving contact:', dbError);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Error saving to database. Please try again later.',
+        details: process.env.NODE_ENV === 'development' ? dbError.message : undefined
+      });
+    }
   } catch (err) {
     console.error('Contact form error:', err);
-    res.status(500).json({ success: false, message: 'Error processing message' });
+    res.status(500).json({ 
+      success: false, 
+      message: 'Error processing message. Please try again later.',
+      details: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
   }
 });
 
