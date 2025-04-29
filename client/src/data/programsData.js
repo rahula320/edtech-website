@@ -5,11 +5,8 @@ export const programsData = {
     tag: "Top Rated",
     description: "Master data visualization and statistical analysis with hands-on projects that shape strategic business decisions",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Intermediate to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1599658880436-c61792e70672?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
     overview: "The Data Science & Analytics program is designed to transform you into a skilled data professional capable of deriving valuable insights from complex datasets. Through a combination of theoretical learning and practical applications, you'll master essential tools and techniques used in the industry today. This comprehensive program covers everything from data cleaning and visualization to advanced statistical analysis and machine learning algorithms, preparing you for a successful career in this high-demand field.",
@@ -210,8 +207,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Learn from experienced data scientists who have worked at leading companies and research institutions. Our instructors bring real-world expertise and are committed to your success.",
-    
     instructors: [
       {
         name: "Dr. Priya Sharma",
@@ -258,43 +253,59 @@ export const programsData = {
     
     faqs: [
       {
-        question: "Do I need prior programming experience for this program?",
-        answer: "Some basic programming knowledge is helpful, but not required. We start with fundamentals and gradually build your skills. However, familiarity with basic concepts in Python or another programming language will help you progress faster."
+        question: "What is included in this program?",
+        answer: "You get access to beginner-friendly lessons, hands-on projects, mentor support, and a certificate upon completion."
       },
       {
-        question: "How much time should I dedicate to this program each week?",
-        answer: "You should plan to spend 15-20 hours per week on the program, including live sessions, assignments, and projects. The more time you invest in practicing, the more you'll get out of the program."
+        question: "Do I get a certificate?",
+        answer: "Yes, you will receive a certificate after successfully completing the program."
       },
       {
-        question: "Will I receive a certificate upon completion?",
-        answer: "Yes, after successfully completing all modules and the capstone project, you'll receive an industry-recognized certificate that you can share on LinkedIn and with potential employers."
+        question: "Are there real projects?",
+        answer: "Yes, you will work on simple, real-world projects to build your practical skills."
       },
       {
-        question: "What kind of career support is provided?",
-        answer: "Our career support includes resume reviews, LinkedIn profile optimization, interview preparation, and connections to hiring partners. We also provide guidance on building a portfolio that showcases your skills to potential employers."
+        question: "Is there mentor support?",
+        answer: "Yes, you will have access to mentors for guidance and support throughout the program."
       },
       {
-        question: "How do I enroll in this program?",
-        answer: "You can enroll in the program by clicking the 'Enroll Now' button and following the registration process. Once registered, you'll receive further instructions on how to access the course materials."
+        question: "Is there career or placement support?",
+        answer: "Yes, we provide basic career guidance and tips for job readiness."
       },
       {
-        question: "Is there a refund policy if I'm not satisfied?",
-        answer: "We strive to provide high-quality education. If you have any concerns about the program, please contact our support team who will assist you with your queries."
+        question: "Is the program hands-on?",
+        answer: "Absolutely! The program is designed to be practical and project-based."
+      },
+      {
+        question: "How much time should I dedicate each week?",
+        answer: "You should plan to spend 2-3 hours per week on the program, including lessons and projects."
+      },
+      {
+        question: "Do I need prior experience?",
+        answer: "No prior experience is required. This program is designed for beginners."
+      },
+      {
+        question: "How do I enroll?",
+        answer: "Click the 'Enroll Now' button and follow the instructions to register."
+      },
+      {
+        question: "Is there a refund policy?",
+        answer: "If you have concerns, please contact our support team for assistance with refunds or other issues."
       }
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
         originalPrice: "29,999",
         currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -304,9 +315,7 @@ export const programsData = {
         tag: "Career Booster",
         description: "Dive deeper into ML algorithms and implement advanced models for complex problems",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/machine-learning"
       },
       {
@@ -314,9 +323,7 @@ export const programsData = {
         tag: "Bestseller",
         description: "Learn how to develop intelligent systems that can perceive, reason, and act",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/artificial-intelligence"
       },
       {
@@ -324,12 +331,25 @@ export const programsData = {
         tag: "New",
         description: "Translate data insights into strategic business decisions and performance improvements",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/business-analytics"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "Data Science & Analytics Curriculum (Entry Level)",
+      description: "A beginner-friendly 8-week program introducing the basics of data science, analytics, and hands-on projects.",
+      weeks: [
+        { week: 1, title: "Introduction to Data Science & Analytics", topics: ["What is data science?", "Applications in business and industry", "Overview of the data science process"] },
+        { week: 2, title: "Python Basics for Data Science", topics: ["Python setup", "Variables, data types, and operators", "Simple scripts"] },
+        { week: 3, title: "Data Collection & Cleaning", topics: ["Importing data", "Handling missing values", "Basic data cleaning techniques"] },
+        { week: 4, title: "Exploratory Data Analysis", topics: ["Descriptive statistics", "Simple data visualizations", "Identifying trends"] },
+        { week: 5, title: "Introduction to Data Visualization", topics: ["Plotting with Matplotlib", "Bar, line, and scatter plots", "Interpreting graphs"] },
+        { week: 6, title: "Basic Statistics for Data Science", topics: ["Mean, median, mode", "Standard deviation", "Simple probability concepts"] },
+        { week: 7, title: "Introduction to Machine Learning", topics: ["What is machine learning?", "Simple classification and regression", "Model evaluation basics"] },
+        { week: 8, title: "Mini Project: Simple Data Analysis", topics: ["Project planning", "Implementation", "Presentation"] }
+      ]
+    }
   },
   
   "artificial-intelligence": {
@@ -338,14 +358,11 @@ export const programsData = {
     tag: "Bestseller",
     description: "Blend theory with hands-on projects to create intelligent solutions that drive real-world impact and innovation",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Intermediate to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1555255707-c07966088b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
-    overview: "Our Artificial Intelligence program takes you on a comprehensive journey through the cutting-edge field of AI. From fundamental concepts to advanced applications, you'll learn how to develop intelligent systems that can perceive, reason, and act in complex environments. This program emphasizes practical skills through hands-on projects, preparing you to implement AI solutions that address real-world challenges across various industries.",
+    overview: "The Artificial Intelligence program immerses you in the world of intelligent systems, from foundational AI concepts to advanced applications. You'll learn to design, build, and deploy AI solutions for real-world challenges in areas like computer vision, natural language processing, and automation. With a strong focus on hands-on projects and industry tools, this program prepares you to innovate and lead in the rapidly evolving AI landscape, equipping you with the skills needed for roles in tech, research, and beyond.",
     
     keyHighlights: [
       {
@@ -380,18 +397,95 @@ export const programsData = {
       }
     ],
     
+    learningOutcomes: [
+      "Understand core AI concepts, algorithms, and methodologies",
+      "Develop and implement machine learning and deep learning models",
+      "Apply AI techniques to solve problems in computer vision and natural language processing",
+      "Utilize popular AI frameworks such as TensorFlow and PyTorch",
+      "Evaluate and optimize AI models for performance and accuracy",
+      "Address ethical considerations and responsible AI practices",
+      "Deploy AI solutions in real-world applications",
+      "Collaborate on AI projects and communicate technical results effectively"
+    ],
+    
+    projects: [
+      {
+        icon: "fas fa-robot",
+        title: "Image Recognition System",
+        description: "Build a deep learning model to classify images for applications such as medical diagnostics or automated quality control."
+      },
+      {
+        icon: "fas fa-language",
+        title: "Chatbot with Natural Language Processing",
+        description: "Develop a conversational AI chatbot capable of understanding and responding to user queries using NLP techniques."
+      },
+      {
+        icon: "fas fa-car",
+        title: "Self-Driving Car Simulation",
+        description: "Implement AI algorithms to simulate autonomous vehicle navigation and decision-making in a virtual environment."
+      },
+      {
+        icon: "fas fa-brain",
+        title: "Predictive Analytics for Business",
+        description: "Use AI models to analyze business data and generate actionable predictions for sales, customer behavior, or inventory management."
+      }
+    ],
+    
+    faqs: [
+      {
+        question: "What is included in this program?",
+        answer: "You get access to beginner-friendly lessons, hands-on projects, mentor support, and a certificate upon completion."
+      },
+      {
+        question: "Do I get a certificate?",
+        answer: "Yes, you will receive a certificate after successfully completing the program."
+      },
+      {
+        question: "Are there real projects?",
+        answer: "Yes, you will work on simple, real-world projects to build your practical skills."
+      },
+      {
+        question: "Is there mentor support?",
+        answer: "Yes, you will have access to mentors for guidance and support throughout the program."
+      },
+      {
+        question: "Is there career or placement support?",
+        answer: "Yes, we provide basic career guidance and tips for job readiness."
+      },
+      {
+        question: "Is the program hands-on?",
+        answer: "Absolutely! The program is designed to be practical and project-based."
+      },
+      {
+        question: "How much time should I dedicate each week?",
+        answer: "You should plan to spend 2-3 hours per week on the program, including lessons and projects."
+      },
+      {
+        question: "Do I need prior experience?",
+        answer: "No prior experience is required. This program is designed for beginners."
+      },
+      {
+        question: "How do I enroll?",
+        answer: "Click the 'Enroll Now' button and follow the instructions to register."
+      },
+      {
+        question: "Is there a refund policy?",
+        answer: "If you have concerns, please contact our support team for assistance with refunds or other issues."
+      }
+    ],
+    
     pricing: {
-      advanced: {
-        originalPrice: "59,999",
-        currentPrice: "49,999"
+      self: {
+        originalPrice: "24,999",
+        currentPrice: "19,999"
       },
       mentor: {
         originalPrice: "39,999",
         currentPrice: "34,999"
       },
-      self: {
-        originalPrice: "24,999",
-        currentPrice: "19,999"
+      advanced: {
+        originalPrice: "59,999",
+        currentPrice: "49,999"
       }
     },
     
@@ -401,9 +495,7 @@ export const programsData = {
         tag: "Top Rated",
         description: "Master data visualization and statistical analysis with hands-on projects",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/data-science"
       },
       {
@@ -411,9 +503,7 @@ export const programsData = {
         tag: "Career Booster",
         description: "Dive deeper into ML algorithms and implement advanced models",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/machine-learning"
       },
       {
@@ -421,12 +511,25 @@ export const programsData = {
         tag: "Advanced",
         description: "Master neural networks and deep learning architectures for complex applications",
         duration: "10 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/deep-learning"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "Artificial Intelligence Curriculum (Entry Level)",
+      description: "A beginner-friendly 8-week program introducing the basics of AI, machine learning, and practical applications.",
+      weeks: [
+        { week: 1, title: "Introduction to Artificial Intelligence", topics: ["What is AI?", "History and applications", "AI in daily life"] },
+        { week: 2, title: "Python for AI", topics: ["Python basics", "Simple AI scripts", "Using libraries like NumPy"] },
+        { week: 3, title: "Data for AI", topics: ["Collecting and preparing data", "Simple data exploration", "Data visualization"] },
+        { week: 4, title: "Introduction to Machine Learning", topics: ["Supervised vs. unsupervised learning", "Simple classification tasks", "Model evaluation basics"] },
+        { week: 5, title: "Neural Networks Basics", topics: ["What is a neural network?", "Simple neural network demo", "Applications"] },
+        { week: 6, title: "AI in Computer Vision", topics: ["Image classification basics", "Simple image processing", "Hands-on with sample images"] },
+        { week: 7, title: "AI in Natural Language Processing", topics: ["Text data basics", "Simple sentiment analysis", "Hands-on with sample text"] },
+        { week: 8, title: "Mini Project: Build a Simple AI Application", topics: ["Project planning", "Implementation", "Presentation"] }
+      ]
+    }
   },
   
   "machine-learning": {
@@ -435,11 +538,8 @@ export const programsData = {
     tag: "Career Booster",
     description: "Engage with theory and practical coding to tackle exciting projects that push technology boundaries",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Intermediate to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1526378800651-c32d170fe6f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
     overview: "Our Machine Learning with Python program offers a comprehensive exploration of machine learning algorithms and their implementation using Python. You'll learn how to build, evaluate, and deploy machine learning models to solve real-world problems. From classical algorithms to advanced techniques, this program covers the full spectrum of machine learning, preparing you for a career in this rapidly growing field.",
@@ -640,8 +740,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Our machine learning instructors are industry practitioners who bring real-world experience into the classroom. They've implemented machine learning solutions across various domains and are passionate about sharing their knowledge.",
-    
     instructors: [
       {
         name: "Dr. James Wilson",
@@ -660,17 +758,17 @@ export const programsData = {
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "45,999",
-        currentPrice: "39,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
-        originalPrice: "34,999",
-        currentPrice: "29,999"
+        originalPrice: "29,999",
+        currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "22,999",
-        currentPrice: "19,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -680,9 +778,7 @@ export const programsData = {
         tag: "Top Rated",
         description: "Master data visualization and statistical analysis with hands-on projects",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/data-science"
       },
       {
@@ -690,9 +786,7 @@ export const programsData = {
         tag: "Bestseller",
         description: "Learn how to develop intelligent systems that can perceive, reason, and act",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/artificial-intelligence"
       },
       {
@@ -700,12 +794,25 @@ export const programsData = {
         tag: "Technical",
         description: "Build expertise in cloud platforms with practical labs on AWS, Azure, and Google Cloud",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/cloud-computing"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "Machine Learning with Python Curriculum (Entry Level)",
+      description: "A beginner-friendly 8-week program introducing the basics of machine learning, Python, and practical applications.",
+      weeks: [
+        { week: 1, title: "Introduction to Machine Learning", topics: ["What is machine learning?", "Types of machine learning", "Applications in real life"] },
+        { week: 2, title: "Python Basics for ML", topics: ["Python setup", "Variables, data types, and operators", "Simple scripts"] },
+        { week: 3, title: "Data Preparation & Cleaning", topics: ["Importing data", "Handling missing values", "Basic data cleaning techniques"] },
+        { week: 4, title: "Exploratory Data Analysis", topics: ["Descriptive statistics", "Simple data visualizations", "Identifying trends"] },
+        { week: 5, title: "Supervised Learning Basics", topics: ["Simple classification", "Simple regression", "Model evaluation basics"] },
+        { week: 6, title: "Unsupervised Learning Basics", topics: ["Clustering basics", "Simple clustering demo", "Applications"] },
+        { week: 7, title: "Model Deployment Basics", topics: ["Saving/loading models", "Simple deployment demo", "Sharing results"] },
+        { week: 8, title: "Mini Project: Build a Simple ML Model", topics: ["Project planning", "Implementation", "Presentation"] }
+      ]
+    }
   },
   
   "cloud-computing": {
@@ -714,11 +821,8 @@ export const programsData = {
     tag: "Technical",
     description: "Build expertise in cloud platforms with practical labs on AWS, Azure, and Google Cloud for enterprise solutions",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Beginner to Intermediate",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1508345228704-935cc84bf5e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
     overview: "Our Cloud Computing program provides comprehensive training on the leading cloud platforms including AWS, Microsoft Azure, and Google Cloud. You'll learn how to design, deploy, and manage cloud-based solutions that are scalable, reliable, and secure. Through hands-on labs and real-world projects, you'll gain practical experience with cloud infrastructure, services, and best practices for cloud migration and optimization.",
@@ -919,8 +1023,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Our cloud computing instructors are certified experts with extensive experience implementing and managing cloud solutions across various industries. They bring practical insights and best practices from real-world projects.",
-    
     instructors: [
       {
         name: "Mark Jenkins",
@@ -939,17 +1041,17 @@ export const programsData = {
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "49,999",
-        currentPrice: "42,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
-        originalPrice: "35,999",
-        currentPrice: "30,999"
+        originalPrice: "29,999",
+        currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "24,999",
-        currentPrice: "19,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -961,7 +1063,6 @@ export const programsData = {
         duration: "8 weeks",
         durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/devops"
       },
       {
@@ -971,7 +1072,6 @@ export const programsData = {
         duration: "8 weeks",
         durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/data-science"
       },
       {
@@ -981,10 +1081,24 @@ export const programsData = {
         duration: "8 weeks",
         durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/web-development"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "Cloud Computing Curriculum (Entry Level)",
+      description: "A beginner-friendly 8-week program introducing the basics of cloud computing, platforms, and simple deployments.",
+      weeks: [
+        { week: 1, title: "Introduction to Cloud Computing", topics: ["What is cloud computing?", "Cloud service models", "Benefits and use cases"] },
+        { week: 2, title: "Cloud Platforms Overview", topics: ["AWS, Azure, GCP basics", "Setting up a free account", "Navigating the console"] },
+        { week: 3, title: "Virtual Machines & Storage", topics: ["Launching a VM", "Basic storage options", "Uploading/downloading files"] },
+        { week: 4, title: "Networking Basics in the Cloud", topics: ["IP addresses", "Security groups", "Simple networking setup"] },
+        { week: 5, title: "Deploying a Simple Web App", topics: ["Uploading a static website", "Basic web hosting", "Accessing your site"] },
+        { week: 6, title: "Cloud Databases Basics", topics: ["Creating a simple database", "Connecting to a database", "Storing/retrieving data"] },
+        { week: 7, title: "Cloud Security Basics", topics: ["User accounts", "Permissions", "Simple security best practices"] },
+        { week: 8, title: "Mini Project: Deploy a Simple Cloud Solution", topics: ["Project planning", "Implementation", "Presentation"] }
+      ]
+    }
   },
   
   "web-development": {
@@ -993,11 +1107,8 @@ export const programsData = {
     tag: "High Demand",
     description: "Learn everything from basics to advanced techniques, crafting engaging, user-friendly websites with real impact",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Beginner to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
     overview: "Our Web Development program takes you on a comprehensive journey from the fundamentals of front-end development to advanced back-end technologies. You'll learn how to build responsive, dynamic websites and web applications that provide exceptional user experiences. Through hands-on projects and real-world scenarios, you'll master modern frameworks and tools used by professional web developers.",
@@ -1198,8 +1309,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Our web development instructors are industry professionals with extensive experience building web applications for companies of all sizes. They bring practical knowledge and best practices from the field into the classroom.",
-    
     instructors: [
       {
         name: "Alex Rodriguez",
@@ -1218,17 +1327,17 @@ export const programsData = {
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "42,999",
-        currentPrice: "36,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
         originalPrice: "29,999",
         currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -1238,9 +1347,7 @@ export const programsData = {
         tag: "Mobile",
         description: "Learn to develop powerful Android applications using Kotlin and Java",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/android-development"
       },
       {
@@ -1248,9 +1355,7 @@ export const programsData = {
         tag: "Apple",
         description: "Design and develop iOS apps using Swift and Apple frameworks",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/ios-development"
       },
       {
@@ -1258,12 +1363,25 @@ export const programsData = {
         tag: "Technical",
         description: "Build expertise in cloud platforms for scalable web applications",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/cloud-computing"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "Web Development Curriculum (Entry Level)",
+      description: "A beginner-friendly 8-week program introducing the basics of web development, HTML, CSS, JavaScript, and simple projects.",
+      weeks: [
+        { week: 1, title: "Introduction to Web Development", topics: ["What is web development?", "Types of websites", "Overview of the web stack"] },
+        { week: 2, title: "HTML Basics", topics: ["HTML structure", "Common tags", "Building a simple page"] },
+        { week: 3, title: "CSS Basics", topics: ["Styling with CSS", "Selectors and properties", "Layouts and colors"] },
+        { week: 4, title: "JavaScript Basics", topics: ["Variables and data types", "Functions", "Simple interactivity"] },
+        { week: 5, title: "Responsive Design Basics", topics: ["Media queries", "Mobile-friendly layouts", "Testing responsiveness"] },
+        { week: 6, title: "Simple Web Project", topics: ["Building a personal homepage", "Adding images and links", "Styling your site"] },
+        { week: 7, title: "Intro to Forms & User Input", topics: ["Creating forms", "Handling user input", "Form validation basics"] },
+        { week: 8, title: "Mini Project: Build a Simple Website", topics: ["Project planning", "Implementation", "Presentation"] }
+      ]
+    }
   },
   
   "embedded-systems": {
@@ -1272,11 +1390,8 @@ export const programsData = {
     tag: "Engineering",
     description: "Develop microcontroller-based electronic systems for industrial applications with hands-on prototype building",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Intermediate to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1591799265444-d66432b91588?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
     overview: "Our Embedded Systems program provides comprehensive training in designing and programming electronic systems that are at the heart of modern devices. From microcontroller programming to hardware interfacing, you'll gain the skills needed to develop embedded solutions for various industries. Through hands-on projects and practical labs, you'll learn to create reliable, efficient systems that meet real-world requirements.",
@@ -1477,8 +1592,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Our embedded systems instructors are experienced professionals with backgrounds in industrial automation, consumer electronics, and IoT device development. They bring practical knowledge from real-world projects to the classroom.",
-    
     instructors: [
       {
         name: "Dr. Robert Chen",
@@ -1497,17 +1610,17 @@ export const programsData = {
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "45,999",
-        currentPrice: "39,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
-        originalPrice: "34,999",
-        currentPrice: "29,999"
+        originalPrice: "29,999",
+        currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "22,999",
-        currentPrice: "19,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -1517,9 +1630,7 @@ export const programsData = {
         tag: "New",
         description: "Connect devices that revolutionize everyday life through enhanced efficiency",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/iot"
       },
       {
@@ -1527,9 +1638,7 @@ export const programsData = {
         tag: "Design",
         description: "Master 2D and 3D modeling for engineering designs",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/autocad"
       },
       {
@@ -1537,12 +1646,25 @@ export const programsData = {
         tag: "Bestseller",
         description: "Implement AI capabilities in embedded systems for smart devices",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/artificial-intelligence"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "Embedded Systems Curriculum (Entry Level)",
+      description: "A beginner-friendly 8-week program introducing the fundamentals of embedded systems, microcontrollers, and hands-on projects.",
+      weeks: [
+        { week: 1, title: "Introduction to Embedded Systems & Microcontrollers", topics: ["What is an embedded system?", "Microcontroller vs. Microprocessor", "Popular microcontroller families", "Development boards overview"] },
+        { week: 2, title: "Basics of C Programming for Embedded", topics: ["C language basics", "Variables, data types, and operators", "Control structures", "Simple embedded C programs"] },
+        { week: 3, title: "Digital & Analog I/O, Sensors, and Actuators", topics: ["Digital input/output", "Analog input/output", "Interfacing LEDs, switches, and sensors", "Actuator basics"] },
+        { week: 4, title: "Timers, Interrupts, and Communication Protocols", topics: ["Timers and counters", "Interrupt basics", "UART, I2C, SPI communication"] },
+        { week: 5, title: "Simple Embedded Projects", topics: ["LED blinking project", "Button-controlled output", "Sensor-based automation"] },
+        { week: 6, title: "Debugging & Troubleshooting Basics", topics: ["Debugging tools", "Common errors and fixes", "Testing embedded code"] },
+        { week: 7, title: "Introduction to RTOS Concepts", topics: ["What is an RTOS?", "Basic multitasking concepts", "Simple RTOS demo"] },
+        { week: 8, title: "Mini Project: Build a Simple Embedded Application", topics: ["Project planning", "Implementation", "Testing and demonstration"] }
+      ]
+    }
   },
   
   "iot": {
@@ -1551,11 +1673,8 @@ export const programsData = {
     tag: "New",
     description: "Discover how interconnected devices transform lives through enhanced efficiency and connectivity in applications",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Intermediate to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
     overview: "Our Internet of Things (IoT) program teaches you how to design, build, and deploy interconnected devices that collect and exchange data. From smart home systems to industrial automation, you'll learn how to create IoT solutions that solve real-world problems. Through practical projects and hands-on labs, you'll master the hardware, software, and cloud components that make up the IoT ecosystem.",
@@ -1756,8 +1875,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Our IoT instructors are industry professionals with experience implementing IoT solutions across various sectors. They bring practical insights and best practices from real-world deployments.",
-    
     instructors: [
       {
         name: "David Patel",
@@ -1776,17 +1893,17 @@ export const programsData = {
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "47,999",
-        currentPrice: "41,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
-        originalPrice: "35,999",
-        currentPrice: "30,999"
+        originalPrice: "29,999",
+        currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "23,999",
-        currentPrice: "19,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -1796,9 +1913,7 @@ export const programsData = {
         tag: "Engineering",
         description: "Master microcontroller-based electronic systems development",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/embedded-systems"
       },
       {
@@ -1806,9 +1921,7 @@ export const programsData = {
         tag: "Technical",
         description: "Build expertise in cloud platforms that power IoT solutions",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/cloud-computing"
       },
       {
@@ -1816,10 +1929,66 @@ export const programsData = {
         tag: "Bestseller",
         description: "Add intelligence to IoT systems with AI capabilities",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/artificial-intelligence"
+      }
+    ],
+    
+    curriculum: {
+      title: "Internet of Things (IoT) Curriculum (Entry Level)",
+      description: "A beginner-friendly 8-week program covering IoT concepts, hardware, connectivity, and hands-on projects.",
+      weeks: [
+        { week: 1, title: "What is IoT? Concepts & Applications", topics: ["Definition of IoT", "IoT use cases", "Industry applications"] },
+        { week: 2, title: "IoT Hardware Platforms", topics: ["Overview of Arduino, ESP32, Raspberry Pi", "Setting up development boards", "Basic programming"] },
+        { week: 3, title: "Sensors & Actuators in IoT", topics: ["Types of sensors", "Actuator basics", "Interfacing sensors and actuators"] },
+        { week: 4, title: "Communication Protocols", topics: ["Wi-Fi basics", "Bluetooth basics", "MQTT introduction", "Simple device-to-device communication"] },
+        { week: 5, title: "Cloud Platforms for IoT", topics: ["Intro to AWS IoT, Thingspeak, etc.", "Sending data to the cloud", "Basic dashboards"] },
+        { week: 6, title: "Data Collection & Visualization", topics: ["Collecting sensor data", "Visualizing data online", "Simple analytics"] },
+        { week: 7, title: "IoT Security Basics", topics: ["Why security matters in IoT", "Simple security practices", "Common vulnerabilities"] },
+        { week: 8, title: "Mini Project: Build a Simple IoT System", topics: ["Project planning", "Implementation", "Testing and demonstration"] }
+      ]
+    },
+    
+    faqs: [
+      {
+        question: "What is included in this program?",
+        answer: "You get access to beginner-friendly lessons, hands-on projects, mentor support, and a certificate upon completion."
+      },
+      {
+        question: "Do I get a certificate?",
+        answer: "Yes, you will receive a certificate after successfully completing the program."
+      },
+      {
+        question: "Are there real projects?",
+        answer: "Yes, you will work on simple, real-world projects to build your practical skills."
+      },
+      {
+        question: "Is there mentor support?",
+        answer: "Yes, you will have access to mentors for guidance and support throughout the program."
+      },
+      {
+        question: "Is there career or placement support?",
+        answer: "Yes, we provide basic career guidance and tips for job readiness."
+      },
+      {
+        question: "Is the program hands-on?",
+        answer: "Absolutely! The program is designed to be practical and project-based."
+      },
+      {
+        question: "How much time should I dedicate each week?",
+        answer: "You should plan to spend 2-3 hours per week on the program, including lessons and projects."
+      },
+      {
+        question: "Do I need prior experience?",
+        answer: "No prior experience is required. This program is designed for beginners."
+      },
+      {
+        question: "How do I enroll?",
+        answer: "Click the 'Enroll Now' button and follow the instructions to register."
+      },
+      {
+        question: "Is there a refund policy?",
+        answer: "If you have concerns, please contact our support team for assistance with refunds or other issues."
       }
     ]
   },
@@ -1830,11 +1999,8 @@ export const programsData = {
     tag: "Design",
     description: "Master 2D and 3D modeling, drafting, and rendering for architectural, mechanical and engineering designs",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Beginner to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
     overview: "Our AutoCAD Designing program teaches you how to create precise 2D and 3D designs for architectural, mechanical, and civil engineering applications. From basic drawing tools to advanced modeling techniques, you'll learn to use AutoCAD efficiently for professional design work. Through hands-on projects based on real-world scenarios, you'll develop the skills needed to create detailed technical drawings that meet industry standards.",
@@ -2035,8 +2201,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Our AutoCAD instructors are certified professionals with extensive experience in architectural and mechanical design. They bring practical industry knowledge and best practices to help you develop professional-grade CAD skills.",
-    
     instructors: [
       {
         name: "Michael Henderson",
@@ -2055,17 +2219,17 @@ export const programsData = {
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "39,999",
-        currentPrice: "34,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
         originalPrice: "29,999",
         currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -2075,9 +2239,7 @@ export const programsData = {
         tag: "Engineering",
         description: "Design the electronic components that power modern devices",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/embedded-systems"
       },
       {
@@ -2085,9 +2247,7 @@ export const programsData = {
         tag: "New",
         description: "Connect physical designs to the digital world through IoT integration",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/iot"
       },
       {
@@ -2095,12 +2255,25 @@ export const programsData = {
         tag: "High Demand",
         description: "Complement your design skills with web development capabilities",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/web-development"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "AutoCAD Designing Curriculum (Entry Level)",
+      description: "A beginner-friendly 8-week program introducing the basics of AutoCAD, 2D drafting, and simple 3D modeling.",
+      weeks: [
+        { week: 1, title: "Introduction to AutoCAD & User Interface", topics: ["AutoCAD overview", "Navigating the interface", "Basic settings"] },
+        { week: 2, title: "Basic Drawing Tools & Commands", topics: ["Line, circle, rectangle, and other basic shapes", "Drawing precision", "Coordinate entry"] },
+        { week: 3, title: "Editing & Modifying Drawings", topics: ["Move, copy, rotate, scale", "Trim, extend, offset", "Undo/redo"] },
+        { week: 4, title: "Layers, Properties, and Object Organization", topics: ["Creating and managing layers", "Object properties", "Grouping and organizing objects"] },
+        { week: 5, title: "Dimensioning, Text, and Annotations", topics: ["Adding dimensions", "Text and labels", "Annotations and leaders"] },
+        { week: 6, title: "Introduction to 2D Drafting Projects", topics: ["Simple 2D project workflow", "Drawing templates", "Printing and plotting"] },
+        { week: 7, title: "Introduction to 3D Modeling Concepts", topics: ["3D workspace basics", "Creating simple 3D shapes", "Viewing and navigating in 3D"] },
+        { week: 8, title: "Mini Project: Create a Simple 2D/3D Design", topics: ["Project planning", "Implementation", "Presentation"] }
+      ]
+    }
   },
   
   "cyber-security": {
@@ -2109,11 +2282,8 @@ export const programsData = {
     tag: "Industry Partner",
     description: "Navigate the complex world of digital security with hands-on labs and current threat analysis techniques",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Intermediate to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
     overview: "Our Cyber Security program provides comprehensive training in protecting digital assets and systems from threats and vulnerabilities. From network security to ethical hacking, you'll learn how to identify, analyze, and mitigate security risks using industry-standard tools and methodologies. Through hands-on labs and real-world scenarios, you'll develop the practical skills needed to safeguard organizations in today's complex threat landscape.",
@@ -2314,8 +2484,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Our cybersecurity instructors are industry professionals with extensive experience in various security domains. They bring practical knowledge from the field and stay current with the evolving threat landscape.",
-    
     instructors: [
       {
         name: "Richard Torres",
@@ -2334,17 +2502,17 @@ export const programsData = {
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "54,999",
-        currentPrice: "49,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
-        originalPrice: "39,999",
-        currentPrice: "34,999"
+        originalPrice: "29,999",
+        currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "24,999",
-        currentPrice: "19,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -2354,9 +2522,7 @@ export const programsData = {
         tag: "Technical",
         description: "Learn to secure cloud infrastructure and services",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/cloud-computing"
       },
       {
@@ -2364,9 +2530,7 @@ export const programsData = {
         tag: "DevOps",
         description: "Integrate security into the development and operations pipeline",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/devops"
       },
       {
@@ -2374,12 +2538,105 @@ export const programsData = {
         tag: "New",
         description: "Address security challenges in connected device ecosystems",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/iot"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "Cybersecurity Curriculum",
+      description: "An intensive 8-week program covering cybersecurity from fundamentals to advanced topics",
+      weeks: [
+        {
+          week: 1,
+          title: "Cybersecurity Fundamentals",
+          topics: [
+            "Cybersecurity concepts and terminology",
+            "Threat landscape and attack vectors",
+            "Security frameworks and models (NIST, ISO 27001)",
+            "Risk assessment methodologies",
+            "Security controls and their implementation"
+          ]
+        },
+        {
+          week: 2,
+          title: "Network Security",
+          topics: [
+            "Network architecture and security design",
+            "Firewalls and intrusion prevention systems",
+            "VPNs and secure remote access",
+            "Network monitoring and traffic analysis",
+            "Wireless network security"
+          ]
+        },
+        {
+          week: 3,
+          title: "System Security",
+          topics: [
+            "Operating system hardening techniques",
+            "Access control mechanisms",
+            "Endpoint protection solutions",
+            "Patch management strategies",
+            "Virtualization and container security"
+          ]
+        },
+        {
+          week: 4,
+          title: "Application Security",
+          topics: [
+            "Secure software development lifecycle",
+            "Common vulnerabilities (OWASP Top 10)",
+            "Web application security testing",
+            "API security considerations",
+            "Code review and static analysis"
+          ]
+        },
+        {
+          week: 5,
+          title: "Ethical Hacking & Penetration Testing",
+          topics: [
+            "Reconnaissance and information gathering",
+            "Vulnerability scanning and assessment",
+            "Exploitation techniques and tools",
+            "Privilege escalation and persistence",
+            "Reporting and remediation recommendations"
+          ]
+        },
+        {
+          week: 6,
+          title: "Cryptography & Data Protection",
+          topics: [
+            "Cryptographic algorithms and protocols",
+            "Public key infrastructure (PKI)",
+            "Secure communications and TLS/SSL",
+            "Data loss prevention strategies",
+            "Privacy regulations and compliance (GDPR, CCPA)"
+          ]
+        },
+        {
+          week: 7,
+          title: "Incident Response & Digital Forensics",
+          topics: [
+            "Security monitoring and event management",
+            "Incident response procedures and playbooks",
+            "Threat hunting methodologies",
+            "Digital evidence collection and preservation",
+            "Malware analysis techniques"
+          ]
+        },
+        {
+          week: 8,
+          title: "Security Operations & Management",
+          topics: [
+            "Security operations center (SOC) functions",
+            "Security awareness and training programs",
+            "Security metrics and reporting",
+            "Vulnerability management lifecycle",
+            "Business continuity and disaster recovery"
+          ]
+        }
+      ]
+    }
   },
   
   "devops": {
@@ -2388,11 +2645,8 @@ export const programsData = {
     tag: "DevOps",
     description: "Master tools and practices for continuous integration, delivery, and deployment with emphasis on automation",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Intermediate to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1607743386760-88f10eb85a79?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
     overview: "Our DevOps program teaches you how to bridge development and operations through automation, collaboration, and efficient workflows. You'll learn to implement continuous integration and deployment pipelines, infrastructure as code, and monitoring solutions that enable organizations to deliver software faster and more reliably. Through hands-on projects with industry-standard tools, you'll develop the skills needed to transform traditional development processes and drive DevOps culture.",
@@ -2593,8 +2847,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Our DevOps instructors are industry professionals with extensive experience implementing DevOps practices across various organizations. They bring practical insights from real-world transformations and implementations.",
-    
     instructors: [
       {
         name: "Jason Miller",
@@ -2613,17 +2865,17 @@ export const programsData = {
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "49,999",
-        currentPrice: "44,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
-        originalPrice: "37,999",
-        currentPrice: "32,999"
+        originalPrice: "29,999",
+        currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "24,999",
-        currentPrice: "19,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -2633,9 +2885,7 @@ export const programsData = {
         tag: "Technical",
         description: "Build expertise in cloud platforms that power modern infrastructures",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/cloud-computing"
       },
       {
@@ -2643,9 +2893,7 @@ export const programsData = {
         tag: "High Demand",
         description: "Learn to build the applications that DevOps practices deploy",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/web-development"
       },
       {
@@ -2653,12 +2901,105 @@ export const programsData = {
         tag: "Industry Partner",
         description: "Integrate security considerations throughout the DevOps lifecycle",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/cyber-security"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "DevOps Curriculum",
+      description: "A comprehensive 8-week program covering DevOps practices and tools",
+      weeks: [
+        {
+          week: 1,
+          title: "DevOps Fundamentals",
+          topics: [
+            "DevOps philosophy and benefits",
+            "Development and operations collaboration",
+            "Continuous integration and continuous delivery concepts",
+            "Automation principles and approaches",
+            "DevOps toolchain overview"
+          ]
+        },
+        {
+          week: 2,
+          title: "Version Control & Git Workflows",
+          topics: [
+            "Advanced Git commands and workflows",
+            "Branching strategies (GitFlow, GitHub Flow)",
+            "Pull requests and code review processes",
+            "Managing dependencies and submodules",
+            "Git hooks and automation"
+          ]
+        },
+        {
+          week: 3,
+          title: "Continuous Integration",
+          topics: [
+            "CI server setup (Jenkins, GitLab CI, GitHub Actions)",
+            "Build automation and dependency management",
+            "Automated testing strategies",
+            "Code quality checks and analysis",
+            "Artifact management and repositories"
+          ]
+        },
+        {
+          week: 4,
+          title: "Infrastructure as Code",
+          topics: [
+            "Infrastructure as Code principles",
+            "Terraform for cloud resource provisioning",
+            "Configuration management with Ansible",
+            "Cloud-specific IaC tools and templates",
+            "Testing and validating infrastructure code"
+          ]
+        },
+        {
+          week: 5,
+          title: "Containerization with Docker",
+          topics: [
+            "Docker architecture and components",
+            "Creating efficient Dockerfiles",
+            "Multi-container applications with Docker Compose",
+            "Container registries and image management",
+            "Docker security best practices"
+          ]
+        },
+        {
+          week: 6,
+          title: "Container Orchestration with Kubernetes",
+          topics: [
+            "Kubernetes architecture and components",
+            "Deploying applications on Kubernetes",
+            "Service discovery and load balancing",
+            "Kubernetes configuration and secrets management",
+            "Persistent storage in Kubernetes"
+          ]
+        },
+        {
+          week: 7,
+          title: "Monitoring & Observability",
+          topics: [
+            "Monitoring strategies and best practices",
+            "Metrics collection and visualization (Prometheus, Grafana)",
+            "Centralized logging (ELK stack, Loki)",
+            "Distributed tracing (Jaeger, Zipkin)",
+            "Alerting and incident response automation"
+          ]
+        },
+        {
+          week: 8,
+          title: "DevSecOps & Site Reliability Engineering",
+          topics: [
+            "Security in the CI/CD pipeline",
+            "Infrastructure and container security scanning",
+            "Secrets management and secure configurations",
+            "SRE principles and practices",
+            "Chaos engineering and resilience testing"
+          ]
+        }
+      ]
+    }
   },
   
   "android-development": {
@@ -2667,11 +3008,8 @@ export const programsData = {
     tag: "Mobile",
     description: "Learn to develop applications for the Android platform using Kotlin and Java",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Beginner to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1607252650355-f7fd0460ccdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
     
     overview: "Our Android Development program provides a comprehensive introduction to Android app development using Kotlin and Java. You'll learn the fundamentals of Android app development, including UI design, data storage, and networking. Through hands-on projects and real-world scenarios, you'll develop the skills to create functional and polished Android applications.",
@@ -2876,8 +3214,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Our Android Development instructors are experienced professionals with backgrounds in mobile app development and software engineering. They bring practical industry knowledge and best practices to the classroom.",
-    
     instructors: [
       {
         name: "John Smith",
@@ -2896,17 +3232,17 @@ export const programsData = {
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "49,999",
-        currentPrice: "44,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
-        originalPrice: "35,999",
-        currentPrice: "30,999"
+        originalPrice: "29,999",
+        currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "23,999",
-        currentPrice: "19,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -2916,9 +3252,7 @@ export const programsData = {
         tag: "Apple",
         description: "Design and develop iOS apps using Swift and Apple frameworks",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/ios-development"
       },
       {
@@ -2926,9 +3260,7 @@ export const programsData = {
         tag: "High Demand",
         description: "Master web technologies that complement mobile development",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/web-development"
       },
       {
@@ -2936,12 +3268,105 @@ export const programsData = {
         tag: "Design",
         description: "Create engaging user experiences for mobile applications",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/ui-ux-design"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "Android Development Curriculum",
+      description: "A comprehensive 8-week program covering Android app development",
+      weeks: [
+        {
+          week: 1,
+          title: "Android Development Fundamentals",
+          topics: [
+            "Android Studio installation and setup",
+            "Android SDK and emulator",
+            "Basic Android app structure and project setup",
+            "Android lifecycle and activity management",
+            "Android UI design principles"
+          ]
+        },
+        {
+          week: 2,
+          title: "Kotlin Programming",
+          topics: [
+            "Kotlin syntax and fundamentals",
+            "Variables, constants, and data types",
+            "Control flow and functions",
+            "Classes, structures, and protocols",
+            "Error handling and optionals"
+          ]
+        },
+        {
+          week: 3,
+          title: "UI/UX Design",
+          topics: [
+            "Android UI design principles",
+            "Material Design guidelines",
+            "Creating layouts with XML and ConstraintLayout",
+            "Using Android Studio's layout editor",
+            "Designing responsive layouts"
+          ]
+        },
+        {
+          week: 4,
+          title: "Data Storage",
+          topics: [
+            "SQLite for local data storage",
+            "Room database for object-oriented data",
+            "Firebase Realtime Database for real-time data",
+            "SharedPreferences for simple data",
+            "ContentProvider for secure data access"
+          ]
+        },
+        {
+          week: 5,
+          title: "Networking",
+          topics: [
+            "Retrofit for RESTful API integration",
+            "OkHttp for efficient HTTP requests",
+            "Volley for image loading and caching",
+            "AsyncTask and Threading in Android",
+            "Networking best practices"
+          ]
+        },
+        {
+          week: 6,
+          title: "Background Services and Notifications",
+          topics: [
+            "Service and IntentService for background tasks",
+            "BroadcastReceiver for system events",
+            "Notification channels and notifications",
+            "WorkManager for background jobs",
+            "Foreground services"
+          ]
+        },
+        {
+          week: 7,
+          title: "Advanced Android Features",
+          topics: [
+            "Android Jetpack components (ViewModel, LiveData, Room, Navigation)",
+            "Data binding and MVVM architecture",
+            "Dependency injection with Dagger 2",
+            "Room database advanced features",
+            "Android architecture components"
+          ]
+        },
+        {
+          week: 8,
+          title: "Android App Development Project",
+          topics: [
+            "Project planning and requirements gathering",
+            "UI/UX design and prototyping",
+            "Backend integration and API development",
+            "Testing and debugging",
+            "Publishing to Google Play Store"
+          ]
+        }
+      ]
+    }
   },
   
   "ios-development": {
@@ -2950,11 +3375,8 @@ export const programsData = {
     tag: "Apple",
     description: "Design and develop iOS apps using Swift, UIKit, and the latest Apple frameworks and technologies",
     duration: "8 weeks",
-    durationIcon: "fas fa-clock",
     format: "Online Weekends",
-    formatIcon: "fas fa-laptop",
     level: "Beginner to Advanced",
-    levelIcon: "fas fa-chart-line",
     heroImage: "https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80",
     
     overview: "Our iOS Development program teaches you how to create elegant, high-performance applications for Apple's ecosystem of devices. From mastering Swift programming to implementing the latest iOS frameworks, you'll learn to build polished, professional apps that meet Apple's high standards. Through hands-on projects and real-world scenarios, you'll develop the skills to create engaging user experiences and publish your apps to the App Store.",
@@ -3159,8 +3581,6 @@ export const programsData = {
       }
     ],
     
-    instructorsIntro: "Our iOS development instructors are experienced professionals who have published numerous applications to the App Store. They bring practical knowledge and best practices from the field into the classroom.",
-    
     instructors: [
       {
         name: "David Miller",
@@ -3179,17 +3599,17 @@ export const programsData = {
     ],
     
     pricing: {
-      advanced: {
-        originalPrice: "49,999",
-        currentPrice: "44,999"
+      self: {
+        originalPrice: "19,999",
+        currentPrice: "14,999"
       },
       mentor: {
-        originalPrice: "35,999",
-        currentPrice: "30,999"
+        originalPrice: "29,999",
+        currentPrice: "24,999"
       },
-      self: {
-        originalPrice: "23,999",
-        currentPrice: "19,999"
+      advanced: {
+        originalPrice: "49,999",
+        currentPrice: "39,999"
       }
     },
     
@@ -3199,9 +3619,7 @@ export const programsData = {
         tag: "Mobile",
         description: "Learn to develop applications for the Android platform",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/android-development"
       },
       {
@@ -3209,9 +3627,7 @@ export const programsData = {
         tag: "High Demand",
         description: "Master web technologies that complement mobile development",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/web-development"
       },
       {
@@ -3219,12 +3635,105 @@ export const programsData = {
         tag: "Design",
         description: "Create engaging user experiences for mobile applications",
         duration: "8 weeks",
-        durationIcon: "fas fa-clock",
         format: "Online Weekends",
-        formatIcon: "fas fa-laptop",
         path: "/programs/ui-ux-design"
       }
-    ]
+    ],
+    
+    curriculum: {
+      title: "iOS Development Curriculum",
+      description: "A comprehensive 8-week program covering iOS app development",
+      weeks: [
+        {
+          week: 1,
+          title: "Swift Programming Fundamentals",
+          topics: [
+            "Swift syntax and fundamentals",
+            "Variables, constants, and data types",
+            "Control flow and functions",
+            "Classes, structures, and protocols",
+            "Error handling and optionals"
+          ]
+        },
+        {
+          week: 2,
+          title: "iOS App Fundamentals",
+          topics: [
+            "iOS app architecture",
+            "Xcode IDE and Interface Builder",
+            "App lifecycle and delegates",
+            "View controllers and navigation",
+            "Creating your first iOS application"
+          ]
+        },
+        {
+          week: 3,
+          title: "User Interface Design",
+          topics: [
+            "UIKit framework fundamentals",
+            "Auto Layout and adaptive interfaces",
+            "Table and collection views",
+            "Custom UI components",
+            "Introduction to SwiftUI"
+          ]
+        },
+        {
+          week: 4,
+          title: "Data Persistence",
+          topics: [
+            "UserDefaults for simple storage",
+            "File system operations",
+            "Core Data for object persistence",
+            "Realm database integration",
+            "iCloud synchronization"
+          ]
+        },
+        {
+          week: 5,
+          title: "Networking and Web Services",
+          topics: [
+            "URLSession for networking",
+            "Working with REST APIs",
+            "JSON parsing and serialization",
+            "Authentication and authorization",
+            "Image downloading and caching"
+          ]
+        },
+        {
+          week: 6,
+          title: "Advanced iOS Features",
+          topics: [
+            "Push notifications",
+            "Background processing",
+            "Core Location and MapKit",
+            "Camera and photo library access",
+            "Animations and transitions"
+          ]
+        },
+        {
+          week: 7,
+          title: "iOS App Architecture",
+          topics: [
+            "MVC, MVVM, and VIPER patterns",
+            "Protocol-oriented programming",
+            "Dependency injection",
+            "Reactive programming with Combine",
+            "Managing app state"
+          ]
+        },
+        {
+          week: 8,
+          title: "Testing and Deployment",
+          topics: [
+            "Unit testing with XCTest",
+            "UI testing and automation",
+            "Performance optimization",
+            "App Store preparation and submission",
+            "App analytics and monitoring"
+          ]
+        }
+      ]
+    }
   }
 };
 
