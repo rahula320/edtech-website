@@ -1,10 +1,11 @@
 # EdTech Website Server
 
-Backend server for the EdTech website.
+Backend server for the EdTech website with MongoDB integration.
 
 ## Features
 
 - Express.js backend
+- MongoDB database for data storage
 - User authentication with Passport.js
 - Session management
 - RESTful API endpoints
@@ -23,13 +24,15 @@ The following models are defined:
 
 3. **Contact**
    - Contact form submissions
-   - Status tracking
+   - Status tracking (new, read, replied, closed)
+   - Stored in MongoDB
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js (v14 or newer)
+- MongoDB Atlas account or local MongoDB installation
 
 ### Environment Setup
 
@@ -42,6 +45,7 @@ The following models are defined:
    ```
    PORT=5001
    NODE_ENV=development
+   MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/?retryWrites=true&w=majority
    SESSION_SECRET=your-secret-key-change-this-in-production
    ```
 
@@ -52,10 +56,23 @@ The following models are defined:
    npm install
    ```
 
-2. Start the development server:
+2. Test the database connection:
+   ```
+   node scripts/test-db.js
+   ```
+
+3. Start the development server:
    ```
    npm run dev
    ```
+
+## Database Connection
+
+The server connects to MongoDB using Mongoose. The connection is established in `config/db.js` with automatic retry logic for better reliability.
+
+### MongoDB Atlas
+
+This project uses MongoDB Atlas for the database. The connection string is stored in the .env file.
 
 ## API Endpoints
 
@@ -71,7 +88,9 @@ The following models are defined:
 - `POST /api/courses` - Create a new course (instructors only)
 
 ### Contact
-- `POST /api/contact` - Submit contact form (logs message to console)
+- `POST /api/contact` - Submit contact form (stores in MongoDB)
+- `GET /api/admin/contacts` - Get all contacts (admin only)
+- `PUT /api/admin/contacts/:id` - Update contact status (admin only)
 
 ## Docker Deployment
 
