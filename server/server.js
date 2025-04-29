@@ -302,7 +302,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 5003;
+const PORT = process.env.PORT || 5001;
 
 // Function to start the server
 async function startServer() {
