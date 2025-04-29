@@ -1,21 +1,20 @@
 import React from 'react';
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Programs from './pages/Programs';
+import Internships from './pages/Internships';
 import About from './pages/About';
+import FAQ from './pages/FAQ';
 import Careers from './pages/Careers';
 import MentorForm from './pages/MentorForm';
 import BdaForm from './pages/BdaForm';
 import CampusAmbassadorForm from './pages/CampusAmbassadorForm';
-import StudentPortal from './pages/StudentPortal';
 import ProgramDetail from './pages/ProgramDetail';
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
-import ProtectedRoute from './components/ProtectedRoute';
 import Terms from './pages/Terms';
 import Contact from './pages/Contact';
+import AdminContacts from './pages/AdminContacts';
 import './App.css';
 import { programsData } from './data/programsData';
 
@@ -30,22 +29,20 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/programs" element={<Programs />} />
+          <Route path="/internships" element={<Internships />} />
           <Route path="/about" element={<About />} />
+          <Route path="/faq" element={<FAQ />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/careers/mentor" element={<MentorForm />} />
           <Route path="/careers/business-development" element={<BdaForm />} />
           <Route path="/careers/campus-ambassador" element={<CampusAmbassadorForm />} />
-          <Route path="/portal" element={<StudentPortal />} />
           <Route path="/programs/:programId" element={<ProgramDetail programsData={programsData} />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={
-            <ProtectedRoute>
-              <AdminDashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/login" element={<Navigate to="/admin" replace />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin/contacts" element={<AdminContacts />} />
+          
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

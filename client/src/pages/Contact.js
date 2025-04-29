@@ -1,14 +1,33 @@
 import React, { useState } from 'react';
 import './Contact.css';
+import ContactService from '../utils/contactService';
 
 function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
+    phone: '',
+    college: '',
+    domain: '',
     message: ''
   });
   const [status, setStatus] = useState({ type: '', message: '' });
+
+  // Program domains for dropdown - actual programs offered
+  const programDomains = [
+    "Data Science & Analytics",
+    "Artificial Intelligence",
+    "Machine Learning with Python",
+    "Cloud Computing",
+    "Web Development",
+    "Embedded Systems",
+    "Internet of Things (IoT)",
+    "AutoCAD",
+    "Cyber Security",
+    "DevOps",
+    "Android Development",
+    "iOS Development"
+  ];
 
   const handleChange = (e) => {
     setFormData({
@@ -22,24 +41,17 @@ function Contact() {
     setStatus({ type: 'loading', message: 'Sending message...' });
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+      const response = await ContactService.submitContactForm(formData);
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (response.success) {
         setStatus({ type: 'success', message: 'Message sent successfully!' });
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({ name: '', email: '', phone: '', college: '', domain: '', message: '' });
       } else {
-        setStatus({ type: 'error', message: data.message || 'Something went wrong' });
+        setStatus({ type: 'error', message: response.message || 'Something went wrong' });
       }
     } catch (error) {
-      setStatus({ type: 'error', message: 'Failed to send message' });
+      console.error('Error submitting form:', error);
+      setStatus({ type: 'error', message: 'Failed to send message. Please try again later.' });
     }
   };
 
@@ -59,20 +71,10 @@ function Contact() {
             <div className="contact-info">
               <div className="contact-info-header">
                 <h2>Get in Touch</h2>
-                <p className="last-updated">Last updated on 26-04-2025 14:34:54</p>
+                <p className="contact-subheading">Contact Information</p>
               </div>
               
-              <div className="contact-details">
-                <div className="contact-detail-item">
-                  <div className="icon-wrapper">
-                    <i className="fas fa-building"></i>
-                  </div>
-                  <div className="detail-content">
-                    <h3>Merchant Legal entity name</h3>
-                    <p>RAHUL KUMAR</p>
-                  </div>
-                </div>
-                
+              <div className="contact-details">                
                 <div className="contact-detail-item">
                   <div className="icon-wrapper">
                     <i className="fas fa-map-marker-alt"></i>
@@ -95,16 +97,6 @@ function Contact() {
                 
                 <div className="contact-detail-item">
                   <div className="icon-wrapper">
-                    <i className="fas fa-phone-alt"></i>
-                  </div>
-                  <div className="detail-content">
-                    <h3>Telephone</h3>
-                    <p><a href="tel:9150210762">9150210762</a></p>
-                  </div>
-                </div>
-                
-                <div className="contact-detail-item">
-                  <div className="icon-wrapper">
                     <i className="fas fa-envelope"></i>
                   </div>
                   <div className="detail-content">
@@ -122,6 +114,11 @@ function Contact() {
                   <a href="#" className="social-icon" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
                   <a href="#" className="social-icon" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
                 </div>
+              </div>
+              
+              <div className="contact-hours">
+                <h3>Business Hours</h3>
+                <p>Monday - Sunday: 12:00 PM - 9:00 PM</p>
               </div>
             </div>
 
@@ -156,17 +153,49 @@ function Contact() {
                   </div>
                 </div>
 
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone Number <span className="required">*</span></label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      placeholder="Enter your phone number"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="college">College Name <span className="required">*</span></label>
+                    <input
+                      type="text"
+                      id="college"
+                      name="college"
+                      value={formData.college}
+                      onChange={handleChange}
+                      required
+                      placeholder="Enter your college name"
+                    />
+                  </div>
+                </div>
+
                 <div className="form-group">
-                  <label htmlFor="subject">Subject <span className="required">*</span></label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
+                  <label htmlFor="domain">Domain of Interest <span className="required">*</span></label>
+                  <select
+                    id="domain"
+                    name="domain"
+                    value={formData.domain}
                     onChange={handleChange}
                     required
-                    placeholder="What is this regarding?"
-                  />
+                    className="domain-select"
+                  >
+                    <option value="" disabled>Select your domain of interest</option>
+                    {programDomains.map((domain, index) => (
+                      <option key={index} value={domain}>{domain}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="form-group">

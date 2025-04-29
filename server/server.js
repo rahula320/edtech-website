@@ -8,16 +8,13 @@ const LocalStrategy = require('passport-local').Strategy;
 const path = require('path');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
-const connectDB = require('./config/db');
 
-// Import models
+// Import database configuration
+const { testConnection } = require('./config/db');
 const Contact = require('./models/Contact');
 
 // Import routes
 const apiRoutes = require('./routes/api');
-
-// Connect to MongoDB
-connectDB();
 
 const app = express();
 
@@ -108,65 +105,23 @@ app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, message } = req.body;
     
-    // Save contact message to MongoDB
-    const newContact = new Contact({
+    // Log the contact request
+    console.log('Contact form submission:', { name, email, message });
+    
+    // Save to database
+    const newContact = await Contact.create({
       name,
       email,
-      message
+      message,
+      status: 'new'
     });
     
-    await newContact.save();
-    
-    console.log('Contact form submission saved to database:', { name, email, message });
+    console.log('Contact saved to database with ID:', newContact.id);
     
     res.json({ success: true, message: 'Message received and saved successfully' });
   } catch (err) {
     console.error('Contact form error:', err);
     res.status(500).json({ success: false, message: 'Error processing message' });
-  }
-});
-
-// Admin route to get all contact messages
-app.get('/api/admin/contacts', async (req, res) => {
-  try {
-    // Check if user is authenticated and is an admin
-    if (!req.isAuthenticated() || req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Unauthorized' });
-    }
-    
-    const contacts = await Contact.find().sort({ createdAt: -1 });
-    res.json(contacts);
-  } catch (err) {
-    console.error('Error fetching contacts:', err);
-    res.status(500).json({ message: 'Error fetching contacts' });
-  }
-});
-
-// Admin route to update contact status
-app.put('/api/admin/contacts/:id', async (req, res) => {
-  try {
-    // Check if user is authenticated and is an admin
-    if (!req.isAuthenticated() || req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Unauthorized' });
-    }
-    
-    const { id } = req.params;
-    const { status } = req.body;
-    
-    const contact = await Contact.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
-    
-    if (!contact) {
-      return res.status(404).json({ message: 'Contact not found' });
-    }
-    
-    res.json(contact);
-  } catch (err) {
-    console.error('Error updating contact:', err);
-    res.status(500).json({ message: 'Error updating contact' });
   }
 });
 
@@ -339,8 +294,12 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5003;
 
 // Function to start the server
-function startServer() {
+async function startServer() {
   try {
+    // Test database connection
+    await testConnection();
+    
+    // Start the server
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });

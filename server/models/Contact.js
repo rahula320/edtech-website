@@ -1,39 +1,43 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
 
-const ContactSchema = new mongoose.Schema({
+// Define the Contact model
+const Contact = sequelize.define('Contact', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   name: {
-    type: String,
-    required: true,
-    trim: true
+    type: DataTypes.STRING,
+    allowNull: false
   },
   email: {
-    type: String,
-    required: true,
-    trim: true
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
   },
   message: {
-    type: String,
-    required: true
+    type: DataTypes.TEXT,
+    allowNull: false
   },
   status: {
-    type: String,
-    enum: ['new', 'read', 'replied', 'closed'],
-    default: 'new'
+    type: DataTypes.ENUM('new', 'read', 'replied'),
+    defaultValue: 'new'
   },
   createdAt: {
-    type: Date,
-    default: Date.now
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   },
   updatedAt: {
-    type: Date,
-    default: Date.now
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
+}, {
+  tableName: 'contacts',
+  timestamps: true
 });
 
-// Update the updatedAt field before saving
-ContactSchema.pre('save', function(next) {
-  this.updatedAt = Date.now();
-  next();
-});
-
-module.exports = mongoose.model('Contact', ContactSchema); 
+module.exports = Contact; 

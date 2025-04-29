@@ -1,11 +1,18 @@
 /**
- * API Routes for the ACMYX application
- * Using Neon PostgreSQL database
+ * API Routes for the application
+ * In-memory implementation
  */
 
 const express = require('express');
 const router = express.Router();
-const { sql, updateAdminPassword } = require('../config/db');
+const Contact = require('../models/Contact');
+
+// In-memory data storage
+const storage = {
+  mentorApplications: [],
+  bdaApplications: [],
+  campusAmbassadorApplications: []
+};
 
 // Health check endpoint
 router.get('/health', (req, res) => {
@@ -17,27 +24,21 @@ router.get('/health', (req, res) => {
       '/api/applications',
       '/api/applications/mentor',
       '/api/applications/bda',
-      '/api/applications/campus-ambassador'
+      '/api/applications/campus-ambassador',
+      '/api/contacts'
     ]
   });
 });
 
-// Get all applications (updated to combine results from both tables)
+// Get all applications (combined from both tables)
 router.get('/applications', async (req, res) => {
   try {
-    // Get mentor applications
-    const mentorApplications = await sql`
-      SELECT *, 'mentor' as type FROM mentor_applications ORDER BY timestamp DESC
-    `;
-    
-    // Get BDA applications
-    const bdaApplications = await sql`
-      SELECT *, 'bda' as type FROM bda_applications ORDER BY timestamp DESC
-    `;
-    
     // Combine and sort by timestamp
-    const allApplications = [...mentorApplications, ...bdaApplications]
-      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    const allApplications = [
+      ...storage.mentorApplications.map(app => ({ ...app, type: 'mentor' })),
+      ...storage.bdaApplications.map(app => ({ ...app, type: 'bda' })),
+      ...storage.campusAmbassadorApplications.map(app => ({ ...app, type: 'campus-ambassador' }))
+    ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     
     res.status(200).json(allApplications);
   } catch (error) {
@@ -49,9 +50,7 @@ router.get('/applications', async (req, res) => {
 // Get mentor applications
 router.get('/applications/mentor', async (req, res) => {
   try {
-    const applications = await sql`
-      SELECT *, 'mentor' as type FROM mentor_applications ORDER BY timestamp DESC
-    `;
+    const applications = storage.mentorApplications.map(app => ({ ...app, type: 'mentor' }));
     res.status(200).json(applications);
   } catch (error) {
     console.error('Error fetching mentor applications:', error);
@@ -62,9 +61,7 @@ router.get('/applications/mentor', async (req, res) => {
 // Get BDA applications
 router.get('/applications/bda', async (req, res) => {
   try {
-    const applications = await sql`
-      SELECT *, 'bda' as type FROM bda_applications ORDER BY timestamp DESC
-    `;
+    const applications = storage.bdaApplications.map(app => ({ ...app, type: 'bda' }));
     res.status(200).json(applications);
   } catch (error) {
     console.error('Error fetching BDA applications:', error);
@@ -75,9 +72,7 @@ router.get('/applications/bda', async (req, res) => {
 // Get Campus Ambassador applications
 router.get('/applications/campus-ambassador', async (req, res) => {
   try {
-    const applications = await sql`
-      SELECT *, 'campus-ambassador' as type FROM campus_ambassador_applications ORDER BY timestamp DESC
-    `;
+    const applications = storage.campusAmbassadorApplications.map(app => ({ ...app, type: 'campus-ambassador' }));
     res.status(200).json(applications);
   } catch (error) {
     console.error('Error fetching Campus Ambassador applications:', error);
@@ -108,7 +103,7 @@ router.post('/applications/mentor', async (req, res) => {
       return res.status(400).json({ error: 'Full name and email are required' });
     }
 
-    // Process domains field correctly - store as an array
+    // Process domains field correctly
     let domainsArray = [];
     if (domains) {
       if (Array.isArray(domains)) {
@@ -117,10 +112,6 @@ router.post('/applications/mentor', async (req, res) => {
         domainsArray = domains.split(',').map(domain => domain.trim());
       }
     }
-    
-    // Convert to PostgreSQL array format
-    const domainsStr = domainsArray.map(domain => `"${domain}"`).join(',');
-    const domainsArrayStr = `{${domainsStr}}`;
 
     console.log('Saving mentor application with data:', { 
       fullName, email, phone, company, designation, 
@@ -137,38 +128,38 @@ router.post('/applications/mentor', async (req, res) => {
       }
     }
 
-    // Insert application into mentor_applications table
-    const result = await sql`
-      INSERT INTO mentor_applications (
-        full_name, email, phone, company, designation, 
-        experience, education, domains, resume_url, portfolio_url
-      ) VALUES (
-        ${fullName || ''}, 
-        ${email}, 
-        ${phone || ''}, 
-        ${company || ''}, 
-        ${designation || ''}, 
-        ${experienceValue}, 
-        ${education || ''},
-        ${domainsArrayStr}::text[],
-        ${resumeUrl || ''}, 
-        ${portfolioUrl || ''}
-      ) RETURNING id
-    `;
+    // Create new application
+    const newApplication = {
+      id: storage.mentorApplications.length + 1,
+      full_name: fullName || '',
+      email,
+      phone: phone || '',
+      company: company || '',
+      designation: designation || '',
+      experience: experienceValue,
+      education: education || '',
+      domains: domainsArray,
+      resume_url: resumeUrl || '',
+      portfolio_url: portfolioUrl || '',
+      status: 'pending',
+      timestamp: new Date().toISOString()
+    };
+    
+    // Add to storage
+    storage.mentorApplications.push(newApplication);
 
-    console.log('Mentor application saved successfully:', result[0].id);
+    console.log('Mentor application saved successfully:', newApplication.id);
 
     res.status(201).json({
       success: true,
       message: 'Mentor application submitted successfully',
-      applicationId: result[0].id
+      applicationId: newApplication.id
     });
   } catch (error) {
     console.error('Error submitting mentor application:', error);
     res.status(500).json({ 
       error: 'Failed to submit application', 
-      details: error.message,
-      stack: error.stack
+      details: error.message
     });
   }
 });
@@ -201,31 +192,34 @@ router.post('/applications/bda', async (req, res) => {
       }
     }
 
-    const result = await sql`
-      INSERT INTO bda_applications (
-        full_name, email, phone, education, 
-        experience, resume_url, portfolio_url
-      ) VALUES (
-        ${fullName || req.body.full_name || ''}, 
-        ${email}, 
-        ${phone || ''}, 
-        ${education || ''}, 
-        ${experienceValue}, 
-        ${resumeUrl || req.body.resume_url || ''}, 
-        ${portfolioUrl || req.body.portfolio_url || ''}
-      ) RETURNING id
-    `;
-
-    console.log('BDA application saved successfully:', result[0].id);
+    // Create new application
+    const newApplication = {
+      id: storage.bdaApplications.length + 1,
+      full_name: fullName,
+      email,
+      phone: phone || '',
+      education: education || '',
+      experience: experienceValue,
+      resume_url: resumeUrl || '',
+      portfolio_url: portfolioUrl || '',
+      status: 'pending',
+      timestamp: new Date().toISOString()
+    };
+    
+    // Add to storage
+    storage.bdaApplications.push(newApplication);
 
     res.status(201).json({
       success: true,
       message: 'BDA application submitted successfully',
-      applicationId: result[0].id
+      applicationId: newApplication.id
     });
   } catch (error) {
     console.error('Error submitting BDA application:', error);
-    res.status(500).json({ error: 'Failed to submit application', message: error.message });
+    res.status(500).json({ 
+      error: 'Failed to submit application', 
+      details: error.message 
+    });
   }
 });
 
@@ -243,370 +237,160 @@ router.post('/applications/campus-ambassador', async (req, res) => {
     } = req.body;
 
     // Validate required fields
-    if (!fullName || !email || !phone || !collegeName || !yearOfStudy || !branch || !department) {
+    if (!fullName || !email || !phone || !collegeName) {
       return res.status(400).json({ 
-        error: 'All fields are required', 
-        body: req.body 
+        error: 'Full name, email, phone, and college name are required' 
       });
     }
 
-    const result = await sql`
-      INSERT INTO campus_ambassador_applications (
-        full_name, email, phone, college_name, 
-        year_of_study, branch, department
-      ) VALUES (
-        ${fullName}, 
-        ${email}, 
-        ${phone}, 
-        ${collegeName}, 
-        ${yearOfStudy}, 
-        ${branch},
-        ${department}
-      ) RETURNING id
-    `;
-
-    console.log('Campus Ambassador application saved successfully:', result[0].id);
+    // Create new application
+    const newApplication = {
+      id: storage.campusAmbassadorApplications.length + 1,
+      full_name: fullName,
+      email,
+      phone,
+      college_name: collegeName,
+      year_of_study: yearOfStudy || '1st Year',
+      branch: branch || '',
+      department: department || '',
+      status: 'pending',
+      timestamp: new Date().toISOString()
+    };
+    
+    // Add to storage
+    storage.campusAmbassadorApplications.push(newApplication);
 
     res.status(201).json({
       success: true,
       message: 'Campus Ambassador application submitted successfully',
-      applicationId: result[0].id
+      applicationId: newApplication.id
     });
   } catch (error) {
     console.error('Error submitting Campus Ambassador application:', error);
-    res.status(500).json({ error: 'Failed to submit application', message: error.message });
-  }
-});
-
-// Admin login
-router.post('/admin/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    
-    // Validate required fields
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
-    }
-    
-    // Find the admin user with password hashing
-    const users = await sql`
-      SELECT id, email, password, role, first_name, last_name 
-      FROM users 
-      WHERE email = ${email} AND role = 'admin'
-    `;
-    
-    if (users.length === 0) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-    
-    const user = users[0];
-    
-    // Verify the password using bcrypt
-    const bcrypt = require('bcryptjs');
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    
-    if (!isValidPassword) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-    
-    // Set session data
-    if (req.session) {
-      req.session.isAdmin = true;
-      req.session.adminId = user.id;
-      req.session.adminEmail = user.email;
-      req.session.adminRole = user.role;
-    }
-    
-    res.status(200).json({
-      success: true,
-      message: 'Login successful',
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        firstName: user.first_name,
-        lastName: user.last_name
-      }
+    res.status(500).json({ 
+      error: 'Failed to submit application', 
+      details: error.message 
     });
-  } catch (error) {
-    console.error('Error during admin login:', error);
-    res.status(500).json({ error: 'Login failed due to server error' });
   }
 });
 
-// Check admin status
-router.get('/admin/status', async (req, res) => {
-  try {
-    // Check if the user is authenticated via session
-    if (!req.session || !req.session.isAdmin || !req.session.adminEmail) {
-      return res.status(401).json({ 
-        isAdmin: false,
-        message: 'No active admin session found'
-      });
-    }
-    
-    // Retrieve the admin user from the database to confirm they still exist and have admin privileges
-    const users = await sql`
-      SELECT id, email, role, first_name, last_name 
-      FROM users 
-      WHERE email = ${req.session.adminEmail} AND role = 'admin'
-    `;
-    
-    if (users.length === 0) {
-      // Clear invalid session
-      if (req.session) {
-        req.session.destroy();
-      }
-      
-      return res.status(401).json({
-        isAdmin: false,
-        message: 'Admin session is no longer valid'
-      });
-    }
-    
-    const user = users[0];
-    
-    res.status(200).json({ 
-      isAdmin: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        firstName: user.first_name,
-        lastName: user.last_name
-      }
-    });
-  } catch (error) {
-    console.error('Error checking admin status:', error);
-    res.status(500).json({ error: 'Failed to check admin status due to server error' });
-  }
-});
-
-// Reset admin password route - use this with caution
-router.post('/admin/reset-password', async (req, res) => {
-  try {
-    // In production, this route should be secured or disabled
-    const { email, newPassword, secretKey } = req.body;
-    
-    // Simple security check - in production use a more secure approach
-    // The secretKey should match the SESSION_SECRET env var or another secure value
-    if (secretKey !== (process.env.SESSION_SECRET || 'your-secret-key')) {
-      return res.status(403).json({ error: 'Not authorized' });
-    }
-    
-    if (!email || !newPassword) {
-      return res.status(400).json({ error: 'Email and new password are required' });
-    }
-    
-    const success = await updateAdminPassword(email, newPassword);
-    
-    if (success) {
-      res.status(200).json({ 
-        success: true, 
-        message: 'Admin password updated successfully' 
-      });
-    } else {
-      res.status(404).json({ 
-        success: false, 
-        message: 'Admin user not found or password update failed' 
-      });
-    }
-  } catch (error) {
-    console.error('Error in admin password reset:', error);
-    res.status(500).json({ error: 'Password reset failed due to server error' });
-  }
-});
-
-// Delete multiple applications by IDs
-router.delete('/applications/batch', async (req, res) => {
-  try {
-    const { ids, type } = req.body;
-    
-    if (!ids || !Array.isArray(ids) || ids.length === 0) {
-      return res.status(400).json({ error: 'Valid application IDs are required' });
-    }
-    
-    if (!type || !['mentor', 'bda'].includes(type)) {
-      return res.status(400).json({ error: 'Valid application type is required (mentor or bda)' });
-    }
-    
-    console.log(`Deleting ${ids.length} ${type} applications with IDs:`, ids);
-    
-    let result;
-    if (type === 'mentor') {
-      result = await sql`
-        DELETE FROM mentor_applications
-        WHERE id IN ${sql(ids)}
-        RETURNING id
-      `;
-    } else {
-      result = await sql`
-        DELETE FROM bda_applications
-        WHERE id IN ${sql(ids)}
-        RETURNING id
-      `;
-    }
-    
-    console.log(`Deleted ${result.length} applications`);
-    
-    res.status(200).json({
-      success: true,
-      message: `${result.length} applications deleted successfully`,
-      deletedIds: result.map(item => item.id)
-    });
-  } catch (error) {
-    console.error('Error deleting applications:', error);
-    res.status(500).json({ error: 'Failed to delete applications', message: error.message });
-  }
-});
-
-// Update application status
-router.patch('/applications/:id', async (req, res) => {
+// Update application status endpoints (admin only)
+router.put('/applications/mentor/:id/status', (req, res) => {
   try {
     const { id } = req.params;
-    const { status, type } = req.body;
+    const { status } = req.body;
     
-    if (!id) {
-      return res.status(400).json({ error: 'Application ID is required' });
-    }
+    // Find the application
+    const application = storage.mentorApplications.find(app => app.id === parseInt(id));
     
-    if (!status || !['pending', 'approved', 'rejected'].includes(status)) {
-      return res.status(400).json({ error: 'Valid status is required (pending, approved, or rejected)' });
-    }
-    
-    if (!type || !['mentor', 'bda'].includes(type)) {
-      return res.status(400).json({ error: 'Valid application type is required (mentor or bda)' });
-    }
-    
-    console.log(`Updating ${type} application ${id} status to ${status}`);
-    
-    let result;
-    if (type === 'mentor') {
-      result = await sql`
-        UPDATE mentor_applications
-        SET status = ${status},
-            updated_at = CURRENT_TIMESTAMP
-        WHERE id = ${id}
-        RETURNING id, status
-      `;
-    } else {
-      result = await sql`
-        UPDATE bda_applications
-        SET status = ${status},
-            updated_at = CURRENT_TIMESTAMP
-        WHERE id = ${id}
-        RETURNING id, status
-      `;
-    }
-    
-    if (result.length === 0) {
+    if (!application) {
       return res.status(404).json({ error: 'Application not found' });
     }
     
-    res.status(200).json({
-      success: true,
-      message: 'Application status updated successfully',
-      application: result[0]
-    });
+    // Update status
+    application.status = status;
+    application.updated_at = new Date().toISOString();
+    
+    res.json({ success: true, message: 'Application status updated' });
   } catch (error) {
-    console.error(`Error updating application status:`, error);
-    res.status(500).json({ error: 'Failed to update application status', message: error.message });
+    console.error('Error updating application status:', error);
+    res.status(500).json({ error: 'Failed to update application status' });
   }
 });
 
-// Delete mentor application by ID
-router.delete('/applications/mentor/:id', async (req, res) => {
+router.put('/applications/bda/:id/status', (req, res) => {
   try {
     const { id } = req.params;
+    const { status } = req.body;
     
-    if (!id) {
-      return res.status(400).json({ error: 'Application ID is required' });
+    // Find the application
+    const application = storage.bdaApplications.find(app => app.id === parseInt(id));
+    
+    if (!application) {
+      return res.status(404).json({ error: 'Application not found' });
     }
     
-    console.log(`Deleting mentor application with ID: ${id}`);
+    // Update status
+    application.status = status;
+    application.updated_at = new Date().toISOString();
     
-    const deletedApplication = await sql`
-      DELETE FROM mentor_applications
-      WHERE id = ${id}
-      RETURNING *
-    `;
-    
-    if (deletedApplication.length === 0) {
-      return res.status(404).json({ error: 'Mentor application not found' });
-    }
-    
-    res.status(200).json({
-      success: true,
-      message: 'Mentor application deleted successfully',
-      deletedApplication: deletedApplication[0]
-    });
+    res.json({ success: true, message: 'Application status updated' });
   } catch (error) {
-    console.error('Error deleting mentor application:', error);
-    res.status(500).json({ error: 'Failed to delete mentor application', message: error.message });
+    console.error('Error updating application status:', error);
+    res.status(500).json({ error: 'Failed to update application status' });
   }
 });
 
-// Delete BDA application by ID
-router.delete('/applications/bda/:id', async (req, res) => {
+router.put('/applications/campus-ambassador/:id/status', (req, res) => {
   try {
     const { id } = req.params;
+    const { status } = req.body;
     
-    if (!id) {
-      return res.status(400).json({ error: 'Application ID is required' });
+    // Find the application
+    const application = storage.campusAmbassadorApplications.find(app => app.id === parseInt(id));
+    
+    if (!application) {
+      return res.status(404).json({ error: 'Application not found' });
     }
     
-    console.log(`Deleting BDA application with ID: ${id}`);
+    // Update status
+    application.status = status;
+    application.updated_at = new Date().toISOString();
     
-    const deletedApplication = await sql`
-      DELETE FROM bda_applications
-      WHERE id = ${id}
-      RETURNING *
-    `;
-    
-    if (deletedApplication.length === 0) {
-      return res.status(404).json({ error: 'BDA application not found' });
-    }
-    
-    res.status(200).json({
-      success: true,
-      message: 'BDA application deleted successfully',
-      deletedApplication: deletedApplication[0]
-    });
+    res.json({ success: true, message: 'Application status updated' });
   } catch (error) {
-    console.error('Error deleting BDA application:', error);
-    res.status(500).json({ error: 'Failed to delete BDA application', message: error.message });
+    console.error('Error updating application status:', error);
+    res.status(500).json({ error: 'Failed to update application status' });
   }
 });
 
-// Delete Campus Ambassador application by ID
-router.delete('/applications/campus-ambassador/:id', async (req, res) => {
+// Get all contacts
+router.get('/contacts', async (req, res) => {
   try {
-    const { id } = req.params;
-    
-    if (!id) {
-      return res.status(400).json({ error: 'Application ID is required' });
-    }
-    
-    console.log(`Deleting Campus Ambassador application with ID: ${id}`);
-    
-    const deletedApplication = await sql`
-      DELETE FROM campus_ambassador_applications
-      WHERE id = ${id}
-      RETURNING *
-    `;
-    
-    if (deletedApplication.length === 0) {
-      return res.status(404).json({ error: 'Campus Ambassador application not found' });
-    }
-    
-    res.status(200).json({
-      success: true,
-      message: 'Campus Ambassador application deleted successfully',
-      deletedApplication: deletedApplication[0]
+    const contacts = await Contact.findAll({
+      order: [['createdAt', 'DESC']]
     });
+    
+    res.status(200).json(contacts);
   } catch (error) {
-    console.error('Error deleting Campus Ambassador application:', error);
-    res.status(500).json({ error: 'Failed to delete Campus Ambassador application', message: error.message });
+    console.error('Error fetching contacts:', error);
+    res.status(500).json({ error: 'Failed to fetch contacts' });
+  }
+});
+
+// Get contact by ID
+router.get('/contacts/:id', async (req, res) => {
+  try {
+    const contact = await Contact.findByPk(req.params.id);
+    
+    if (!contact) {
+      return res.status(404).json({ error: 'Contact not found' });
+    }
+    
+    res.status(200).json(contact);
+  } catch (error) {
+    console.error('Error fetching contact:', error);
+    res.status(500).json({ error: 'Failed to fetch contact' });
+  }
+});
+
+// Update contact status
+router.put('/contacts/:id', async (req, res) => {
+  try {
+    const { status } = req.body;
+    const contact = await Contact.findByPk(req.params.id);
+    
+    if (!contact) {
+      return res.status(404).json({ error: 'Contact not found' });
+    }
+    
+    contact.status = status;
+    await contact.save();
+    
+    res.status(200).json({ success: true, message: 'Contact updated successfully' });
+  } catch (error) {
+    console.error('Error updating contact:', error);
+    res.status(500).json({ error: 'Failed to update contact' });
   }
 });
 
