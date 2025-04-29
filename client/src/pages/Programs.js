@@ -48,11 +48,6 @@ navCategories.forEach(category => {
 // Get unique categories (using the nav categories order)
 const categories = navCategories.filter(category => programsByCategory[category].length > 0);
 
-// Get featured programs (one from each category)
-const featuredPrograms = categories.map(category => 
-  programsByCategory[category][0]
-).slice(0, 3);
-
 const Programs = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -171,17 +166,17 @@ const Programs = () => {
                   <div className="program-content">
                     <h3>{program.title}</h3>
                     <div className="program-meta">
-                      <div className="meta-item">
-                        <i className="fas fa-clock"></i>
+                      <div className="meta-item duration">
+                        <i className="fas fa-hourglass-half"></i>
                         <span>{program.duration}</span>
                       </div>
-                      <div className="meta-item">
-                        <i className="fas fa-signal"></i>
-                        <span>{program.level}</span>
-                      </div>
-                      <div className="meta-item">
-                        <i className="fas fa-desktop"></i>
+                      <div className="meta-item format">
+                        <i className="fas fa-laptop-house"></i>
                         <span>{program.format}</span>
+                      </div>
+                      <div className="meta-item level">
+                        <i className="fas fa-chart-line"></i>
+                        <span>{program.level}</span>
                       </div>
                     </div>
                     <div className="program-description">

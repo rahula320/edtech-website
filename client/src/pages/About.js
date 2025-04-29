@@ -9,119 +9,152 @@ function About() {
       <section className="about-hero">
         <div className="responsive-container">
           <h1>About ACMYX</h1>
-          <p className="hero-subtitle">Empowering tech professionals through expert-led education</p>
+          <p className="hero-subtitle">Bridging theory with practical tech skills for your career growth</p>
         </div>
       </section>
 
-      {/* Overview Section */}
+      {/* Our Approach Section */}
       <section className="about-overview section-spacing">
         <div className="responsive-container">
           <div className="overview-content">
             <div className="overview-text">
-              <h2>Our Story</h2>
-              <p>ACMYX is dedicated to providing high-quality tech education that bridges the gap between academic knowledge and industry requirements. Our programs are designed to be practical, career-focused, and accessible to professionals at all levels.</p>
+              <h2>Our Approach</h2>
+              <p>At ACMYX, we focus on practical, hands-on learning that prepares you for real-world challenges. Our weekend-focused programs are designed to fit busy schedules, requiring just 2-3 hours of dedication during weekends.</p>
+              <p>We believe in learning by doing, which is why our curriculum emphasizes practical projects that you can add to your portfolio. No prior experience needed—our programs are designed to take you from basics to advanced concepts in a structured way.</p>
             </div>
             <div className="overview-stats">
               <div className="stat-card">
-                <span className="stat-number">1000+</span>
-                <span className="stat-label">Students Enrolled</span>
+                <span className="stat-number">12</span>
+                <span className="stat-label">Technical Programs</span>
               </div>
               <div className="stat-card">
-                <span className="stat-number">50+</span>
-                <span className="stat-label">Industry Experts</span>
+                <span className="stat-number">8</span>
+                <span className="stat-label">Weeks Per Program</span>
               </div>
               <div className="stat-card">
-                <span className="stat-number">90%</span>
-                <span className="stat-label">Satisfaction Rate</span>
+                <span className="stat-number">100%</span>
+                <span className="stat-label">Project-Based</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Mission Section */}
+      {/* What We Offer Section */}
       <section className="about-mission section-spacing">
         <div className="responsive-container">
-          <h2>Our Mission</h2>
+          <h2>What We Offer</h2>
           <div className="mission-cards">
             <div className="mission-card">
               <div className="mission-icon">
-                <i className="fas fa-graduation-cap"></i>
+                <i className="fas fa-laptop-code"></i>
               </div>
-              <h3>Quality Education</h3>
-              <p>Deliver practical, industry-relevant education that prepares students for real-world challenges</p>
+              <h3>Practical Learning</h3>
+              <p>Our programs are 60% hands-on with real-world projects that build your portfolio and showcase your skills to employers</p>
             </div>
             <div className="mission-card">
               <div className="mission-icon">
-                <i className="fas fa-handshake"></i>
+                <i className="fas fa-users"></i>
               </div>
-              <h3>Industry Alignment</h3>
-              <p>Bridge the gap between academic learning and industry requirements through expert mentorship</p>
+              <h3>Industry Mentors</h3>
+              <p>Learn from experienced mentors who provide guidance, feedback, and support throughout your learning journey</p>
             </div>
             <div className="mission-card">
               <div className="mission-icon">
-                <i className="fas fa-rocket"></i>
+                <i className="fas fa-certificate"></i>
               </div>
-              <h3>Career Growth</h3>
-              <p>Empower professionals to accelerate their careers with practical skills and industry insights</p>
+              <h3>Certification</h3>
+              <p>Receive an industry-recognized certificate upon completion that you can add to your resume and LinkedIn profile</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Values Section */}
+      {/* Programs Section */}
       <section className="about-values section-spacing">
         <div className="responsive-container">
-          <h2>Our Values</h2>
-          <div className="values-grid">
+          <h2>Our Programs</h2>
+          <p className="programs-intro">We offer weekend-focused programs in the most in-demand technical fields</p>
+          <div className="values-grid programs-grid">
             <div className="value-card">
-              <h3>Excellence</h3>
-              <p>We maintain high standards in education quality and student support</p>
+              <h3>Computer Science</h3>
+              <ul>
+                <li>Data Science & Analytics</li>
+                <li>Artificial Intelligence</li>
+                <li>Machine Learning with Python</li>
+                <li>Web Development</li>
+                <li>Cyber Security</li>
+              </ul>
             </div>
             <div className="value-card">
-              <h3>Innovation</h3>
-              <p>We continuously evolve our programs to meet industry demands</p>
+              <h3>DevOps & Cloud</h3>
+              <ul>
+                <li>Cloud Computing</li>
+                <li>DevOps Engineering</li>
+              </ul>
             </div>
             <div className="value-card">
-              <h3>Integrity</h3>
-              <p>We are committed to transparency and ethical practices</p>
+              <h3>Mobile Development</h3>
+              <ul>
+                <li>Android Development</li>
+                <li>iOS Development</li>
+              </ul>
             </div>
             <div className="value-card">
-              <h3>Community</h3>
-              <p>We foster a supportive learning environment for all students</p>
+              <h3>Engineering</h3>
+              <ul>
+                <li>Embedded Systems</li>
+                <li>Internet of Things (IoT)</li>
+                <li>AutoCAD Designing</li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="about-team section-spacing">
+      {/* Support Section */}
+      <section className="support-section section-spacing">
         <div className="responsive-container">
-          <h2>Meet Our Leadership</h2>
-          <div className="team-grid">
-            <div className="team-member">
-              <div className="member-image">
-                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="Team member" />
+          <h2>Learning Support</h2>
+          <div className="support-grid">
+            <div className="support-item">
+              <div className="support-icon">
+                <i className="fas fa-book-open"></i>
               </div>
-              <h3>John Smith</h3>
-              <p className="member-role">Founder & CEO</p>
-              <p className="member-bio">With over 15 years of experience in tech education, John leads our vision for transforming professional learning.</p>
+              <div className="support-content">
+                <h3>Beginner-Friendly Curriculum</h3>
+                <p>Our learning materials are designed to be accessible for beginners while covering advanced concepts as you progress. The content is regularly updated to align with industry trends and the latest technologies.</p>
+              </div>
             </div>
-            <div className="team-member">
-              <div className="member-image">
-                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="Team member" />
+            <div className="support-item">
+              <div className="support-icon">
+                <i className="fas fa-hands-helping"></i>
               </div>
-              <h3>Sarah Johnson</h3>
-              <p className="member-role">Head of Education</p>
-              <p className="member-bio">Sarah brings her expertise in curriculum development and industry partnerships to our programs.</p>
+              <div className="support-content">
+                <h3>Career Guidance</h3>
+                <p>We provide career guidance, resume review, interview preparation, and networking opportunities to help you transition into your desired role after completing our programs.</p>
+              </div>
             </div>
-            <div className="team-member">
-              <div className="member-image">
-                <img src="https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="Team member" />
-              </div>
-              <h3>Michael Chen</h3>
-              <p className="member-role">Technical Director</p>
-              <p className="member-bio">Michael ensures our programs stay at the cutting edge of technology and industry trends.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section className="about-pricing section-spacing">
+        <div className="responsive-container">
+          <h2>Flexible Learning Plans</h2>
+          <div className="pricing-overview">
+            <div className="pricing-item">
+              <h3>Self-Paced</h3>
+              <p>Learn at your own pace with access to all course materials and basic support</p>
+            </div>
+            <div className="pricing-item">
+              <h3>Mentor-Led</h3>
+              <p>Enhanced learning with dedicated mentor guidance and additional resources</p>
+            </div>
+            <div className="pricing-item">
+              <h3>Advanced Program</h3>
+              <p>Premium experience with personalized mentorship, career coaching, and industry projects</p>
             </div>
           </div>
         </div>
@@ -131,9 +164,12 @@ function About() {
       <section className="about-cta section-spacing">
         <div className="responsive-container">
           <div className="cta-content">
-            <h2>Ready to Transform Your Career?</h2>
-            <p>Join our community of tech professionals and take your career to the next level</p>
-            <Link to="/programs" className="cta-button primary">Explore Programs</Link>
+            <h2>Start Your Learning Journey</h2>
+            <p>Explore our programs and find the right fit for your career goals</p>
+            <div className="cta-buttons">
+              <Link to="/programs" className="cta-button primary">Browse Programs</Link>
+              <Link to="/contact" className="cta-button secondary">Contact Us</Link>
+            </div>
           </div>
         </div>
       </section>

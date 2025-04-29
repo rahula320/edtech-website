@@ -27,6 +27,66 @@ function Home() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const isMobile = windowWidth <= 768;
   
+  // Contact form state
+  const [contactFormData, setContactFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    college: '',
+    domain: '',
+    message: ''
+  });
+  const [contactStatus, setContactStatus] = useState({ type: '', message: '' });
+  
+  // Program domains for dropdown - actual programs offered
+  const programDomains = [
+    "Data Science & Analytics",
+    "Artificial Intelligence",
+    "Machine Learning with Python",
+    "Cloud Computing",
+    "Web Development",
+    "Embedded Systems",
+    "Internet of Things (IoT)",
+    "AutoCAD",
+    "Cyber Security",
+    "DevOps",
+    "Android Development",
+    "iOS Development"
+  ];
+  
+  const handleContactFormChange = (e) => {
+    setContactFormData({
+      ...contactFormData,
+      [e.target.name]: e.target.value
+    });
+  };
+  
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactStatus({ type: 'loading', message: 'Sending message...' });
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(contactFormData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setContactStatus({ type: 'success', message: 'Message sent successfully!' });
+        setContactFormData({ name: '', email: '', phone: '', college: '', domain: '', message: '' });
+      } else {
+        setContactStatus({ type: 'error', message: data.message || 'Something went wrong' });
+      }
+    } catch (error) {
+      setContactStatus({ type: 'error', message: 'Failed to send message' });
+    }
+  };
+  
   // Update window width on resize
   useEffect(() => {
     const handleResize = () => {
@@ -378,65 +438,92 @@ function Home() {
   // Carousel slides data
   const slides = [
     {
-      title: "Elevate Your Expertise with Expert-Led Programs",
-      description: "Build industry-relevant skills with renowned educators and transform your career trajectory with specialized programs designed for tomorrow's professionals.",
+      title: "Direct Industry Mentors",
+      description: "Learn directly from industry experts who bring real-world experience and insights to your learning journey.",
       primaryButton: "Explore Programs",
       secondaryButton: "View Success Stories",
       stats: [
-        { number: "12", label: "Courses" },
-        { number: "96%", label: "Satisfaction" },
-        { number: "91%", label: "Completion" }
+        { number: "25+", label: "Industry Mentors" },
+        { number: "10", label: "Years Experience" },
+        { number: "1:1", label: "Mentorship" }
       ],
       image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1771&q=80",
-      imageAlt: "Students learning",
+      imageAlt: "Industry mentors",
       className: "slide-1"
     },
     {
-      title: "Learn from Industry Experts & Top Educators",
-      description: "Gain insights from professionals with real-world experience who understand the practical applications of theoretical knowledge in today's competitive market.",
-      primaryButton: "Meet Our Mentors",
-      secondaryButton: "View Programs",
+      title: "Industrial Experience",
+      description: "Gain practical experience through real-world projects and industry-relevant case studies.",
+      primaryButton: "View Projects",
+      secondaryButton: "Learn More",
       stats: [
-        { number: "200+", label: "Expert Mentors" },
-        { number: "15+", label: "Years Experience" },
-        { number: "24/7", label: "Support" }
+        { number: "100+", label: "Real Projects" },
+        { number: "20", label: "Case Studies" },
+        { number: "10", label: "Industries" }
       ],
       image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-      imageAlt: "Expert mentors",
+      imageAlt: "Industrial experience",
       className: "slide-2"
     },
     {
-      title: "Practical Learning with Real-World Projects",
-      description: "Build an impressive portfolio through hands-on projects that demonstrate your skills to potential employers and solve actual industry challenges.",
+      title: "Hands-on Projects",
+      description: "Build your portfolio with practical projects that demonstrate your skills to potential employers.",
       primaryButton: "View Project Gallery",
       secondaryButton: "Student Showcases",
       stats: [
-        { number: "500+", label: "Projects" },
-        { number: "85%", label: "Placement" },
-        { number: "40+", label: "Partners" }
+        { number: "200+", label: "Projects" },
+        { number: "15", label: "Tech Stacks" },
+        { number: "50", label: "Live Projects" }
       ],
       image: "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-      imageAlt: "Project work",
+      imageAlt: "Hands-on projects",
       className: "slide-3"
     },
     {
-      title: "Flexible Learning Designed for Busy Professionals",
-      description: "Balance your career and education with our flexible weekend and evening programs that adapt to your schedule without compromising on quality or results.",
-      primaryButton: "Explore Schedules",
-      secondaryButton: "Start Learning",
+      title: "Placement Ready Skills",
+      description: "Master in-demand skills and technologies that employers are actively seeking in the industry.",
+      primaryButton: "View Skills",
+      secondaryButton: "Career Paths",
       stats: [
-        { number: "24/7", label: "Access" },
-        { number: "4.8/5", label: "Rating" },
-        { number: "12", label: "Programs" }
+        { number: "10", label: "Core Skills" },
+        { number: "5", label: "Industry Tools" },
+        { number: "3", label: "Certifications" }
       ],
       image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1772&q=80",
-      imageAlt: "Flexible learning",
+      imageAlt: "Placement ready skills",
       className: "slide-4"
     }
   ];
 
+  const handleEnrollNow = (planType) => {
+    switch (planType) {
+      case 'self-paced':
+        window.location.href = 'https://payments.cashfree.com/forms/selfpacedcomplete';
+        break;
+      case 'mentor-led':
+        window.location.href = 'https://payments.cashfree.com/forms/mentorledcomplete';
+        break;
+      case 'advanced':
+        window.location.href = 'https://payments.cashfree.com/forms/advancecomplete';
+        break;
+      default:
+        break;
+    }
+  };
+
+  // New state for FAQ section
+  const [activeFaq, setActiveFaq] = useState(null);
+  const [showAllFaqs, setShowAllFaqs] = useState(false);
+
   return (
     <div className="home">
+      {/* Background geometric shapes */}
+      <div className="geometric-shape-1"></div>
+      <div className="geometric-shape-2"></div>
+      <div className="geometric-shape-3"></div>
+      <div className="geometric-shape-4"></div>
+      <div className="geometric-shape-5"></div>
+
       {/* Mobile Menu Toggle Button */}
       <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
         <div className={`hamburger ${mobileMenuOpen ? 'active' : ''}`}>
@@ -787,7 +874,7 @@ function Home() {
             </div>
             <div className="feature-card">
               <h3><i className="fas fa-calendar-alt"></i> Flexible Learning Schedule</h3>
-              <p>Balance your career and education with our weekend and evening programs designed specifically for working professionals and busy students.</p>
+              <p>Access weekend live sessions and recorded content to learn at your own pace, perfect for working professionals and busy students.</p>
             </div>
             <div className="feature-card">
               <h3><i className="fas fa-briefcase"></i> Career Acceleration</h3>
@@ -807,41 +894,42 @@ function Home() {
           <p className="pricing-intro">Select the perfect learning path that fits your goals and budget with our flexible pricing options</p>
           <div className="pricing-cards">
             <div className="pricing-card">
-              <h3>🎓 Advanced Program</h3>
+              <h3>⏱️ Self-Paced Plan</h3>
               <div className="price">
-                <span className="original-price">₹12,999</span>
-                <span className="current-price">₹8,999</span>
+                <span className="original-price">₹4,999</span>
+                <span className="current-price">₹3,499</span>
               </div>
               <div className="duration">Valid for 8 weeks</div>
-              <button className="pricing-button">Select</button>
+              <button 
+                className="pricing-button"
+                onClick={() => handleEnrollNow('self-paced')}
+              >
+                Enroll Now
+              </button>
               <ul className="plan-features">
                 <li>
-                  <span className="feature-text">💡 Real-Time Projects (Industry Capstone Projects)</span>
+                  <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🕒 Live Sessions (Extended sessions + Guest Experts)</span>
+                  <span className="feature-text">🕒 Live Sessions - 16hrs+</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">❓ One-on-One Doubt Sessions (Priority access)</span>
+                  <span className="feature-text">❓ One-on-One Doubt Sessions</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🏆 Certifications (Co-branded with industry partners)</span>
+                  <span className="feature-text">🏆 Certifications (Industry Certified)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🏅 Mentor Support (Dedicated mentor)</span>
+                  <span className="feature-text">🏅 Mentor Support</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🚀 Placement Guidance (Exclusive referrals + 1:1 coaching)</span>
-                  <span className="feature-status included"><i className="fas fa-check"></i></span>
-                </li>
-                <li>
-                  <span className="feature-text">🤝 Interview Assistance (Mock interviews with HR)</span>
-                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                  <span className="feature-text">🤝 Interview Assistance</span>
+                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
                 </li>
               </ul>
             </div>
@@ -854,7 +942,12 @@ function Home() {
                 <span className="current-price">₹4,999</span>
               </div>
               <div className="duration">Valid for 8 weeks</div>
-              <button className="pricing-button">Select</button>
+              <button 
+                className="pricing-button"
+                onClick={() => handleEnrollNow('mentor-led')}
+              >
+                Enroll Now
+              </button>
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Guided with mentor feedback)</span>
@@ -888,41 +981,46 @@ function Home() {
             </div>
             
             <div className="pricing-card">
-              <h3>⏱️ Self-Paced Plan</h3>
+              <h3>🎓 Advanced Program</h3>
               <div className="price">
-                <span className="original-price">₹4,999</span>
-                <span className="current-price">₹3,499</span>
+                <span className="original-price">₹12,999</span>
+                <span className="current-price">₹8,999</span>
               </div>
               <div className="duration">Valid for 8 weeks</div>
-              <button className="pricing-button">Select</button>
+              <button 
+                className="pricing-button"
+                onClick={() => handleEnrollNow('advanced')}
+              >
+                Enroll Now
+              </button>
               <ul className="plan-features">
                 <li>
-                  <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
+                  <span className="feature-text">💡 Real-Time Projects (Industry Capstone Projects)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🕒 Live Sessions - 16hrs+</span>
+                  <span className="feature-text">🕒 Live Sessions (Extended sessions + Guest Experts)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">❓ One-on-One Doubt Sessions</span>
+                  <span className="feature-text">❓ One-on-One Doubt Sessions (Priority access)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🏆 Certifications (Mentor Certified)</span>
+                  <span className="feature-text">🏆 Certifications (Co-branded with industry partners)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🏅 Mentor Support</span>
+                  <span className="feature-text">🏅 Mentor Support (Dedicated mentor)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🚀 Placement Guidance</span>
-                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
+                  <span className="feature-text">🚀 Placement Guidance (Exclusive referrals + 1:1 coaching)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🤝 Interview Assistance</span>
-                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
+                  <span className="feature-text">🤝 Interview Assistance (Mock interviews with HR)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
               </ul>
             </div>
@@ -930,76 +1028,286 @@ function Home() {
         </div>
       </section>
 
-      <section className="success-stories animate-on-scroll section-spacing">
+      <section className="faq-section animate-on-scroll section-spacing">
         <div className="responsive-container">
-          <h2>Student Transformations</h2>
-          <p className="stories-intro">Real stories from professionals who accelerated their careers with our programs</p>
-          <div className="story-cards">
-            <div className="story-card">
-              <div className="story-image">
-                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="Student portrait" />
+          <h2>Frequently Asked Questions</h2>
+          <p className="faq-intro">Find answers to common questions about our programs and enrollment process</p>
+          
+          <div className="faq-accordion">
+            <div className="faq-columns">
+              {/* First Column */}
+              <div className="faq-column">
+                <div className="faq-item">
+                  <div className="faq-question" onClick={() => setActiveFaq(activeFaq === 1 ? null : 1)}>
+                    <h3>What is included in the programs?</h3>
+                    <span className={`toggle-icon ${activeFaq === 1 ? 'active' : ''}`}>
+                      <i className={`fas ${activeFaq === 1 ? 'fa-minus' : 'fa-plus'}`}></i>
+                    </span>
+                  </div>
+                  <div className={`faq-answer ${activeFaq === 1 ? 'active' : ''}`}>
+                    <p>You get access to beginner-friendly lessons, hands-on projects, mentor support, and a certificate upon completion.</p>
+                  </div>
+                </div>
+                
+                <div className="faq-item">
+                  <div className="faq-question" onClick={() => setActiveFaq(activeFaq === 2 ? null : 2)}>
+                    <h3>Do I get a certificate?</h3>
+                    <span className={`toggle-icon ${activeFaq === 2 ? 'active' : ''}`}>
+                      <i className={`fas ${activeFaq === 2 ? 'fa-minus' : 'fa-plus'}`}></i>
+                    </span>
+                  </div>
+                  <div className={`faq-answer ${activeFaq === 2 ? 'active' : ''}`}>
+                    <p>Yes, you will receive a certificate after successfully completing the program.</p>
+                  </div>
+                </div>
+                
+                <div className="faq-item">
+                  <div className="faq-question" onClick={() => setActiveFaq(activeFaq === 3 ? null : 3)}>
+                    <h3>Are there real projects?</h3>
+                    <span className={`toggle-icon ${activeFaq === 3 ? 'active' : ''}`}>
+                      <i className={`fas ${activeFaq === 3 ? 'fa-minus' : 'fa-plus'}`}></i>
+                    </span>
+                  </div>
+                  <div className={`faq-answer ${activeFaq === 3 ? 'active' : ''}`}>
+                    <p>Yes, you will work on simple, real-world projects to build your practical skills.</p>
+                  </div>
+                </div>
               </div>
-              <div className="story-content">
-                <h3><i className="fas fa-quote-left"></i> The perfect bridge between theory and application</h3>
-                <p>The program gave me practical skills I could immediately apply at work. The mentorship was invaluable in helping me transition to a senior role.</p>
-                <div className="student-info">
-                  <span className="student-name">Alexandra Chen</span>
-                  <span className="student-role">Data Science Lead</span>
+              
+              {/* Second Column */}
+              <div className="faq-column">
+                <div className="faq-item">
+                  <div className="faq-question" onClick={() => setActiveFaq(activeFaq === 4 ? null : 4)}>
+                    <h3>Is there mentor support?</h3>
+                    <span className={`toggle-icon ${activeFaq === 4 ? 'active' : ''}`}>
+                      <i className={`fas ${activeFaq === 4 ? 'fa-minus' : 'fa-plus'}`}></i>
+                    </span>
+                  </div>
+                  <div className={`faq-answer ${activeFaq === 4 ? 'active' : ''}`}>
+                    <p>Yes, you will have access to mentors for guidance and support throughout the program.</p>
+                  </div>
+                </div>
+                
+                <div className="faq-item">
+                  <div className="faq-question" onClick={() => setActiveFaq(activeFaq === 5 ? null : 5)}>
+                    <h3>Is there career or placement support?</h3>
+                    <span className={`toggle-icon ${activeFaq === 5 ? 'active' : ''}`}>
+                      <i className={`fas ${activeFaq === 5 ? 'fa-minus' : 'fa-plus'}`}></i>
+                    </span>
+                  </div>
+                  <div className={`faq-answer ${activeFaq === 5 ? 'active' : ''}`}>
+                    <p>Yes, we provide basic career guidance and tips for job readiness.</p>
+                  </div>
+                </div>
+                
+                <div className="faq-item">
+                  <div className="faq-question" onClick={() => setActiveFaq(activeFaq === 6 ? null : 6)}>
+                    <h3>Is the program hands-on?</h3>
+                    <span className={`toggle-icon ${activeFaq === 6 ? 'active' : ''}`}>
+                      <i className={`fas ${activeFaq === 6 ? 'fa-minus' : 'fa-plus'}`}></i>
+                    </span>
+                  </div>
+                  <div className={`faq-answer ${activeFaq === 6 ? 'active' : ''}`}>
+                    <p>Absolutely! The program is designed to be practical and project-based.</p>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="story-card">
-              <div className="story-image">
-                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="Student portrait" />
-              </div>
-              <div className="story-content">
-                <h3><i className="fas fa-quote-left"></i> Changed my perspective on problem-solving</h3>
-                <p>Going beyond just coding, the program taught me how to approach problems systematically. The network I built has opened doors I never thought possible.</p>
-                <div className="student-info">
-                  <span className="student-name">Michael Roberts</span>
-                  <span className="student-role">DevOps Engineer</span>
+            
+            {/* Hidden FAQs (visible when Show More is clicked) */}
+            {showAllFaqs && (
+              <div className="faq-columns">
+                {/* Additional FAQs First Column */}
+                <div className="faq-column">
+                  <div className="faq-item">
+                    <div className="faq-question" onClick={() => setActiveFaq(activeFaq === 7 ? null : 7)}>
+                      <h3>How much time should I dedicate each week?</h3>
+                      <span className={`toggle-icon ${activeFaq === 7 ? 'active' : ''}`}>
+                        <i className={`fas ${activeFaq === 7 ? 'fa-minus' : 'fa-plus'}`}></i>
+                      </span>
+                    </div>
+                    <div className={`faq-answer ${activeFaq === 7 ? 'active' : ''}`}>
+                      <p>You should plan to spend 2-3 hours per week on the program, including lessons and projects.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="faq-item">
+                    <div className="faq-question" onClick={() => setActiveFaq(activeFaq === 8 ? null : 8)}>
+                      <h3>Do I need prior experience?</h3>
+                      <span className={`toggle-icon ${activeFaq === 8 ? 'active' : ''}`}>
+                        <i className={`fas ${activeFaq === 8 ? 'fa-minus' : 'fa-plus'}`}></i>
+                      </span>
+                    </div>
+                    <div className={`faq-answer ${activeFaq === 8 ? 'active' : ''}`}>
+                      <p>No prior experience is required. This program is designed for beginners.</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Additional FAQs Second Column */}
+                <div className="faq-column">
+                  <div className="faq-item">
+                    <div className="faq-question" onClick={() => setActiveFaq(activeFaq === 9 ? null : 9)}>
+                      <h3>How do I enroll?</h3>
+                      <span className={`toggle-icon ${activeFaq === 9 ? 'active' : ''}`}>
+                        <i className={`fas ${activeFaq === 9 ? 'fa-minus' : 'fa-plus'}`}></i>
+                      </span>
+                    </div>
+                    <div className={`faq-answer ${activeFaq === 9 ? 'active' : ''}`}>
+                      <p>Click the 'Enroll Now' button and follow the instructions to register.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="faq-item">
+                    <div className="faq-question" onClick={() => setActiveFaq(activeFaq === 10 ? null : 10)}>
+                      <h3>Is there a refund policy?</h3>
+                      <span className={`toggle-icon ${activeFaq === 10 ? 'active' : ''}`}>
+                        <i className={`fas ${activeFaq === 10 ? 'fa-minus' : 'fa-plus'}`}></i>
+                      </span>
+                    </div>
+                    <div className={`faq-answer ${activeFaq === 10 ? 'active' : ''}`}>
+                      <p>If you have concerns, please contact our support team for assistance with refunds or other issues.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="story-card">
-              <div className="story-image">
-                <img src="https://images.unsplash.com/photo-1540569014015-19a7be504e3a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="Student portrait" />
-              </div>
-              <div className="story-content">
-                <h3><i className="fas fa-quote-left"></i> Accelerated my career transition</h3>
-                <p>After years in a different field, the program helped me transition to tech. The hands-on projects gave me a portfolio that impressed recruiters.</p>
-                <div className="student-info">
-                  <span className="student-name">James Wilson</span>
-                  <span className="student-role">iOS Developer</span>
-                </div>
-              </div>
-            </div>
-            <div className="story-card">
-              <div className="story-image">
-                <img src="https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" alt="Student portrait" />
-              </div>
-              <div className="story-content">
-                <h3><i className="fas fa-quote-left"></i> Found my path through guided learning</h3>
-                <p>The structured curriculum and mentorship gave me direction when I was feeling lost. Now I'm confident in my skills and career trajectory.</p>
-                <div className="student-info">
-                  <span className="student-name">Sarah Johnson</span>
-                  <span className="student-role">Frontend Developer</span>
-                </div>
-              </div>
+            )}
+            
+            {/* Show More / Show Less Button */}
+            <div className="faq-show-more">
+              <button 
+                className="show-more-button"
+                onClick={() => setShowAllFaqs(!showAllFaqs)}
+              >
+                {showAllFaqs ? 'Show Less' : 'Show More'} <i className={`fas ${showAllFaqs ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+              </button>
             </div>
           </div>
         </div>
       </section>
-      
-      <section className="join-community">
+
+      <section className="home-contact-section">
         <div className="responsive-container">
-          <div className="join-content">
-            <h2>Start Your Learning Journey Today</h2>
-            <p>Take the first step toward transforming your career with expert-led education</p>
-            <form className="join-form">
-              <input type="email" placeholder="Enter your email address" required />
-              <button type="submit" className="cta-button primary"><i className="fas fa-paper-plane"></i> Get Program Guide</button>
+          <div className="home-contact-wrapper">
+            <div className="home-contact-info">
+              <h2>Contact Us</h2>
+              <p>Have questions? We're here to help!</p>
+              
+              <div className="home-contact-details">
+                <div className="home-contact-item">
+                  <i className="fas fa-envelope"></i>
+                  <a href="mailto:acmyxteams@gmail.com">acmyxteams@gmail.com</a>
+                </div>
+                <div className="home-contact-item">
+                  <i className="fas fa-clock"></i>
+                  <span>Monday - Sunday: 12:00 PM - 9:00 PM</span>
+                </div>
+                <div className="home-contact-item">
+                  <i className="fas fa-map-marker-alt"></i>
+                  <span>HSR Layout, Bangalore, Karnataka</span>
+                </div>
+              </div>
+              
+              <div className="home-social-icons">
+                <a href="#" className="social-icon" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
+                <a href="#" className="social-icon" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
+                <a href="#" className="social-icon" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
+                <a href="#" className="social-icon" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+              </div>
+            </div>
+            
+            <div className="home-contact-form">
+              <h3>Send Us a Message</h3>
+              <form className="home-form" onSubmit={handleContactSubmit}>
+                <div className="home-form-row">
+                  <div className="home-form-group">
+                    <input
+                      type="text"
+                      name="name"
+                      value={contactFormData.name}
+                      onChange={handleContactFormChange}
+                      required
+                      placeholder="Your Name *"
+                    />
+                  </div>
+                  <div className="home-form-group">
+                    <input
+                      type="email"
+                      name="email"
+                      value={contactFormData.email}
+                      onChange={handleContactFormChange}
+                      required
+                      placeholder="Email Address *"
+                    />
+                  </div>
+                </div>
+                
+                <div className="home-form-row">
+                  <div className="home-form-group">
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={contactFormData.phone}
+                      onChange={handleContactFormChange}
+                      required
+                      placeholder="Phone Number *"
+                    />
+                  </div>
+                  <div className="home-form-group">
+                    <input
+                      type="text"
+                      name="college"
+                      value={contactFormData.college}
+                      onChange={handleContactFormChange}
+                      required
+                      placeholder="College Name *"
+                    />
+                  </div>
+                </div>
+                
+                <div className="home-form-group">
+                  <select
+                    name="domain"
+                    value={contactFormData.domain}
+                    onChange={handleContactFormChange}
+                    required
+                    className="home-domain-select"
+                  >
+                    <option value="" disabled>Select Domain of Interest *</option>
+                    {programDomains.map((domain, index) => (
+                      <option key={index} value={domain}>{domain}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="home-form-group">
+                  <textarea
+                    name="message"
+                    value={contactFormData.message}
+                    onChange={handleContactFormChange}
+                    required
+                    rows="3"
+                    placeholder="Your Message *"
+                  ></textarea>
+                </div>
+                
+                <button type="submit" className="home-submit-btn">
+                  {contactStatus.type === 'loading' ? (
+                    <><i className="fas fa-spinner fa-spin"></i> Sending...</>
+                  ) : (
+                    <><i className="fas fa-paper-plane"></i> Send Message</>
+                  )}
+                </button>
+                
+                {contactStatus.message && (
+                  <div className={`home-status-message ${contactStatus.type}`}>
+                    {contactStatus.type === 'success' && <i className="fas fa-check-circle"></i>}
+                    {contactStatus.type === 'error' && <i className="fas fa-exclamation-circle"></i>}
+                    <span>{contactStatus.message}</span>
+                  </div>
+                )}
             </form>
+            </div>
           </div>
         </div>
       </section>

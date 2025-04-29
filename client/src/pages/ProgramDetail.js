@@ -7,12 +7,78 @@ function ProgramDetail({ programsData }) {
   const [program, setProgram] = useState(null);
   const [selectedTab, setSelectedTab] = useState('overview');
   const pricingRef = useRef(null);
+  const [activeFaq, setActiveFaq] = useState(null);
+  const [showAllFaqs, setShowAllFaqs] = useState(false);
 
   useEffect(() => {
     // In a real app, this would fetch data from an API
     // For now, we'll use the programId to find the matching program
     if (programsData && programsData[programId]) {
-      setProgram(programsData[programId]);
+      const currentProgram = { ...programsData[programId] };
+      
+      // If program has modules but no curriculum, create a curriculum structure
+      if (currentProgram.modules && Array.isArray(currentProgram.modules) && 
+          (!currentProgram.curriculum || !currentProgram.curriculum.weeks)) {
+        
+        currentProgram.curriculum = {
+          title: currentProgram.title + ' Curriculum',
+          description: currentProgram.curriculumIntro || 'Program curriculum',
+          weeks: currentProgram.modules.map((module, index) => ({
+            week: index + 1,
+            title: module.title,
+            topics: module.topics || []
+          }))
+        };
+      }
+      
+      // Create standardized FAQs for all programs
+      const standardFaqs = [
+        {
+          question: `What is included in the ${currentProgram.title} program?`,
+          answer: "This program includes beginner-friendly lessons, hands-on projects, mentor support, comprehensive learning materials, and an industry-recognized certificate upon completion."
+        },
+        {
+          question: "Do I get a certificate after completing this program?",
+          answer: "Yes, you will receive an industry-recognized certificate after successfully completing the program, which you can add to your resume and LinkedIn profile."
+        },
+        {
+          question: `What kind of projects will I work on in the ${currentProgram.title} program?`,
+          answer: "You'll work on real-world, industry-relevant projects that will help you build a strong portfolio to showcase your skills to potential employers."
+        },
+        {
+          question: "Is there mentor support available?",
+          answer: "Yes, you will have access to experienced industry mentors who will provide guidance, feedback, and support throughout your learning journey."
+        },
+        {
+          question: "Do you provide career or placement support?",
+          answer: "Yes, we provide career guidance, resume review, interview preparation, and networking opportunities to help you transition into your desired role."
+        },
+        {
+          question: "Is the program completely hands-on?",
+          answer: "Absolutely! The program is designed to be highly practical with at least 60% of the time dedicated to hands-on projects and real-world applications."
+        },
+        {
+          question: "How much time should I dedicate each week?",
+          answer: "We recommend dedicating 2-3 hours during weekends to get the most out of the program. This gives you enough time to complete the lessons, work on projects, and practice your skills."
+        },
+        {
+          question: `Do I need prior experience for the ${currentProgram.title} program?`,
+          answer: `No prior experience is required for our ${currentProgram.title} program. We've designed it to take you from basics to advanced concepts in a structured way.`
+        },
+        {
+          question: "What is the enrollment process?",
+          answer: "Simply click the 'Enroll Now' button, select your preferred plan, complete the payment process, and you'll receive immediate access to start your learning journey."
+        },
+        {
+          question: "Do you provide regular updates to the course content?",
+          answer: "Yes, we constantly update our curriculum to ensure it aligns with industry trends and the latest technologies. As a student, you'll always have access to the most current content."
+        }
+      ];
+      
+      // Replace or add standard FAQs
+      currentProgram.faqs = standardFaqs;
+      
+      setProgram(currentProgram);
     }
     
     // Scroll to top when program changes
@@ -50,9 +116,26 @@ function ProgramDetail({ programsData }) {
     };
   }, [selectedTab]); // Re-run when selected tab changes
 
-  const handleEnrollNow = () => {
-    // Scroll to pricing plans section
-    pricingRef.current.scrollIntoView({ behavior: 'smooth' });
+  const handleEnrollNow = (planType) => {
+    if (planType) {
+      // Redirect to appropriate Cashfree payment link based on plan type
+      switch (planType) {
+        case 'self-paced':
+          window.location.href = 'https://payments.cashfree.com/forms/selfpacedcomplete';
+          break;
+        case 'mentor-led':
+          window.location.href = 'https://payments.cashfree.com/forms/mentorledcomplete';
+          break;
+        case 'advanced':
+          window.location.href = 'https://payments.cashfree.com/forms/advancecomplete';
+          break;
+        default:
+          pricingRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // If no plan type specified, just scroll to pricing section
+      pricingRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   if (!program) {
@@ -91,7 +174,7 @@ function ProgramDetail({ programsData }) {
             <div className="program-hero-cta">
               <button 
                 className="cta-button primary"
-                onClick={handleEnrollNow}
+                onClick={() => handleEnrollNow()}
               >
                 Enroll Now
               </button>
@@ -122,12 +205,6 @@ function ProgramDetail({ programsData }) {
                 <i className="fas fa-book"></i> Curriculum
               </button>
               <button 
-                className={`tab-button ${selectedTab === 'instructors' ? 'active' : ''}`}
-                onClick={() => setSelectedTab('instructors')}
-              >
-                <i className="fas fa-chalkboard-teacher"></i> Instructors
-              </button>
-              <button 
                 className={`tab-button ${selectedTab === 'faq' ? 'active' : ''}`}
                 onClick={() => setSelectedTab('faq')}
               >
@@ -136,7 +213,7 @@ function ProgramDetail({ programsData }) {
             </div>
             <button 
               className="nav-enroll-button"
-              onClick={handleEnrollNow}
+              onClick={() => handleEnrollNow()}
             >
               <i className="fas fa-graduation-cap"></i> Enroll Now
             </button>
@@ -183,23 +260,6 @@ function ProgramDetail({ programsData }) {
               </div>
             )}
             
-            {program.whoShouldAttend && (
-              <div className="content-section">
-                <h3>Who Should Attend</h3>
-                <div className="attendees-grid">
-                  {program.whoShouldAttend.map((attendee, index) => (
-                    <div className="attendee-card" key={index}>
-                      <div className="attendee-icon">
-                        <i className={attendee.icon}></i>
-                      </div>
-                      <h4>{attendee.title}</h4>
-                      <p>{attendee.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            
             {program.projects && (
               <div className="content-section">
                 <h3>Industry Projects</h3>
@@ -222,26 +282,45 @@ function ProgramDetail({ programsData }) {
         {/* Curriculum Tab */}
         {selectedTab === 'curriculum' && (
           <div className="tab-fade-in">
-            <h3>Curriculum</h3>
+            <h3>{program.curriculum?.title || 'Curriculum'}</h3>
+            {program.curriculum?.description && <p className="curriculum-intro">{program.curriculum.description}</p>}
             {program.curriculumIntro && <p className="curriculum-intro">{program.curriculumIntro}</p>}
             
             <div className="modules-container">
-              {program.curriculum && program.curriculum.map((module, index) => (
+              {/* Render weeks from curriculum object if it exists */}
+              {program.curriculum?.weeks && Array.isArray(program.curriculum.weeks) && program.curriculum.weeks.map((week, index) => (
                 <div key={index} className="module-card">
                   <div className="module-header">
                     <h3>
-                      <span className="module-number">{index + 1}</span>
-                      {module.title}
+                      <span className="module-number">Week {week.week}</span>
+                      {week.title}
                     </h3>
-                    {module.duration && (
-                      <div className="module-duration">
-                        <i className="fas fa-clock"></i>
-                        <span>{module.duration}</span>
-                      </div>
-                    )}
                   </div>
                   <div className="module-content">
-                    <p>{module.description}</p>
+                    {week.topics && week.topics.length > 0 && (
+                      <ul className="module-topics">
+                        {week.topics.map((topic, i) => (
+                          <li key={i}>
+                            <i className="fas fa-angle-right"></i>
+                            <span>{topic}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              ))}
+              
+              {/* Render modules array if it exists */}
+              {program.modules && Array.isArray(program.modules) && program.modules.map((module, index) => (
+                <div key={index} className="module-card">
+                  <div className="module-header">
+                    <h3>
+                      <span className="module-number">Module {index + 1}</span>
+                      {module.title}
+                    </h3>
+                  </div>
+                  <div className="module-content">
                     {module.topics && module.topics.length > 0 && (
                       <ul className="module-topics">
                         {module.topics.map((topic, i) => (
@@ -255,6 +334,13 @@ function ProgramDetail({ programsData }) {
                   </div>
                 </div>
               ))}
+              
+              {(!program.curriculum?.weeks || !Array.isArray(program.curriculum.weeks)) && 
+               (!program.modules || !Array.isArray(program.modules)) && (
+                <div className="no-curriculum-message">
+                  <p>Curriculum details will be available soon.</p>
+                </div>
+              )}
             </div>
             
             {program.projects && (
@@ -277,74 +363,101 @@ function ProgramDetail({ programsData }) {
           </div>
         )}
 
-        {/* Instructors Tab */}
-        {selectedTab === 'instructors' && (
-          <div className="tab-fade-in">
-            <h3>Instructors</h3>
-            {program.instructorsIntro && <p className="instructors-intro">{program.instructorsIntro}</p>}
-            
-            <div className="instructors-grid">
-              {program.instructors && program.instructors.map((instructor, index) => (
-                <div key={index} className="instructor-card">
-                  <div className="instructor-image">
-                    <img src={instructor.image} alt={instructor.name} />
-                  </div>
-                  <div className="instructor-info">
-                    <h3>{instructor.name}</h3>
-                    <span className="instructor-title">{instructor.title}</span>
-                    <p>{instructor.bio}</p>
-                    
-                    {instructor.specialties && (
-                      <div className="instructor-specialties">
-                        <h4>Areas of Expertise</h4>
-                        <div className="specialty-tags">
-                          {instructor.specialties.map((specialty, i) => (
-                            <span className="specialty-tag" key={i}>{specialty}</span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            {program.mentors && (
-              <div className="content-section">
-                <h3>Industry Mentors</h3>
-                <p>Get guidance from professionals currently working in the industry:</p>
-                <div className="mentors-grid">
-                  {program.mentors.map((mentor, index) => (
-                    <div className="mentor-card" key={index}>
-                      <div className="mentor-image">
-                        <img src={mentor.image} alt={mentor.name} />
-                      </div>
-                      <h4>{mentor.name}</h4>
-                      <span className="mentor-company">{mentor.company}</span>
-                      <p>{mentor.bio}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
         {/* FAQ Tab */}
         {selectedTab === 'faq' && (
           <div className="tab-fade-in">
             <h3>Frequently Asked Questions</h3>
-            <div className="faq-container">
-              {program.faqs && program.faqs.map((faq, index) => (
-                <div className="faq-item" key={index}>
-                  <h4 className="faq-question">
-                    <i className="fas fa-question-circle"></i>
-                    {faq.question}
-                  </h4>
-                  <p className="faq-answer">{faq.answer}</p>
+            <p className="faq-intro">Find answers to common questions about our {program.title} program</p>
+            
+            <div className="faq-accordion">
+              <div className="faq-columns">
+                {/* First Column - First 3 FAQs */}
+                <div className="faq-column">
+                  {program.faqs && program.faqs.slice(0, 3).map((faq, index) => (
+                    <div className="faq-item" key={index}>
+                      <div className="faq-question" onClick={() => setActiveFaq(activeFaq === index ? null : index)}>
+                        <h3>{faq.question}</h3>
+                        <span className={`toggle-icon ${activeFaq === index ? 'active' : ''}`}>
+                          <i className={`fas ${activeFaq === index ? 'fa-minus' : 'fa-plus'}`}></i>
+                        </span>
+                      </div>
+                      <div className={`faq-answer ${activeFaq === index ? 'active' : ''}`}>
+                        <p>{faq.answer}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+                
+                {/* Second Column - Next 3 FAQs */}
+                <div className="faq-column">
+                  {program.faqs && program.faqs.slice(3, 6).map((faq, index) => (
+                    <div className="faq-item" key={index + 3}>
+                      <div className="faq-question" onClick={() => setActiveFaq(activeFaq === index + 3 ? null : index + 3)}>
+                        <h3>{faq.question}</h3>
+                        <span className={`toggle-icon ${activeFaq === index + 3 ? 'active' : ''}`}>
+                          <i className={`fas ${activeFaq === index + 3 ? 'fa-minus' : 'fa-plus'}`}></i>
+                        </span>
+                      </div>
+                      <div className={`faq-answer ${activeFaq === index + 3 ? 'active' : ''}`}>
+                        <p>{faq.answer}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Hidden FAQs (visible when Show More is clicked) */}
+              {showAllFaqs && program.faqs && program.faqs.length > 6 && (
+                <div className="faq-columns">
+                  {/* Additional FAQs First Column */}
+                  <div className="faq-column">
+                    {program.faqs.slice(6, 8).map((faq, index) => (
+                      <div className="faq-item" key={index + 6}>
+                        <div className="faq-question" onClick={() => setActiveFaq(activeFaq === index + 6 ? null : index + 6)}>
+                          <h3>{faq.question}</h3>
+                          <span className={`toggle-icon ${activeFaq === index + 6 ? 'active' : ''}`}>
+                            <i className={`fas ${activeFaq === index + 6 ? 'fa-minus' : 'fa-plus'}`}></i>
+                          </span>
+                        </div>
+                        <div className={`faq-answer ${activeFaq === index + 6 ? 'active' : ''}`}>
+                          <p>{faq.answer}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Additional FAQs Second Column */}
+                  <div className="faq-column">
+                    {program.faqs.slice(8, 10).map((faq, index) => (
+                      <div className="faq-item" key={index + 8}>
+                        <div className="faq-question" onClick={() => setActiveFaq(activeFaq === index + 8 ? null : index + 8)}>
+                          <h3>{faq.question}</h3>
+                          <span className={`toggle-icon ${activeFaq === index + 8 ? 'active' : ''}`}>
+                            <i className={`fas ${activeFaq === index + 8 ? 'fa-minus' : 'fa-plus'}`}></i>
+                          </span>
+                        </div>
+                        <div className={`faq-answer ${activeFaq === index + 8 ? 'active' : ''}`}>
+                          <p>{faq.answer}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Show More / Show Less Button - Only show if there are more than 6 FAQs */}
+              {program.faqs && program.faqs.length > 6 && (
+                <div className="faq-show-more">
+                  <button 
+                    className="show-more-button"
+                    onClick={() => setShowAllFaqs(!showAllFaqs)}
+                  >
+                    {showAllFaqs ? 'Show Less' : 'Show More'} <i className={`fas ${showAllFaqs ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                  </button>
+                </div>
+              )}
             </div>
+            
             <div className="contact-support">
               <h4>Still have questions?</h4>
               <p>Our support team is happy to help you with any questions about this program.</p>
@@ -364,52 +477,48 @@ function ProgramDetail({ programsData }) {
           
           <div className="pricing-cards">
             <div className="pricing-card">
-              <div className="plan-tag">Best Value</div>
-              <h3>🎓 Advanced Program</h3>
+              <h3>⏱️ Self-Paced Plan</h3>
               <div className="price">
-                <span className="original-price">₹12,999</span>
-                <span className="current-price">₹8,999</span>
+                <span className="original-price">₹4,999</span>
+                <span className="current-price">₹3,499</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
               <button 
                 className="pricing-button"
-                onClick={handleEnrollNow}
+                onClick={() => handleEnrollNow('self-paced')}
               >
                 Enroll Now
               </button>
               <ul className="plan-features">
                 <li>
-                  <span className="feature-text">💡 Real-Time Projects (Industry Capstone Projects)</span>
+                  <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🕒 Live Sessions (Extended sessions + Guest Experts)</span>
+                  <span className="feature-text">🕒 Live Sessions - 16hrs+</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">❓ One-on-One Doubt Sessions (Priority access)</span>
+                  <span className="feature-text">❓ One-on-One Doubt Sessions</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🏆 Certifications (Co-branded with industry partners)</span>
+                  <span className="feature-text">🏆 Certifications (Industry Certified)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🏅 Mentor Support (Dedicated mentor)</span>
+                  <span className="feature-text">🏅 Mentor Support</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🚀 Placement Guidance (Exclusive referrals + 1:1 coaching)</span>
-                  <span className="feature-status included"><i className="fas fa-check"></i></span>
-                </li>
-                <li>
-                  <span className="feature-text">🤝 Interview Assistance (Mock interviews with HR)</span>
-                  <span className="feature-status included"><i className="fas fa-check"></i></span>
+                  <span className="feature-text">🤝 Interview Assistance</span>
+                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
                 </li>
               </ul>
             </div>
             
             <div className="pricing-card">
+              <div className="plan-tag">Best Value</div>
               <h3>👨‍🏫 Mentor-Led Plan</h3>
               <div className="price">
                 <span className="original-price">₹7,499</span>
@@ -418,7 +527,7 @@ function ProgramDetail({ programsData }) {
               <div className="duration">Valid for {program.duration}</div>
               <button 
                 className="pricing-button"
-                onClick={handleEnrollNow}
+                onClick={() => handleEnrollNow('mentor-led')}
               >
                 Enroll Now
               </button>
@@ -455,46 +564,46 @@ function ProgramDetail({ programsData }) {
             </div>
             
             <div className="pricing-card">
-              <h3>⏱️ Self-Paced Plan</h3>
+              <h3>🎓 Advanced Program</h3>
               <div className="price">
-                <span className="original-price">₹4,999</span>
-                <span className="current-price">₹3,499</span>
+                <span className="original-price">₹12,999</span>
+                <span className="current-price">₹8,999</span>
               </div>
               <div className="duration">Valid for {program.duration}</div>
               <button 
                 className="pricing-button"
-                onClick={handleEnrollNow}
+                onClick={() => handleEnrollNow('advanced')}
               >
                 Enroll Now
               </button>
               <ul className="plan-features">
                 <li>
-                  <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
+                  <span className="feature-text">💡 Real-Time Projects (Industry Capstone Projects)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🕒 Live Sessions - 16hrs+</span>
+                  <span className="feature-text">🕒 Live Sessions (Extended sessions + Guest Experts)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">❓ One-on-One Doubt Sessions</span>
+                  <span className="feature-text">❓ One-on-One Doubt Sessions (Priority access)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🏆 Certifications (Mentor Certified)</span>
+                  <span className="feature-text">🏆 Certifications (Co-branded with industry partners)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🏅 Mentor Support</span>
+                  <span className="feature-text">🏅 Mentor Support (Dedicated mentor)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🚀 Placement Guidance</span>
-                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
+                  <span className="feature-text">🚀 Placement Guidance (Exclusive referrals + 1:1 coaching)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>
-                  <span className="feature-text">🤝 Interview Assistance</span>
-                  <span className="feature-status excluded"><i className="fas fa-times"></i></span>
+                  <span className="feature-text">🤝 Interview Assistance (Mock interviews with HR)</span>
+                  <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
               </ul>
             </div>

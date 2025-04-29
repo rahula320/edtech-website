@@ -1,30 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [programsDropdownOpen, setProgramsDropdownOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef(null);
   const timeoutRef = useRef(null);
-  const location = useLocation();
-
-  // Handle scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   // Handle hover events for desktop dropdown
   const handleMouseEnter = () => {
@@ -43,12 +25,6 @@ function Navbar() {
   // Toggle for mobile menu
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-    // Prevent body scroll when mobile menu is open
-    if (!mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
   };
 
   // Toggle for mobile dropdown (remains click-based)
@@ -69,12 +45,6 @@ function Navbar() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileMenuOpen(false);
-    document.body.style.overflow = 'auto';
-  }, [location]);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
@@ -127,170 +97,133 @@ function Navbar() {
     description: "Learn skills and build real projects with MNC mentors"
   };
 
-  // Check if current path matches link path
-  const isActive = (path) => {
-    if (path === '/') {
-      return location.pathname === path;
-    }
-    return location.pathname.startsWith(path);
-  };
-
   return (
-    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-      <div className="container">
-        <div className="navbar-logo-links">
-          <div className="navbar-brand">
-            <Link to="/" className="logo-link">
-              <i className="fas fa-graduation-cap"></i>
-              <span className="logo-text">ACMYX</span>
-            </Link>
+    <nav className="navbar">
+      <div className="navbar-brand">
+        <Link to="/">
+          <i className="fas fa-graduation-cap"></i> ACMYX
+        </Link>
+      </div>
+      
+      <div className="navbar-links">
+        <Link to="/"><i className="fas fa-home"></i> Home</Link>
+        
+        <div 
+          className="dropdown-container" 
+          ref={dropdownRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className={`dropdown-toggle ${programsDropdownOpen ? 'active' : ''}`}>
+            <i className="fas fa-laptop-code"></i> Programs <i className={`fas fa-chevron-down arrow ${programsDropdownOpen ? 'rotated' : ''}`}></i>
           </div>
           
-          <div className="navbar-links">
-            <Link to="/" className={isActive('/') ? 'active' : ''}>
-              <i className="fas fa-home"></i> <span>Home</span>
-            </Link>
-            
-            <div 
-              className="dropdown-container" 
-              ref={dropdownRef}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <div className={`dropdown-toggle ${isActive('/programs') || programsDropdownOpen ? 'active' : ''}`}>
-                <i className="fas fa-laptop-code"></i> <span>Programs</span> <i className={`fas fa-chevron-down arrow ${programsDropdownOpen ? 'rotated' : ''}`}></i>
+          <div className={`mega-dropdown ${programsDropdownOpen ? 'open' : ''}`}>
+            <div className="mega-dropdown-content">
+              <div className="mega-dropdown-grid">
+                {programCategories.map((category, idx) => (
+                  <div className="dropdown-category" key={idx}>
+                    <h4 className="category-title">
+                      <i className={category.icon}></i> {category.title}
+                    </h4>
+                    <ul className="category-programs">
+                      {category.programs.map((program, progIdx) => (
+                        <li key={progIdx}>
+                          <Link to={program.path} className="program-link">
+                            <i className={program.icon}></i> {program.name}
+                            <span className="hover-indicator"></span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
               
-              <div className={`mega-dropdown ${programsDropdownOpen ? 'open' : ''}`}>
-                <div className="mega-dropdown-content">
-                  <div className="mega-dropdown-grid">
-                    {programCategories.map((category, idx) => (
-                      <div className="dropdown-category" key={idx}>
-                        <h4 className="category-title">
-                          <i className={category.icon}></i> {category.title}
-                        </h4>
-                        <ul className="category-programs">
-                          {category.programs.map((program, progIdx) => (
-                            <li key={progIdx}>
-                              <Link to={program.path} className="program-link">
-                                <i className={program.icon}></i> {program.name}
-                                <span className="hover-indicator"></span>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+              <div className="featured-program">
+                <h4>Featured Program</h4>
+                <Link to={featuredProgram.path} className="featured-program-link">
+                  <div className="featured-program-icon">
+                    <i className={featuredProgram.icon}></i>
                   </div>
-                  
-                  <div className="featured-program">
-                    <h4>Featured Program</h4>
-                    <Link to={featuredProgram.path} className="featured-program-link">
-                      <div className="featured-program-icon">
-                        <i className={featuredProgram.icon}></i>
-                      </div>
-                      <div className="featured-program-info">
-                        <h5>{featuredProgram.title}</h5>
-                        <p>{featuredProgram.description}</p>
-                      </div>
-                    </Link>
+                  <div className="featured-program-info">
+                    <h5>{featuredProgram.title}</h5>
+                    <p>{featuredProgram.description}</p>
                   </div>
-                </div>
+                </Link>
               </div>
             </div>
-            
-            <Link to="/about" className={isActive('/about') ? 'active' : ''}>
-              <i className="fas fa-info-circle"></i> <span>About</span>
-            </Link>
-            <Link to="/careers" className={isActive('/careers') ? 'active' : ''}>
-              <i className="fas fa-briefcase"></i> <span>Careers</span>
-            </Link>
-            <Link to="/faq" className={isActive('/faq') ? 'active' : ''}>
-              <i className="fas fa-question-circle"></i> <span>FAQ</span>
-            </Link>
           </div>
         </div>
         
-        <div className="navbar-actions">
-          <Link to="/internships" className={`action-button ${isActive('/internships') ? 'active' : ''}`}>
-            <i className="fas fa-user-graduate"></i> <span>Internships</span>
-          </Link>
-          <Link to="/contact" className={`contact-button ${isActive('/contact') ? 'active' : ''}`}>
-            <i className="fas fa-envelope"></i> <span>Contact</span>
-          </Link>
-          
-          <button className="menu-button" onClick={toggleMobileMenu} aria-label="Open Menu">
-            <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
-          </button>
-        </div>
+        <Link to="/about"><i className="fas fa-info-circle"></i> About</Link>
+        <Link to="/careers"><i className="fas fa-briefcase"></i> Careers</Link>
+        <Link to="/faq"><i className="fas fa-question-circle"></i> FAQ</Link>
+        <Link to="/internships"><i className="fas fa-user-graduate"></i> Internships</Link>
       </div>
       
-      <div className={`navbar-mobile ${mobileMenuOpen ? 'active' : ''}`}>
-        <div className="navbar-mobile-links">
-          <Link to="/" className={isActive('/') ? 'active' : ''}>
-            <i className="fas fa-home"></i> Home
-          </Link>
+      <button className="menu-button" onClick={toggleMobileMenu}>
+        <i className="fas fa-bars"></i>
+      </button>
+      
+      {mobileMenuOpen && (
+        <div className={`navbar-mobile ${mobileMenuOpen ? 'active' : ''}`}>
+          <button className="navbar-mobile-close" onClick={toggleMobileMenu}>
+            <i className="fas fa-times"></i>
+          </button>
           
-          <div className="mobile-dropdown">
-            <button className={`mobile-dropdown-toggle ${isActive('/programs') ? 'active' : ''}`} onClick={toggleProgramsDropdown}>
-              <div className="toggle-content">
-                <i className="fas fa-laptop-code"></i> Programs 
-              </div>
-              <i className={`fas ${programsDropdownOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
-            </button>
+          <div className="navbar-mobile-links">
+            <Link to="/" onClick={toggleMobileMenu}><i className="fas fa-home"></i> Home</Link>
             
-            {programsDropdownOpen && (
-              <div className="mobile-dropdown-menu">
-                {programCategories.map((category, idx) => (
-                  <div className="mobile-category" key={idx}>
-                    <h5 className="mobile-category-title">
-                      <i className={category.icon}></i> {category.title}
-                    </h5>
-                    <div className="mobile-category-programs">
+            <div className="mobile-dropdown">
+              <button className="mobile-dropdown-toggle" onClick={toggleProgramsDropdown}>
+                <i className="fas fa-laptop-code"></i> Programs {programsDropdownOpen ? 
+                  <i className="fas fa-chevron-up"></i> : 
+                  <i className="fas fa-chevron-down"></i>}
+              </button>
+              
+              {programsDropdownOpen && (
+                <div className="mobile-dropdown-menu">
+                  {programCategories.map((category, idx) => (
+                    <div className="mobile-category" key={idx}>
+                      <h5 className="mobile-category-title">
+                        <i className={category.icon}></i> {category.title}
+                      </h5>
                       {category.programs.map((program, progIdx) => (
                         <Link 
                           key={progIdx} 
                           to={program.path} 
-                          className={`mobile-program-link ${location.pathname === program.path ? 'active' : ''}`}
+                          onClick={toggleMobileMenu}
+                          className="mobile-program-link"
                         >
                           <i className={program.icon}></i> {program.name}
                         </Link>
                       ))}
                     </div>
+                  ))}
+                  <div className="mobile-featured">
+                    <h5 className="mobile-category-title">
+                      <i className="fas fa-star"></i> Featured
+                    </h5>
+                    <Link 
+                      to={featuredProgram.path} 
+                      onClick={toggleMobileMenu}
+                      className="mobile-program-link featured"
+                    >
+                      <i className={featuredProgram.icon}></i> {featuredProgram.title}
+                    </Link>
                   </div>
-                ))}
-                <div className="mobile-featured">
-                  <h5 className="mobile-category-title">
-                    <i className="fas fa-star"></i> Featured
-                  </h5>
-                  <Link 
-                    to={featuredProgram.path} 
-                    className={`mobile-program-link featured ${location.pathname === featuredProgram.path ? 'active' : ''}`}
-                  >
-                    <i className={featuredProgram.icon}></i> {featuredProgram.title}
-                  </Link>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+            
+            <Link to="/about" onClick={toggleMobileMenu}><i className="fas fa-info-circle"></i> About</Link>
+            <Link to="/careers" onClick={toggleMobileMenu}><i className="fas fa-briefcase"></i> Careers</Link>
+            <Link to="/faq" onClick={toggleMobileMenu}><i className="fas fa-question-circle"></i> FAQ</Link>
+            <Link to="/internships" onClick={toggleMobileMenu}><i className="fas fa-user-graduate"></i> Internships</Link>
           </div>
-          
-          <Link to="/about" className={isActive('/about') ? 'active' : ''}>
-            <i className="fas fa-info-circle"></i> About
-          </Link>
-          <Link to="/careers" className={isActive('/careers') ? 'active' : ''}>
-            <i className="fas fa-briefcase"></i> Careers
-          </Link>
-          <Link to="/faq" className={isActive('/faq') ? 'active' : ''}>
-            <i className="fas fa-question-circle"></i> FAQ
-          </Link>
-          <Link to="/internships" className={isActive('/internships') ? 'active' : ''}>
-            <i className="fas fa-user-graduate"></i> Internships
-          </Link>
-          <Link to="/contact" className={isActive('/contact') ? 'active' : ''}>
-            <i className="fas fa-envelope"></i> Contact
-          </Link>
         </div>
-      </div>
+      )}
     </nav>
   );
 }

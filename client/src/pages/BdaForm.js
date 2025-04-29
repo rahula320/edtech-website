@@ -16,14 +16,14 @@ function BdaForm() {
     resume: null
   });
   
-  // Popup state
-  const [showBdaPopup, setShowBdaPopup] = useState(false);
-  
   // Form errors
   const [bdaErrors, setBdaErrors] = useState({});
 
   // Form submission status
   const [isBdaSubmitting, setIsBdaSubmitting] = useState(false);
+  
+  // Success state
+  const [isSubmissionSuccessful, setIsSubmissionSuccessful] = useState(false);
 
   // Skills options
   const skillsOptions = [
@@ -191,7 +191,7 @@ function BdaForm() {
       console.log('BDA application submitted successfully:', data);
       
       // Show success popup
-      setShowBdaPopup(true);
+      setIsSubmissionSuccessful(true);
       setIsBdaSubmitting(false);
       
       // Reset form
@@ -206,10 +206,6 @@ function BdaForm() {
         coverletter: '',
         resume: null
       });
-      
-      // Reset file input
-      const fileInput = document.getElementById('resume');
-      if (fileInput) fileInput.value = '';
     })
     .catch(error => {
       console.error('Error submitting application:', error);
@@ -218,11 +214,6 @@ function BdaForm() {
       });
       setIsBdaSubmitting(false);
     });
-  };
-
-  // Close success popup
-  const closeBdaPopup = () => {
-    setShowBdaPopup(false);
   };
 
   return (
@@ -492,7 +483,7 @@ function BdaForm() {
       </div>
       
       {/* Success Popup */}
-      {showBdaPopup && (
+      {isSubmissionSuccessful && (
         <div className="form-submit-popup">
           <div className="popup-content">
             <div className="popup-header">
@@ -500,11 +491,14 @@ function BdaForm() {
               <h3>Application Submitted!</h3>
             </div>
             <p>
-              Thank you for applying for the Business Development Associate position. 
-              We've received your application and will review it shortly.
-              Our team will contact you within 3-5 business days.
+              Thank you for your application for the Business Development Associate role. We've received your information and will reach out to you soon.
             </p>
-            <button className="popup-close" onClick={closeBdaPopup}>Close</button>
+            <button 
+              className="popup-close" 
+              onClick={() => setIsSubmissionSuccessful(false)}
+            >
+              Close
+            </button>
           </div>
         </div>
       )}

@@ -14,14 +14,14 @@ function CampusAmbassadorForm() {
     department: ''
   });
   
-  // Popup state
-  const [showCampusAmbassadorPopup, setShowCampusAmbassadorPopup] = useState(false);
-  
   // Form errors
   const [campusAmbassadorErrors, setCampusAmbassadorErrors] = useState({});
 
   // Form submission status
   const [isCampusAmbassadorSubmitting, setIsCampusAmbassadorSubmitting] = useState(false);
+  
+  // Success state
+  const [isSubmissionSuccessful, setIsSubmissionSuccessful] = useState(false);
 
   // Study year options
   const yearOptions = [
@@ -132,7 +132,7 @@ function CampusAmbassadorForm() {
       console.log('Campus ambassador application submitted successfully:', data);
       
       // Show success popup
-      setShowCampusAmbassadorPopup(true);
+      setIsSubmissionSuccessful(true);
       setIsCampusAmbassadorSubmitting(false);
       
       // Reset form
@@ -153,11 +153,6 @@ function CampusAmbassadorForm() {
       });
       setIsCampusAmbassadorSubmitting(false);
     });
-  };
-
-  // Close success popup
-  const closeCampusAmbassadorPopup = () => {
-    setShowCampusAmbassadorPopup(false);
   };
 
   return (
@@ -406,7 +401,7 @@ function CampusAmbassadorForm() {
       </div>
       
       {/* Success Popup */}
-      {showCampusAmbassadorPopup && (
+      {isSubmissionSuccessful && (
         <div className="form-submit-popup">
           <div className="popup-content">
             <div className="popup-header">
@@ -417,7 +412,7 @@ function CampusAmbassadorForm() {
               Thank you for applying to be a Campus Ambassador. We've received your application and will review it shortly.
               Our team will contact you within 3-5 business days with next steps.
             </p>
-            <button className="popup-close" onClick={closeCampusAmbassadorPopup}>Close</button>
+            <button className="popup-close" onClick={() => setIsSubmissionSuccessful(false)}>Close</button>
           </div>
         </div>
       )}

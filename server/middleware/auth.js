@@ -14,19 +14,7 @@ exports.isAuthenticated = (req, res, next) => {
   });
 };
 
-// Check if user is an admin
-exports.isAdmin = (req, res, next) => {
-  if (req.session && req.session.isAdmin) {
-    return next();
-  }
-  
-  return res.status(403).json({
-    success: false,
-    message: 'Access denied. Admin privileges required.'
-  });
-};
-
-// Check if user has admin or specified role
+// Check if user has specified role
 exports.hasRole = (roles) => {
   return (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -36,7 +24,7 @@ exports.hasRole = (roles) => {
       });
     }
     
-    if (req.user && (req.user.role === 'admin' || roles.includes(req.user.role))) {
+    if (req.user && roles.includes(req.user.role)) {
       return next();
     }
     

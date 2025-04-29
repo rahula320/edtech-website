@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Careers.css';
+import { Link } from 'react-router-dom';
 
 function Careers() {
   // Form state for mentor application
@@ -11,7 +12,7 @@ function Careers() {
     designation: '',
     experience: '',
     domains: [],
-    resumeUrl: '',
+    education: '',
     portfolioUrl: ''
   });
   
@@ -28,36 +29,21 @@ function Careers() {
     resume: null
   });
   
-  // Form state for campus ambassador application
-  const [campusAmbassadorFormData, setCampusAmbassadorFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    collegeName: '',
-    yearOfStudy: '',
-    branch: '',
-    department: ''
-  });
-  
   // Form display states
   const [showMentorForm, setShowMentorForm] = useState(false);
   const [showBdaForm, setShowBdaForm] = useState(false);
-  const [showCampusAmbassadorForm, setShowCampusAmbassadorForm] = useState(false);
   
   // Popup state
   const [showPopup, setShowPopup] = useState(false);
   const [showBdaPopup, setShowBdaPopup] = useState(false);
-  const [showCampusAmbassadorPopup, setShowCampusAmbassadorPopup] = useState(false);
-  
+
   // Form errors
   const [errors, setErrors] = useState({});
   const [bdaErrors, setBdaErrors] = useState({});
-  const [campusAmbassadorErrors, setCampusAmbassadorErrors] = useState({});
 
   // Form submission status
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isBdaSubmitting, setIsBdaSubmitting] = useState(false);
-  const [isCampusAmbassadorSubmitting, setIsCampusAmbassadorSubmitting] = useState(false);
 
   // Domain options - updated to match all programs
   const domainOptions = [
@@ -114,23 +100,6 @@ function Careers() {
     if (bdaErrors[name]) {
       setBdaErrors({
         ...bdaErrors,
-        [name]: undefined
-      });
-    }
-  };
-  
-  // Handle input changes for campus ambassador form
-  const handleCampusAmbassadorInputChange = (e) => {
-    const { name, value } = e.target;
-    setCampusAmbassadorFormData({
-      ...campusAmbassadorFormData,
-      [name]: value
-    });
-    
-    // Clear error for this field
-    if (campusAmbassadorErrors[name]) {
-      setCampusAmbassadorErrors({
-        ...campusAmbassadorErrors,
         [name]: undefined
       });
     }
@@ -236,31 +205,6 @@ function Careers() {
     return newErrors;
   };
 
-  // Validate campus ambassador form
-  const validateCampusAmbassadorForm = () => {
-    const newErrors = {};
-    
-    if (!campusAmbassadorFormData.fullName.trim()) newErrors.fullName = 'Full name is required';
-    if (!campusAmbassadorFormData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(campusAmbassadorFormData.email)) {
-      newErrors.email = 'Email is invalid';
-    }
-    
-    if (!campusAmbassadorFormData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\d{10}$/.test(campusAmbassadorFormData.phone.replace(/[^0-9]/g, ''))) {
-      newErrors.phone = 'Phone number is invalid';
-    }
-    
-    if (!campusAmbassadorFormData.collegeName.trim()) newErrors.collegeName = 'College name is required';
-    if (!campusAmbassadorFormData.yearOfStudy.trim()) newErrors.yearOfStudy = 'Year of study is required';
-    if (!campusAmbassadorFormData.branch.trim()) newErrors.branch = 'Branch is required';
-    if (!campusAmbassadorFormData.department.trim()) newErrors.department = 'Department is required';
-    
-    return newErrors;
-  };
-
   // Handle mentor form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -328,7 +272,7 @@ function Careers() {
         designation: '',
         experience: '',
         domains: [],
-        resumeUrl: '',
+        education: '',
         portfolioUrl: ''
       });
       
@@ -432,80 +376,6 @@ function Careers() {
     });
   };
 
-  // Handle campus ambassador form submission
-  const handleCampusAmbassadorSubmit = (e) => {
-    e.preventDefault();
-    
-    const formErrors = validateCampusAmbassadorForm();
-    
-    if (Object.keys(formErrors).length > 0) {
-      setCampusAmbassadorErrors(formErrors);
-      return;
-    }
-    
-    // Set submitting state
-    setIsCampusAmbassadorSubmitting(true);
-    
-    // Create application object for API
-    const applicationData = {
-      fullName: campusAmbassadorFormData.fullName,
-      email: campusAmbassadorFormData.email,
-      phone: campusAmbassadorFormData.phone,
-      collegeName: campusAmbassadorFormData.collegeName,
-      yearOfStudy: campusAmbassadorFormData.yearOfStudy,
-      branch: campusAmbassadorFormData.branch,
-      department: campusAmbassadorFormData.department
-    };
-    
-    console.log('Submitting campus ambassador application:', applicationData);
-    
-    // Send to API
-    fetch('/api/applications/campus-ambassador', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(applicationData)
-    })
-    .then(response => {
-      if (!response.ok) {
-        return response.json().then(data => {
-          throw new Error(data.error || 'Failed to submit application');
-        });
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Campus ambassador application submitted successfully:', data);
-      // Show success popup
-      setShowCampusAmbassadorPopup(true);
-      setIsCampusAmbassadorSubmitting(false);
-      
-      // Reset form
-      setCampusAmbassadorFormData({
-        fullName: '',
-        email: '',
-        phone: '',
-        collegeName: '',
-        yearOfStudy: '',
-        branch: '',
-        department: ''
-      });
-      
-      // Hide the success popup after 5 seconds
-      setTimeout(() => {
-        setShowCampusAmbassadorPopup(false);
-      }, 5000);
-    })
-    .catch(error => {
-      console.error('Error submitting application:', error);
-      setCampusAmbassadorErrors({
-        submit: 'Failed to submit application. Please try again later.'
-      });
-      setIsCampusAmbassadorSubmitting(false);
-    });
-  };
-
   // Close popup
   const closePopup = () => {
     setShowPopup(false);
@@ -513,23 +383,6 @@ function Careers() {
   
   // Close BDA popup
   const closeBdaPopup = () => {
-    setShowBdaPopup(false);
-  };
-  
-  // Close campus ambassador popup
-  const closeCampusAmbassadorPopup = () => {
-    setShowCampusAmbassadorPopup(false);
-  };
-  
-  // Close form popup
-  const closeMentorForm = () => {
-    setShowMentorForm(false);
-    setShowPopup(false);
-  };
-  
-  // Close BDA form popup
-  const closeBdaForm = () => {
-    setShowBdaForm(false);
     setShowBdaPopup(false);
   };
 
@@ -546,35 +399,134 @@ function Careers() {
         <div className="container">
           <div className="section-header">
             <h2>Join Our Team</h2>
-            <p>We're looking for talented individuals to join our mission. Select an option below to apply.</p>
+            <p>We're looking for talented individuals to join our mission. New positions opening soon.</p>
           </div>
           
           <div className="career-options-container">
-            <div className="career-option-card">
+            <div className="career-option-card" style={{ position: 'relative', overflow: 'hidden' }}>
+              <div style={{
+                position: 'absolute',
+                top: '0',
+                left: '0',
+                width: '100%',
+                height: '100%',
+                background: 'rgba(0,0,0,0.5)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 10
+              }}>
+                <div style={{
+                  background: '#3182ce',
+                  color: 'white',
+                  padding: '0.5rem 1.5rem',
+                  borderRadius: '30px',
+                  fontWeight: 'bold',
+                  transform: 'rotate(-15deg)',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+                  fontSize: '1.1rem',
+                  marginBottom: '1rem'
+                }}>
+                  COMING SOON
+                </div>
+                <div style={{
+                  fontSize: '2rem',
+                  color: 'white'
+                }}>
+                  <i className="fas fa-lock"></i>
+                </div>
+              </div>
               <div className="option-icon">
                 <i className="fas fa-chalkboard-teacher"></i>
               </div>
               <h3>Become a Mentor</h3>
               <p>Share your expertise and help shape the next generation of tech professionals.</p>
-              <a href="/careers/mentor" className="option-apply-button">Apply Now</a>
+              <button className="option-apply-button" disabled style={{ opacity: 0.6, cursor: 'not-allowed' }}>Apply Now</button>
             </div>
             
-            <div className="career-option-card">
+            <div className="career-option-card" style={{ position: 'relative', overflow: 'hidden' }}>
+              <div style={{
+                position: 'absolute',
+                top: '0',
+                left: '0',
+                width: '100%',
+                height: '100%',
+                background: 'rgba(0,0,0,0.5)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 10
+              }}>
+                <div style={{
+                  background: '#3182ce',
+                  color: 'white',
+                  padding: '0.5rem 1.5rem',
+                  borderRadius: '30px',
+                  fontWeight: 'bold',
+                  transform: 'rotate(-15deg)',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+                  fontSize: '1.1rem',
+                  marginBottom: '1rem'
+                }}>
+                  COMING SOON
+                </div>
+                <div style={{
+                  fontSize: '2rem',
+                  color: 'white'
+                }}>
+                  <i className="fas fa-lock"></i>
+                </div>
+              </div>
               <div className="option-icon">
                 <i className="fas fa-handshake"></i>
               </div>
               <h3>Business Development</h3>
               <p>Join our business development team and help us grow by connecting with potential clients and partners.</p>
-              <a href="/careers/business-development" className="option-apply-button">Apply Now</a>
+              <button className="option-apply-button" disabled style={{ opacity: 0.6, cursor: 'not-allowed' }}>Apply Now</button>
             </div>
             
-            <div className="career-option-card">
+            <div className="career-option-card" style={{ position: 'relative', overflow: 'hidden' }}>
+              <div style={{
+                position: 'absolute',
+                top: '0',
+                left: '0',
+                width: '100%',
+                height: '100%',
+                background: 'rgba(0,0,0,0.5)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 10
+              }}>
+                <div style={{
+                  background: '#3182ce',
+                  color: 'white',
+                  padding: '0.5rem 1.5rem',
+                  borderRadius: '30px',
+                  fontWeight: 'bold',
+                  transform: 'rotate(-15deg)',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+                  fontSize: '1.1rem',
+                  marginBottom: '1rem'
+                }}>
+                  COMING SOON
+                </div>
+                <div style={{
+                  fontSize: '2rem',
+                  color: 'white'
+                }}>
+                  <i className="fas fa-lock"></i>
+                </div>
+              </div>
               <div className="option-icon">
                 <i className="fas fa-graduation-cap"></i>
               </div>
               <h3>Campus Ambassador</h3>
               <p>Help us spread the word about our programs and services on your campus.</p>
-              <a href="/careers/campus-ambassador" className="option-apply-button">Apply Now</a>
+              <button className="option-apply-button" disabled style={{ opacity: 0.6, cursor: 'not-allowed' }}>Apply Now</button>
             </div>
           </div>
         </div>
@@ -622,7 +574,7 @@ function Careers() {
           <div className="form-modal">
             <div className="form-modal-header">
               <h3>Apply to Become a Mentor</h3>
-              <button className="close-modal" onClick={closeMentorForm}><i className="fas fa-times"></i></button>
+              <button className="close-modal" onClick={() => setShowMentorForm(false)}><i className="fas fa-times"></i></button>
             </div>
             <div className="form-modal-content">
               <form className="mentor-form" onSubmit={handleSubmit}>
@@ -795,7 +747,7 @@ function Careers() {
           <div className="form-modal">
             <div className="form-modal-header">
               <h3>Apply for Business Development Associate</h3>
-              <button className="close-modal" onClick={closeBdaForm}><i className="fas fa-times"></i></button>
+              <button className="close-modal" onClick={() => setShowBdaForm(false)}><i className="fas fa-times"></i></button>
             </div>
             <div className="form-modal-content">
               <form className="bda-form" onSubmit={handleBdaSubmit}>
@@ -959,182 +911,18 @@ function Careers() {
         </div>
       )}
       
-      {/* Campus Ambassador Form Modal */}
-      {showCampusAmbassadorForm && (
-        <div className="form-modal-overlay">
-          <div className="form-modal">
-            <div className="form-modal-header">
-              <h3>Apply to Become a Campus Ambassador</h3>
-              <button className="close-modal" onClick={closeCampusAmbassadorPopup}><i className="fas fa-times"></i></button>
-            </div>
-            <div className="form-modal-content">
-              <div className="role-description">
-                <h4>About the Role</h4>
-                <p>Represent our organization on your campus and help us connect with potential students.</p>
-                <h4>The Students will receive:</h4>
-                <ul>
-                  <li>➡ Stipend of Up to Rs 10,000.</li>
-                  <li>➡ Opportunity for Real-Time Industrial Experience</li>
-                  <li>➡ Letter of Recommendation</li>
-                  <li>➡ Internship and Placement Support</li>
-                  <li>➡ Guidance and Certifications</li>
-                  <li>➡ Work from Home (You can work in your own time)</li>
-                </ul>
-              </div>
-              <form className="campus-ambassador-form" onSubmit={handleCampusAmbassadorSubmit}>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="fullName">
-                      Full Name <span className="required-star">*</span>
-                    </label>
-                    <input 
-                      type="text" 
-                      id="fullName" 
-                      name="fullName" 
-                      value={campusAmbassadorFormData.fullName}
-                      onChange={handleCampusAmbassadorInputChange}
-                      onFocus={() => handleFocus()}
-                      onBlur={handleBlur}
-                      className={campusAmbassadorErrors.fullName ? 'error' : ''}
-                      placeholder="Enter your full name"
-                    />
-                    {campusAmbassadorErrors.fullName && <span className="error-message">{campusAmbassadorErrors.fullName}</span>}
-                  </div>
-                  
-                  <div className="form-group">
-                    <label htmlFor="email">
-                      Email Address <span className="required-star">*</span>
-                    </label>
-                    <input 
-                      type="email" 
-                      id="email" 
-                      name="email"
-                      value={campusAmbassadorFormData.email}
-                      onChange={handleCampusAmbassadorInputChange}
-                      onFocus={() => handleFocus()}
-                      onBlur={handleBlur}
-                      className={campusAmbassadorErrors.email ? 'error' : ''}
-                      placeholder="Enter your email address"
-                    />
-                    {campusAmbassadorErrors.email && <span className="error-message">{campusAmbassadorErrors.email}</span>}
-                  </div>
-                </div>
-                
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="phone">
-                      Phone Number <span className="required-star">*</span>
-                    </label>
-                    <input 
-                      type="tel" 
-                      id="phone" 
-                      name="phone"
-                      value={campusAmbassadorFormData.phone}
-                      onChange={handleCampusAmbassadorInputChange}
-                      onFocus={() => handleFocus()}
-                      onBlur={handleBlur}
-                      className={campusAmbassadorErrors.phone ? 'error' : ''}
-                      placeholder="Enter your phone number"
-                    />
-                    {campusAmbassadorErrors.phone && <span className="error-message">{campusAmbassadorErrors.phone}</span>}
-                  </div>
-                  
-                  <div className="form-group">
-                    <label htmlFor="collegeName">
-                      College Name <span className="required-star">*</span>
-                    </label>
-                    <input 
-                      type="text" 
-                      id="collegeName" 
-                      name="collegeName"
-                      value={campusAmbassadorFormData.collegeName}
-                      onChange={handleCampusAmbassadorInputChange}
-                      onFocus={() => handleFocus()}
-                      onBlur={handleBlur}
-                      className={campusAmbassadorErrors.collegeName ? 'error' : ''}
-                      placeholder="Enter your college name"
-                    />
-                    {campusAmbassadorErrors.collegeName && <span className="error-message">{campusAmbassadorErrors.collegeName}</span>}
-                  </div>
-                </div>
-                
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="yearOfStudy">
-                      Year of Study <span className="required-star">*</span>
-                    </label>
-                    <select 
-                      id="yearOfStudy" 
-                      name="yearOfStudy"
-                      value={campusAmbassadorFormData.yearOfStudy}
-                      onChange={handleCampusAmbassadorInputChange}
-                      onFocus={() => handleFocus()}
-                      onBlur={handleBlur}
-                      className={campusAmbassadorErrors.yearOfStudy ? 'error' : ''}
-                    >
-                      <option value="">Select Year of Study</option>
-                      <option value="1st year">1st Year</option>
-                      <option value="2nd year">2nd Year</option>
-                      <option value="3rd year">3rd Year</option>
-                      <option value="4th year">4th Year</option>
-                      <option value="graduate">Graduate</option>
-                    </select>
-                    {campusAmbassadorErrors.yearOfStudy && <span className="error-message">{campusAmbassadorErrors.yearOfStudy}</span>}
-                  </div>
-                  
-                  <div className="form-group">
-                    <label htmlFor="branch">
-                      Branch <span className="required-star">*</span>
-                    </label>
-                    <input 
-                      type="text" 
-                      id="branch" 
-                      name="branch"
-                      value={campusAmbassadorFormData.branch}
-                      onChange={handleCampusAmbassadorInputChange}
-                      onFocus={() => handleFocus()}
-                      onBlur={handleBlur}
-                      className={campusAmbassadorErrors.branch ? 'error' : ''}
-                      placeholder="Enter your branch"
-                    />
-                    {campusAmbassadorErrors.branch && <span className="error-message">{campusAmbassadorErrors.branch}</span>}
-                  </div>
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="department">
-                    Department <span className="required-star">*</span>
-                  </label>
-                  <input 
-                    type="text" 
-                    id="department" 
-                    name="department"
-                    value={campusAmbassadorFormData.department}
-                    onChange={handleCampusAmbassadorInputChange}
-                    onFocus={() => handleFocus()}
-                    onBlur={handleBlur}
-                    className={campusAmbassadorErrors.department ? 'error' : ''}
-                    placeholder="Enter your department"
-                  />
-                  {campusAmbassadorErrors.department && <span className="error-message">{campusAmbassadorErrors.department}</span>}
-                </div>
-                
-                <button 
-                  type="submit" 
-                  className="apply-button" 
-                  disabled={isCampusAmbassadorSubmitting}
-                >
-                  {isCampusAmbassadorSubmitting ? (
-                    <><i className="fas fa-spinner fa-spin"></i> Submitting...</>
-                  ) : (
-                    'Submit Application'
-                  )}
-                </button>
-              </form>
-            </div>
+      {/* Campus Ambassador Form Modal - Replaced with a direct link to the form page */}
+      <div className="apply-section">
+        <div className="container">
+          <div className="become-campus-ambassador">
+            <h3>Interested in becoming a Campus Ambassador?</h3>
+            <p>Represent us on your campus and help fellow students access quality tech education.</p>
+            <Link to="/careers/campus-ambassador" className="apply-button">
+              Apply as Campus Ambassador
+            </Link>
           </div>
         </div>
-      )}
+      </div>
       
       {/* Success Popups */}
       {showPopup && (
@@ -1160,20 +948,6 @@ function Careers() {
             </div>
             <div className="popup-content">
               <p>Thank you for applying to the Business Development position! Your application has been successfully submitted. We'll review your qualifications and reach out to you within 3-5 business days to discuss next steps.</p>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {showCampusAmbassadorPopup && (
-        <div className="confirmation-popup-overlay">
-          <div className="confirmation-popup">
-            <div className="popup-header">
-              <h3><i className="fas fa-check-circle"></i> Application Submitted Successfully</h3>
-              <button className="close-popup" onClick={closeCampusAmbassadorPopup}><i className="fas fa-times"></i></button>
-            </div>
-            <div className="popup-content">
-              <p>Thank you for applying to the Campus Ambassador position! Your application has been successfully submitted. We'll review your qualifications and reach out to you within 3-5 business days to discuss next steps.</p>
             </div>
           </div>
         </div>

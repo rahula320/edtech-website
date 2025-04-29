@@ -13,7 +13,7 @@ function Footer() {
                 <i className="fas fa-graduation-cap"></i> ACMYX
               </Link>
             </div>
-            <p className="footer-tagline">Transforming lives through technology education</p>
+            <p className="footer-tagline">Empowering careers with industry-aligned tech education and mentorship</p>
             <div className="footer-social">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
@@ -41,7 +41,7 @@ function Footer() {
               <ul>
                 <li><Link to="/about">About Us</Link></li>
                 <li><Link to="/careers">Careers</Link></li>
-                <li><Link to="/portal">Student Portal</Link></li>
+                <li><Link to="/faq">FAQ</Link></li>
                 <li><Link to="/programs">Our Programs</Link></li>
               </ul>
             </div>
@@ -49,9 +49,9 @@ function Footer() {
             <div className="footer-column">
               <h3>Support</h3>
               <ul>
-                <li><Link to="/portal">Student Login</Link></li>
-                <li><Link to="/about">FAQs</Link></li>
+                <li><Link to="/faq">FAQs</Link></li>
                 <li><a href="mailto:acmyxteams@gmail.com">Contact Support</a></li>
+                <li><Link to="/contact">Contact Us</Link></li>
               </ul>
             </div>
             
