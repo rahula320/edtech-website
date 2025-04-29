@@ -8,7 +8,8 @@
     "server": "nodemon server/server.js",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "init-db": "node server/scripts/init-db.js"
+    "init-db": "node server/scripts/init-db.js",
+    "vercel-build": "cd client && npm install && npm run build"
   },
   "keywords": [
     "acmyx",
