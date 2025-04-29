@@ -911,19 +911,6 @@ function Careers() {
         </div>
       )}
       
-      {/* Campus Ambassador Form Modal - Replaced with a direct link to the form page */}
-      <div className="apply-section">
-        <div className="container">
-          <div className="become-campus-ambassador">
-            <h3>Interested in becoming a Campus Ambassador?</h3>
-            <p>Represent us on your campus and help fellow students access quality tech education.</p>
-            <Link to="/careers/campus-ambassador" className="apply-button">
-              Apply as Campus Ambassador
-            </Link>
-          </div>
-        </div>
-      </div>
-      
       {/* Success Popups */}
       {showPopup && (
         <div className="confirmation-popup-overlay">
