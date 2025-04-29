@@ -11,6 +11,30 @@ const api = axios.create({
   withCredentials: true,
 });
 
+// Add request interceptor for logging
+api.interceptors.request.use(
+  (config) => {
+    console.log(`API Request: ${config.method.toUpperCase()} ${config.url}`);
+    return config;
+  },
+  (error) => {
+    console.error('API Request Error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for error handling
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    const errorMessage = error.response?.data?.message || 'An error occurred';
+    console.error('API Error:', errorMessage, error.response || error);
+    return Promise.reject(error);
+  }
+);
+
 // Authentication
 export const login = async (credentials) => {
   const response = await api.post('/login', credentials);
