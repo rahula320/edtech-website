@@ -1,23 +1,9 @@
 import axios from 'axios';
 
-// Determine base URL - use relative path for development, absolute path for production
-const getApiUrl = () => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  // If we're in production, use the deployed API URL
-  if (isProduction) {
-    return process.env.REACT_APP_API_URL || '';
-  }
-  // In development, proxy will handle routing to localhost:3001
-  return '';
-};
-
-// Create axios instance with base URL
-const apiClient = axios.create({
-  baseURL: getApiUrl(),
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+// Set base URL for API calls based on environment
+const API_URL = process.env.NODE_ENV === 'production'
+  ? process.env.REACT_APP_API_URL || 'https://edtech-website.vercel.app'
+  : '';
 
 // Contact service using the server API
 const ContactService = {
@@ -25,7 +11,7 @@ const ContactService = {
   submitContactForm: async (contactData) => {
     try {
       // Send all form fields directly to match the database structure
-      const response = await apiClient.post('/api/contact', contactData);
+      const response = await axios.post(`${API_URL}/api/contact`, contactData);
       return response.data;
     } catch (error) {
       console.error('Error submitting contact form:', error);

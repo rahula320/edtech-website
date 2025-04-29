@@ -3,8 +3,17 @@ import axios from 'axios';
 // In development, React will proxy requests to the URL in package.json's "proxy" field
 // In production, use the environment variable or fallback to relative path
 const isDevelopment = process.env.NODE_ENV === 'development';
-const baseURL = isDevelopment ? '' : (process.env.REACT_APP_API_URL || '/api');
-console.log('API baseURL:', baseURL, 'Environment:', process.env.NODE_ENV);
+// For production, try environment variable first, then specific URLs, and finally relative path
+const baseURL = isDevelopment 
+  ? '' 
+  : (process.env.REACT_APP_API_URL || 
+     (window.location.hostname === 'edtech-website.vercel.app' 
+       ? 'https://edtech-website.vercel.app/api' 
+       : window.location.hostname === 'acmyx.com' || window.location.hostname === 'www.acmyx.com'
+         ? 'https://acmyx.com/api'
+         : '/api'));
+
+console.log('API baseURL:', baseURL, 'Environment:', process.env.NODE_ENV, 'Hostname:', window.location.hostname);
 
 const api = axios.create({
   baseURL,

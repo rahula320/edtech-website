@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Home.css';
-import ContactService from '../utils/contactService';
 
 // Program ID mapping function
 const getProgramId = (title) => {
@@ -67,17 +66,24 @@ function Home() {
     setContactStatus({ type: 'loading', message: 'Sending message...' });
 
     try {
-      const response = await ContactService.submitContactForm(contactFormData);
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(contactFormData)
+      });
 
-      if (response.success) {
+      const data = await response.json();
+
+      if (response.ok) {
         setContactStatus({ type: 'success', message: 'Message sent successfully!' });
         setContactFormData({ name: '', email: '', phone: '', college: '', domain: '', message: '' });
       } else {
-        setContactStatus({ type: 'error', message: response.message || 'Something went wrong' });
+        setContactStatus({ type: 'error', message: data.message || 'Something went wrong' });
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      setContactStatus({ type: 'error', message: 'Failed to send message. Please try again later.' });
+      setContactStatus({ type: 'error', message: 'Failed to send message' });
     }
   };
   
