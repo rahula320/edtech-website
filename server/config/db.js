@@ -19,7 +19,15 @@ const sequelize = new Sequelize(connectionString, {
       rejectUnauthorized: false // This might need to be true in production
     }
   },
-  logging: isProduction ? false : console.log // Only log SQL in development
+  logging: isProduction ? false : console.log,
+  // Optimize for serverless environment
+  pool: {
+    max: 2, // Reduce connection pool size for serverless
+    min: 0,
+    idle: 0, // No idle time
+    acquire: 30000,
+    evict: 1000 // Run eviction checks more frequently
+  }
 });
 
 // Test the connection

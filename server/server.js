@@ -26,7 +26,10 @@ const corsOptions = {
         'https://acmyx.com', 
         'https://www.acmyx.com',
         'https://api-edtech-website.vercel.app',
-        'https://api.acmyx.com'
+        'https://api.acmyx.com',
+        'https://server-eta-weld.vercel.app',
+        'https://server-rjkb53sbe-acmyxs-projects.vercel.app',
+        /\.vercel\.app$/  // Allow all vercel.app subdomains
       ] 
     : ['http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:3000', '0.0.0.0'],
   credentials: true,
@@ -359,8 +362,10 @@ async function startServer() {
   }
 }
 
-// Start the server
-startServer();
+// Start the server only in non-Vercel environments
+if (!process.env.VERCEL) {
+  startServer();
+}
 
 // Export the Express app for Vercel
 module.exports = app; 
