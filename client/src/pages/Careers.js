@@ -487,46 +487,27 @@ function Careers() {
               <button className="option-apply-button" disabled style={{ opacity: 0.6, cursor: 'not-allowed' }}>Apply Now</button>
             </div>
             
-            <div className="career-option-card" style={{ position: 'relative', overflow: 'hidden' }}>
-              <div style={{
-                position: 'absolute',
-                top: '0',
-                left: '0',
-                width: '100%',
-                height: '100%',
-                background: 'rgba(0,0,0,0.5)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: 10
-              }}>
-                <div style={{
-                  background: '#3182ce',
-                  color: 'white',
-                  padding: '0.5rem 1.5rem',
-                  borderRadius: '30px',
-                  fontWeight: 'bold',
-                  transform: 'rotate(-15deg)',
-                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-                  fontSize: '1.1rem',
-                  marginBottom: '1rem'
-                }}>
-                  COMING SOON
-                </div>
-                <div style={{
-                  fontSize: '2rem',
-                  color: 'white'
-                }}>
-                  <i className="fas fa-lock"></i>
-                </div>
-              </div>
+            <div className="career-option-card internship-delegate">
               <div className="option-icon">
-                <i className="fas fa-graduation-cap"></i>
+                <i className="fas fa-rocket"></i>
               </div>
-              <h3>Campus Ambassador</h3>
-              <p>Help us spread the word about our programs and services on your campus.</p>
-              <button className="option-apply-button" disabled style={{ opacity: 0.6, cursor: 'not-allowed' }}>Apply Now</button>
+              <h3>Internship Delegate Program</h3>
+              <p>Lead, learn, and level up with industry experts from Accenture, TCS, Barclays, and EPAM.</p>
+              <a 
+                href="https://forms.gle/h7vX3fN54bFS9zfS8" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="option-apply-button"
+              >
+                Apply Now
+              </a>
+              <div className="program-poster">
+                <img 
+                  src="/images/internship-delegate-program.svg" 
+                  alt="ACMYX Internship Delegate Program" 
+                  className="poster-image"
+                />
+              </div>
             </div>
           </div>
         </div>
