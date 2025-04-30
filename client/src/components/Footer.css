@@ -54,9 +54,10 @@
 }
 
 .footer-logo-img {
-  height: 195px;
+  height: 50px;
   width: auto;
   display: block;
+  object-fit: contain;
 }
 
 .footer-logo i {
@@ -320,6 +321,10 @@
   .legal-links {
     justify-content: center;
   }
+  
+  .footer-logo-img {
+    height: 40px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -359,7 +364,7 @@
 /* Responsive adjustments */
 @media (max-width: 991px) {
   .footer-logo-img {
-    height: 165px;
+    height: 45px;
   }
   
   .footer-columns {
@@ -375,7 +380,7 @@
   }
   
   .footer-logo-img {
-    height: 150px;
+    height: 40px;
   }
   
   .footer-bottom {
