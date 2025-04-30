@@ -52,7 +52,7 @@ function Terms() {
                 </div>
                 <p>
                   These Terms and Conditions, along with privacy policy or other terms ("Terms") constitute a binding
-                  agreement by and between RAHUL KUMAR, ("Website Owner" or "we" or "us" or "our") and you
+                  agreement by and between ACMYX ("Website Owner" or "we" or "us" or "our") and you
                   ("you" or "your") and relate to your use of our website, goods (as applicable) or services (as applicable)
                   (collectively, "Services").
                 </p>
@@ -171,24 +171,13 @@ function Terms() {
                 <h2>Contact Information</h2>
                 <p>
                   All concerns or communications relating to these Terms must be communicated to us using the
-                  contact information provided on this website.
+                  contact information provided below.
                 </p>
                 <div className="contact-info-block">
                   <h3>Contact Us</h3>
                   <p className="last-updated">Last updated on 26-04-2025 14:34:54</p>
-                  <p>You may contact us using the information below:</p>
                   
-                  <div className="contact-details-grid">
-                    <div className="contact-detail-item">
-                      <div className="icon-wrapper">
-                        <i className="fas fa-building"></i>
-                      </div>
-                      <div className="detail-content">
-                        <h4>Merchant Legal entity name</h4>
-                        <p>RAHUL KUMAR</p>
-                      </div>
-                    </div>
-                    
+                  <div className="contact-details-grid">                    
                     <div className="contact-detail-item">
                       <div className="icon-wrapper">
                         <i className="fas fa-map-marker-alt"></i>
@@ -206,16 +195,6 @@ function Terms() {
                       <div className="detail-content">
                         <h4>Operational Address</h4>
                         <p>15th Cross, 15th Main Road, HSR Layout, Bangalore, Karnataka, PIN: 560102</p>
-                      </div>
-                    </div>
-                    
-                    <div className="contact-detail-item">
-                      <div className="icon-wrapper">
-                        <i className="fas fa-phone-alt"></i>
-                      </div>
-                      <div className="detail-content">
-                        <h4>Telephone</h4>
-                        <p><a href="tel:9150210762">9150210762</a></p>
                       </div>
                     </div>
                     

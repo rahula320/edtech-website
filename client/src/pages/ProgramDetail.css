@@ -108,6 +108,7 @@
   font-size: 2.5rem;
   margin-bottom: 1rem;
   line-height: 1.2;
+  color: white;
 }
 
 .program-hero-text p {
@@ -171,6 +172,7 @@
   font-size: 1rem;
   font-weight: 600;
   margin-top: 2px;
+  background-color: rgba(5, 28, 50, 0.1);
 }
 
 .program-hero-cta {
@@ -261,7 +263,7 @@
 }
 
 .nav-enroll-button {
-  background-color: var(--primary-color);
+  background-color: #051c32;
   color: white;
   border: none;
   border-radius: 6px;
@@ -870,7 +872,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: var(--primary-color);
+  background-color: #051c32;
   color: white;
   border-radius: 4px;
   text-decoration: none;
@@ -973,7 +975,7 @@
 }
 
 .pricing-button {
-  background-color: var(--primary-color);
+  background-color: #051c32;
   color: white;
   width: 100%;
   padding: 0.75rem;
@@ -1032,7 +1034,7 @@
 }
 
 .feature-status.included {
-  background-color: #2563eb;
+  background-color: #051c32;
   color: white;
 }
 
@@ -1201,6 +1203,7 @@
   
   .program-hero-text h1 {
     font-size: 1.8rem;
+    color: white;
   }
   
   .program-meta-info {

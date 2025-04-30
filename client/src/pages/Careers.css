@@ -11,7 +11,7 @@
 
 /* Hero Section */
 .careers-hero {
-  background: linear-gradient(to right, #1a2b49, #2d4373);
+  background: linear-gradient(to right, #051c32, #0a324f, #102c41);
   color: white;
   padding: 5rem 2rem;
   text-align: center;
@@ -43,6 +43,7 @@
   font-size: 2.8rem;
   margin-bottom: 1.5rem;
   font-weight: 700;
+  color: white;
 }
 
 .careers-hero p {
@@ -63,7 +64,7 @@
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 3rem;
-  color: #1a2b49;
+  color: #051c32;
 }
 
 .benefits-grid {
@@ -83,19 +84,20 @@
 
 .benefit-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(5, 28, 50, 0.15);
+  border-top: 3px solid #051c32;
 }
 
 .benefit-card i {
   font-size: 2.5rem;
-  color: #2563eb;
+  color: #051c32;
   margin-bottom: 1.5rem;
 }
 
 .benefit-card h3 {
   font-size: 1.4rem;
   margin-bottom: 1rem;
-  color: #1a2b49;
+  color: #051c32;
 }
 
 .benefit-card p {
@@ -113,13 +115,31 @@
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 1rem;
-  color: #1a2b49;
+  color: #051c32;
 }
 
 .section-header {
   text-align: center;
   max-width: 700px;
   margin: 0 auto 3rem;
+  position: relative;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: #051c32;
+  border-radius: 3px;
+}
+
+.section-header h2 {
+  position: relative;
+  display: inline-block;
 }
 
 .section-header p {
@@ -149,7 +169,7 @@
   left: 0;
   right: 0;
   height: 6px;
-  background: linear-gradient(to right, #2563eb, #3b82f6, #60a5fa);
+  background: linear-gradient(to right, #051c32, #0a324f, #102c41);
   z-index: 1;
 }
 
@@ -174,7 +194,7 @@
 
 .form-group label {
   font-weight: 600;
-  color: #1a2b49;
+  color: #051c32;
   font-size: 0.95rem;
   transition: color 0.3s ease;
   display: flex;
@@ -629,10 +649,12 @@
   
   .careers-hero h1 {
     font-size: 2rem;
+    color: white;
   }
   
   .careers-hero p {
     font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
   }
   
   .careers-why-join,
@@ -702,7 +724,7 @@
 .careers-cta h2 {
   font-size: 2.2rem;
   margin-bottom: 1.5rem;
-  color: #1a2b49;
+  color: #051c32;
 }
 
 .careers-cta p {
@@ -996,6 +1018,28 @@
   background-color: #f9fafc;
 }
 
+.careers-hero {
+  background: linear-gradient(to right, #051c32, #0a324f, #102c41);
+  color: white;
+  padding: 5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.careers-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 20%),
+    radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 20%);
+  z-index: 0;
+}
+
 .career-options-container {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
@@ -1066,22 +1110,23 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+  background: linear-gradient(135deg, #e7f5ff, #d0e7ff);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
+  border: 2px solid rgba(5, 28, 50, 0.1);
 }
 
 .option-icon i {
   font-size: 2.2rem;
-  color: #2563eb;
+  color: #051c32;
 }
 
 .career-option-card h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #1a2b49;
+  color: #051c32;
 }
 
 .career-option-card p {
@@ -1092,20 +1137,26 @@
 }
 
 .option-apply-button {
-  background-color: #2563eb;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #051c32, #0a324f, #102c41);
   color: white;
   border: none;
-  padding: 0.8rem 1.8rem;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 12px rgba(5, 28, 50, 0.2);
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  min-width: 150px;
 }
 
 .option-apply-button:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(5, 28, 50, 0.3);
+  background: linear-gradient(135deg, #0a324f, #051c32);
 }
 
 /* Form Modal Styles */
@@ -1169,7 +1220,7 @@
 
 .form-modal-header h3 {
   font-size: 1.5rem;
-  color: #1a2b49;
+  color: #051c32;
   margin: 0;
   font-weight: 600;
 }
@@ -1911,19 +1962,19 @@
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 15px rgba(5, 28, 50, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #3B2178;
+  background-color: #051c32;
   height: auto;
   aspect-ratio: 1 / 1;
 }
 
 .program-poster:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgba(5, 28, 50, 0.3);
 }
 
 .poster-image {
@@ -1940,10 +1991,11 @@
   margin-bottom: 3rem;
   background: white;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(5, 28, 50, 0.1);
   overflow: hidden;
   max-width: 1200px;
   margin: 0 auto 3rem;
+  position: relative;
 }
 
 .internship-image {
@@ -1951,7 +2003,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #3B2178;
+  background-color: #051c32;
   overflow: hidden;
 }
 
@@ -1972,12 +2024,13 @@
 .internship-details h3 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: #1a2b49;
+  color: #051c32;
+  font-weight: 700;
 }
 
 .internship-details p {
   font-size: 1.1rem;
-  line-height: 1.6;
+  line-height: 1.7;
   margin-bottom: 2rem;
   color: #4a5568;
 }
@@ -2007,6 +2060,24 @@
 
 .career-option-card.coming-soon {
   cursor: default;
+}
+
+.career-option-card.coming-soon::before {
+  content: "COMING SOON";
+  position: absolute;
+  top: 12%;
+  left: 0;
+  right: 0;
+  background: #051c32;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  z-index: 10;
+  transform: none;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 30px;
 }
 
 @media (max-width: 992px) {
@@ -2048,4 +2119,29 @@
   .form-modal-content {
     padding: 1.5rem;
   }
+}
+
+.department-tab.active {
+  color: #051c32;
+}
+
+.job-list-item:hover .job-title {
+  color: #051c32;
+}
+
+.job-button {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(to right, #051c32, #0a324f);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.benefits-icon {
+  background: linear-gradient(to right, #021221, #051c32);
 } 

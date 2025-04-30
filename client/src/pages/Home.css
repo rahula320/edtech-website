@@ -1,7 +1,7 @@
 :root {
-  --primary-color: #2563eb;
-  --primary-light: #3b82f6;
-  --primary-dark: #1d4ed8;
+  --primary-color: #051c32;
+  --primary-light: #0a324f;
+  --primary-dark: #021221;
   --secondary-color: #059669;
   --text-color: #1e293b;
   --text-light: #64748b;
@@ -308,10 +308,7 @@ section {
   font-size: 3.2rem;
   line-height: 1.2;
   margin-bottom: 1.5rem;
-  background: linear-gradient(90deg, #1a2b49 0%, #2d4373 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #051c32;
 }
 
 .hero-text p {
@@ -435,13 +432,13 @@ section {
 }
 
 .cta-button.primary {
-  background: #e74d3d;
+  background: #051c32;
   color: white;
-  box-shadow: 0 4px 6px rgba(231, 77, 61, 0.2);
+  box-shadow: 0 4px 6px rgba(5, 28, 50, 0.2);
 }
 
 .cta-button.primary:hover {
-  background: #d44133;
+  background: #0a324f;
   transform: translateY(-2px);
 }
 
@@ -470,7 +467,7 @@ section {
 .stat-number {
   font-size: 2rem;
   font-weight: 700;
-  color: #e74d3d;
+  color: #051c32;
 }
 
 .stat-label {
@@ -547,8 +544,9 @@ section {
   }
   
   .hero-text h1 {
-    font-size: 2rem;
-    line-height: 1.3;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: #051c32;
   }
   
   .hero-text p {
@@ -1671,12 +1669,17 @@ section {
   z-index: 1;
 }
 
+.pricing-card:nth-child(1)::before {
+  background: linear-gradient(to right, #051c32, #0a324f);
+  opacity: 0.8;
+}
+
 .pricing-card:nth-child(2)::before {
-  background: linear-gradient(to right, #3b82f6, #2563eb);
+  background: linear-gradient(to right, #051c32, #0a324f, #102c41);
 }
 
 .pricing-card:nth-child(3)::before {
-  background: linear-gradient(to right, #10b981, #059669);
+  background: linear-gradient(135deg, #051c32, #0a324f);
 }
 
 .pricing-card:hover {
@@ -1719,6 +1722,10 @@ section {
   background: #e74d3d;
 }
 
+.pricing-card:nth-child(1) h3::after {
+  background: linear-gradient(to right, #051c32, #0a324f);
+}
+
 .pricing-card:nth-child(2) h3::after {
   background: #3b82f6;
 }
@@ -1743,24 +1750,20 @@ section {
 .current-price {
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #e74d3d, #e95d4e);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  margin-bottom: 0.5rem;
+  color: #051c32;
+}
+
+.pricing-card:nth-child(1) .current-price {
+  color: #051c32;
 }
 
 .pricing-card:nth-child(2) .current-price {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #051c32;
 }
 
 .pricing-card:nth-child(3) .current-price {
-  background: linear-gradient(135deg, #10b981, #059669);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #051c32;
 }
 
 .duration {
@@ -1772,7 +1775,7 @@ section {
 
 .pricing-button {
   padding: 1rem 1.5rem;
-  background: linear-gradient(135deg, #e74d3d, #e95d4e);
+  background: #051c32;
   color: white;
   border: none;
   border-radius: 8px;
@@ -1782,30 +1785,39 @@ section {
   transition: all 0.3s ease;
   margin-bottom: 2.5rem;
   width: 100%;
-  box-shadow: 0 5px 15px rgba(231, 77, 61, 0.2);
+  box-shadow: 0 5px 15px rgba(5, 28, 50, 0.2);
+}
+
+.pricing-card:nth-child(1) .pricing-button {
+  background: #051c32;
+  box-shadow: 0 5px 15px rgba(5, 28, 50, 0.2);
 }
 
 .pricing-card:nth-child(2) .pricing-button {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+  background: #051c32;
+  box-shadow: 0 5px 15px rgba(5, 28, 50, 0.2);
 }
 
 .pricing-card:nth-child(3) .pricing-button {
-  background: linear-gradient(135deg, #10b981, #059669);
-  box-shadow: 0 5px 15px rgba(16, 185, 129, 0.2);
+  background: #051c32;
+  box-shadow: 0 5px 15px rgba(5, 28, 50, 0.2);
 }
 
 .pricing-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(231, 77, 61, 0.3);
+  box-shadow: 0 8px 20px rgba(5, 28, 50, 0.3);
+}
+
+.pricing-card:nth-child(1) .pricing-button:hover {
+  box-shadow: 0 8px 25px rgba(5, 28, 50, 0.3);
 }
 
 .pricing-card:nth-child(2) .pricing-button:hover {
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 8px 20px rgba(5, 28, 50, 0.3);
 }
 
 .pricing-card:nth-child(3) .pricing-button:hover {
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 8px 20px rgba(5, 28, 50, 0.3);
 }
 
 .plan-features {
@@ -1842,7 +1854,7 @@ section {
 }
 
 .feature-status.included {
-  background-color: #2563eb;
+  background-color: #051c32;
   color: white;
 }
 
@@ -3062,13 +3074,13 @@ html body .home .desktop-carousel-override .hero-image {
   /* Only apply these styles if screen width is <= 768px */
   .force-mobile .hero-content {
     flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
     text-align: center !important;
-    padding: 2.5rem 1.5rem !important;
     min-height: auto !important;
   }
   
   .force-mobile .hero-text {
-    width: 100% !important;
     max-width: 100% !important;
     text-align: center !important;
     margin-bottom: 1rem !important;
@@ -3077,6 +3089,7 @@ html body .home .desktop-carousel-override .hero-image {
   .force-mobile .hero-text h1 {
     font-size: 2rem !important;
     line-height: 1.3 !important;
+    color: #051c32 !important;
   }
   
   .force-mobile .hero-text p {
@@ -3480,4 +3493,10 @@ html body .home .desktop-carousel-override .hero-image {
   .home-contact-form {
     padding: 1.5rem;
   }
+}
+
+.force-mobile .hero-text h1 {
+  font-size: 2rem !important;
+  line-height: 1.3 !important;
+  color: #051c32 !important;
 }

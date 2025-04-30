@@ -1,7 +1,7 @@
 :root {
-  --primary-color: #2563eb;
-  --primary-light: #3b82f6;
-  --primary-dark: #1d4ed8;
+  --primary-color: #051c32;
+  --primary-light: #0a324f;
+  --primary-dark: #021221;
   --secondary-color: #059669;
   --text-color: #1e293b;
   --text-light: #64748b;
@@ -29,7 +29,7 @@
 
 .about h1 {
   font-size: 2.5rem;
-  color: #2563eb;
+  color: #051c32;
   margin-bottom: 40px;
   text-align: center;
   position: relative;
@@ -43,7 +43,7 @@
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background-color: #2563eb;
+  background-color: #051c32;
   border-radius: 2px;
 }
 
@@ -76,14 +76,14 @@
 }
 
 .about-section a {
-  color: #2563eb;
+  color: #051c32;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
 .about-section a:hover {
-  color: #1e40af;
+  color: #0a324f;
   text-decoration: underline;
 }
 
@@ -123,7 +123,7 @@
 
 /* Hero Section */
 .about-hero {
-  background: linear-gradient(135deg, #2c3e50, #3498db);
+  background: linear-gradient(135deg, #021221, #051c32);
   color: white;
   padding: 6rem 0;
   text-align: center;
@@ -133,6 +133,7 @@
   font-size: 3.5rem;
   margin-bottom: 1rem;
   font-weight: 700;
+  color: white;
 }
 
 .hero-subtitle {
@@ -194,7 +195,7 @@
   display: block;
   font-size: 2.5rem;
   font-weight: 700;
-  color: #3498db;
+  color: #051c32;
   margin-bottom: 0.5rem;
 }
 
@@ -236,7 +237,7 @@
 
 .mission-icon {
   font-size: 2.5rem;
-  color: #3498db;
+  color: #051c32;
   margin-bottom: 1.5rem;
 }
 
@@ -402,6 +403,7 @@
 @media (max-width: 768px) {
   .about-hero h1 {
     font-size: 2.5rem;
+    color: white;
   }
 
   .overview-stats,
