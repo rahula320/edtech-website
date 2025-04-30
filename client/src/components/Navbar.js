@@ -101,7 +101,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-brand">
         <Link to="/">
-          <i className="fas fa-graduation-cap"></i> ACMYX
+          <img src="/images/logo.png" alt="ACMYX Logo" className="navbar-logo" />
         </Link>
       </div>
       

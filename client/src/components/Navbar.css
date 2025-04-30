@@ -20,6 +20,12 @@
   gap: 0.5rem;
 }
 
+.navbar-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
 .navbar-links {
   display: flex;
   gap: 2rem;
@@ -597,4 +603,34 @@
     background-color: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
+}
+
+/* Mobile responsive styles */
+@media (max-width: 991px) {
+  .navbar-links {
+    display: none;
+  }
+
+  .menu-button {
+    display: inline-block;
+  }
+  
+  .navbar-logo {
+    height: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem 1.5rem;
+  }
+  
+  .navbar-logo {
+    height: 30px;
+  }
+}
+
+/* Navbar Mobile Menu */
+.navbar-mobile {
+  /* existing styles will be here */
 } 

@@ -53,6 +53,12 @@
   gap: 0.5rem;
 }
 
+.footer-logo-img {
+  height: 50px;
+  width: auto;
+  display: block;
+}
+
 .footer-logo i {
   font-size: 1.8rem;
 }
@@ -347,5 +353,34 @@
   
   .legal-link {
     justify-content: center;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .footer-logo-img {
+    height: 45px;
+  }
+  
+  .footer-columns {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-top {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .footer-logo-img {
+    height: 40px;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
   }
 } 
