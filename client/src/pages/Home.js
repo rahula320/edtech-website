@@ -17,7 +17,8 @@ const getProgramId = (title) => {
     'iOS Development': 'ios-development',
     'Internet of Things (IoT)': 'iot',
     'Embedded Systems': 'embedded-systems',
-    'AutoCAD Designing': 'autocad'
+    'AutoCAD Designing': 'autocad',
+    'UI/UX Design & Development': 'ui-ux-design'
   };
   
   return titleMap[title] || title.toLowerCase().replace(/\s+/g, '-');
@@ -46,6 +47,7 @@ function Home() {
     "Machine Learning with Python",
     "Cloud Computing",
     "Web Development",
+    "UI/UX Design & Development",
     "Embedded Systems",
     "Internet of Things (IoT)",
     "AutoCAD",
@@ -355,6 +357,15 @@ function Home() {
         tagline: 'Protect digital assets from evolving threats',
         description: 'Navigate the complex world of digital security with hands-on labs and current threat analysis techniques',
         category: 'computer-science'
+      },
+      {
+        tag: 'New',
+        title: 'UI/UX Design & Development',
+        duration: '8 weeks',
+        format: 'Online Weekends',
+        tagline: 'Create beautiful, intuitive digital experiences',
+        description: 'Master user interface design and user experience principles to create intuitive, engaging, and impactful digital products',
+        category: 'computer-science'
       }
     ],
     'computer-science': [
@@ -381,6 +392,14 @@ function Home() {
         format: 'Online Weekends',
         tagline: 'Code the websites that shape the digital future',
         description: 'Learn everything from basics to advanced techniques, crafting engaging, user-friendly websites with real impact'
+      },
+      {
+        tag: 'New',
+        title: 'UI/UX Design & Development',
+        duration: '8 weeks',
+        format: 'Online Weekends',
+        tagline: 'Create beautiful, intuitive digital experiences',
+        description: 'Master user interface design and user experience principles to create intuitive, engaging, and impactful digital products'
       },
       {
         tag: 'Career Booster',

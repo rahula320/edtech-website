@@ -66,6 +66,7 @@ function Navbar() {
         { name: "Machine Learning with Python", icon: "fas fa-brain", path: "/programs/machine-learning" },
         { name: "Cloud Computing", icon: "fas fa-cloud", path: "/programs/cloud-computing" },
         { name: "Web Development", icon: "fas fa-code", path: "/programs/web-development" },
+        { name: "UI/UX Design & Development", icon: "fas fa-paint-brush", path: "/programs/ui-ux-design" },
         { name: "Cyber Security", icon: "fas fa-shield-alt", path: "/programs/cyber-security" },
         { name: "DevOps", icon: "fas fa-cogs", path: "/programs/devops" },
         { name: "Android Development", icon: "fas fa-mobile-alt", path: "/programs/android-development" },

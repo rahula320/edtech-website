@@ -3737,5 +3737,439 @@ export const programsData = {
   }
 };
 
+// Add UI/UX Design program
+programsData["ui-ux-design"] = {
+  id: "ui-ux-design",
+  title: "UI/UX Design & Development",
+  tag: "New",
+  description: "Master user interface design and user experience principles to create intuitive, engaging, and impactful digital products",
+  duration: "8 weeks",
+  format: "Online Weekends",
+  level: "Beginner to Intermediate",
+  heroImage: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+  
+  overview: "The UI/UX Design & Development program equips you with the skills needed to create beautiful, functional, and user-centered digital experiences. From understanding user psychology to implementing advanced design systems, this comprehensive course covers all aspects of the modern UI/UX design process. Through hands-on projects and industry-standard tools, you'll learn to design interfaces that look stunning and deliver exceptional user experiences, preparing you for a rewarding career in this high-demand field.",
+  
+  keyHighlights: [
+    {
+      icon: "fas fa-users",
+      title: "User-Centered Design",
+      description: "Learn how to put users at the heart of every design decision through research and empathy"
+    },
+    {
+      icon: "fas fa-pencil-ruler",
+      title: "Design Fundamentals",
+      description: "Master color theory, typography, layout principles, and visual hierarchy for effective designs"
+    },
+    {
+      icon: "fas fa-code",
+      title: "Prototyping & Development",
+      description: "Create interactive prototypes and learn how to implement designs using HTML, CSS, and JavaScript"
+    },
+    {
+      icon: "fas fa-clipboard-check",
+      title: "Usability Testing",
+      description: "Conduct proper user testing to validate designs and iterate based on real feedback"
+    },
+    {
+      icon: "fas fa-palette",
+      title: "Design Systems",
+      description: "Build scalable design systems that ensure consistency across products and platforms"
+    },
+    {
+      icon: "fas fa-universal-access",
+      title: "Accessibility",
+      description: "Design inclusive interfaces that work for all users regardless of abilities or circumstances"
+    }
+  ],
+  
+  learningOutcomes: [
+    "Create user personas and journey maps to guide the design process",
+    "Design wireframes, mockups, and prototypes using industry-standard tools",
+    "Apply visual design principles to create aesthetically pleasing interfaces",
+    "Develop responsive designs that work across different devices and screen sizes",
+    "Implement designs using modern frontend technologies",
+    "Conduct user research and usability testing to improve designs",
+    "Create comprehensive UI style guides and design systems",
+    "Optimize interfaces for accessibility and inclusivity"
+  ],
+  
+  whoShouldAttend: [
+    {
+      icon: "fas fa-paint-brush",
+      title: "Aspiring UI/UX Designers",
+      description: "Turn your creative passion into a professional career in digital design"
+    },
+    {
+      icon: "fas fa-code",
+      title: "Web Developers",
+      description: "Enhance your development skills with design principles for better frontend work"
+    },
+    {
+      icon: "fas fa-lightbulb",
+      title: "Product Managers",
+      description: "Learn to better communicate with design teams and improve product decisions"
+    },
+    {
+      icon: "fas fa-palette",
+      title: "Graphic Designers",
+      description: "Transition from print or graphic design to digital product design"
+    },
+    {
+      icon: "fas fa-briefcase",
+      title: "Career Changers",
+      description: "Gain marketable skills for a fast-growing field with numerous opportunities"
+    }
+  ],
+  
+  curriculumIntro: "Our curriculum combines design theory with practical application, giving you both the knowledge and hands-on experience needed to succeed in the field. Each module builds your skills progressively, culminating in a professional portfolio of work.",
+  
+  modules: [
+    {
+      title: "Fundamentals of UI/UX Design",
+      duration: "1 week",
+      description: "Learn the core principles that form the foundation of effective digital design",
+      topics: [
+        "UI vs UX: Understanding the differences and relationships",
+        "Design thinking methodology and problem-solving",
+        "Psychology principles in user experience",
+        "Introduction to information architecture",
+        "Overview of the UI/UX design process"
+      ]
+    },
+    {
+      title: "User Research & Analysis",
+      duration: "1 week",
+      description: "Discover how to gather and analyze user data to inform design decisions",
+      topics: [
+        "User research methods and techniques",
+        "Creating personas and empathy maps",
+        "User journey mapping and scenario creation",
+        "Competitive analysis and benchmarking",
+        "Translating research into design requirements"
+      ]
+    },
+    {
+      title: "Visual Design Principles",
+      duration: "1 week",
+      description: "Master the visual aspects of interface design for aesthetically pleasing results",
+      topics: [
+        "Color theory and psychology in digital interfaces",
+        "Typography for digital products",
+        "Layout principles and grid systems",
+        "Visual hierarchy and content organization",
+        "Iconography and imagery in UI design"
+      ]
+    },
+    {
+      title: "Wireframing & Prototyping",
+      duration: "1 week",
+      description: "Transform concepts into testable prototypes through various fidelity levels",
+      topics: [
+        "Sketching and low-fidelity wireframing",
+        "Digital wireframing with design tools",
+        "Creating interactive mockups and prototypes",
+        "User flows and navigation patterns",
+        "Design critique and iteration processes"
+      ]
+    },
+    {
+      title: "UI Design with Industry Tools",
+      duration: "1 week",
+      description: "Gain proficiency in professional design software used in the industry",
+      topics: [
+        "Mastering Figma for collaborative design",
+        "Working with components and design systems",
+        "Advanced prototyping techniques",
+        "Design handoff and developer collaboration",
+        "Version control and design management"
+      ]
+    },
+    {
+      title: "Frontend Implementation",
+      duration: "1 week",
+      description: "Learn how to implement designs using web technologies",
+      topics: [
+        "HTML5 and semantic markup for designers",
+        "CSS fundamentals and layout techniques",
+        "Responsive design implementation",
+        "Basic JavaScript for interactive elements",
+        "CSS frameworks and component libraries"
+      ]
+    },
+    {
+      title: "Usability Testing & Optimization",
+      duration: "1 week",
+      description: "Validate designs through testing and improve based on user feedback",
+      topics: [
+        "Usability testing methodologies",
+        "Remote vs. in-person testing techniques",
+        "Analyzing test results and identifying issues",
+        "A/B testing and experimentation",
+        "Iterative design based on user feedback"
+      ]
+    },
+    {
+      title: "Advanced UI/UX Topics & Portfolio",
+      duration: "1 week",
+      description: "Explore specialized areas and build a professional portfolio",
+      topics: [
+        "Accessibility standards and inclusive design",
+        "Designing for different platforms (mobile, web, desktop)",
+        "Animation and microinteractions",
+        "Portfolio development and case study writing",
+        "Career preparation and industry trends"
+      ]
+    }
+  ],
+  
+  projects: [
+    {
+      icon: "fas fa-mobile-alt",
+      title: "Mobile App Redesign",
+      description: "Reimagine and redesign an existing mobile application with improved usability and visual appeal"
+    },
+    {
+      icon: "fas fa-shopping-cart",
+      title: "E-commerce Website",
+      description: "Design a responsive e-commerce interface with a focus on conversion optimization and user flow"
+    },
+    {
+      icon: "fas fa-chart-line",
+      title: "Analytics Dashboard",
+      description: "Create an intuitive data visualization dashboard that makes complex information easy to understand"
+    },
+    {
+      icon: "fas fa-concierge-bell",
+      title: "Service Booking Platform",
+      description: "Design a multi-step booking process that simplifies complex user journeys and increases conversion"
+    }
+  ],
+  
+  instructors: [
+    {
+      name: "Sarah Lee",
+      title: "Senior UX Designer at DesignStudios, Former Design Lead at CreativeTech",
+      image: "https://randomuser.me/api/portraits/women/23.jpg",
+      bio: "Sarah has over 8 years of experience creating user-centered designs for startups and enterprise companies. She specializes in research-driven design and has led design teams across multiple industries.",
+      specialties: ["User Research", "Interaction Design", "Design Systems", "Design Leadership"]
+    },
+    {
+      name: "Michael Chen",
+      title: "UI Developer & Design System Specialist",
+      image: "https://randomuser.me/api/portraits/men/45.jpg",
+      bio: "Michael bridges the gap between design and development, with expertise in implementing complex UI components and creating maintainable design systems that scale.",
+      specialties: ["Frontend Development", "Design Implementation", "Component Libraries", "Design Tokens"]
+    }
+  ],
+  
+  mentors: [
+    {
+      name: "Emily Watson",
+      company: "Airbnb",
+      image: "https://randomuser.me/api/portraits/women/35.jpg",
+      bio: "Product Designer specializing in creating seamless booking experiences and hospitality interfaces."
+    },
+    {
+      name: "Jason Rivera",
+      company: "Shopify",
+      image: "https://randomuser.me/api/portraits/men/57.jpg",
+      bio: "Design Systems Specialist helping merchants create beautiful and effective online stores."
+    },
+    {
+      name: "Priya Sharma",
+      company: "Figma",
+      image: "https://randomuser.me/api/portraits/women/81.jpg",
+      bio: "UI Designer focusing on collaborative design tools and creative workflows."
+    },
+    {
+      name: "Alex Thompson",
+      company: "Adobe",
+      image: "https://randomuser.me/api/portraits/men/26.jpg",
+      bio: "UX Researcher with expertise in user testing methodologies and behavioral insights."
+    }
+  ],
+  
+  faqs: [
+    {
+      question: "Do I need design experience to take this course?",
+      answer: "No prior design experience is required. We start with the fundamentals and progress to more advanced topics gradually."
+    },
+    {
+      question: "Will I need to purchase design software?",
+      answer: "We primarily use Figma, which has a free tier that's sufficient for the course. Other tools we use also offer free trials or education versions."
+    },
+    {
+      question: "What computer requirements are there?",
+      answer: "Any modern Mac or PC with at least 8GB of RAM should be sufficient. A mouse is recommended for design work."
+    },
+    {
+      question: "Will I have a portfolio at the end of the course?",
+      answer: "Yes, you'll complete multiple projects throughout the course that can be included in your professional portfolio."
+    },
+    {
+      question: "Do you cover coding as well as design?",
+      answer: "Yes, we include frontend implementation modules so you understand how to translate designs into code."
+    },
+    {
+      question: "Is this course suitable for professional designers looking to switch to UI/UX?",
+      answer: "Absolutely. While we cover fundamentals, the course moves quickly to advanced topics that are valuable for transitioning designers."
+    },
+    {
+      question: "How much time should I dedicate weekly?",
+      answer: "We recommend allocating 10-15 hours per week for lectures, assignments, and projects."
+    },
+    {
+      question: "Will I receive feedback on my designs?",
+      answer: "Yes, you'll receive personalized feedback from instructors and peers through critique sessions and project reviews."
+    },
+    {
+      question: "Is there a focus on specific industries?",
+      answer: "The principles taught are applicable across industries, but projects can be customized to your areas of interest."
+    },
+    {
+      question: "What job roles will this course prepare me for?",
+      answer: "This course prepares you for roles such as UI Designer, UX Designer, Product Designer, and UI Developer."
+    }
+  ],
+  
+  pricing: {
+    self: {
+      originalPrice: "19,999",
+      currentPrice: "14,999"
+    },
+    mentor: {
+      originalPrice: "29,999",
+      currentPrice: "24,999"
+    },
+    advanced: {
+      originalPrice: "49,999",
+      currentPrice: "39,999"
+    }
+  },
+  
+  relatedPrograms: [
+    {
+      title: "Web Development",
+      tag: "High Demand",
+      description: "Learn frontend and backend development to implement your designs",
+      duration: "8 weeks",
+      format: "Online Weekends",
+      path: "/programs/web-development"
+    },
+    {
+      title: "Graphic Design",
+      tag: "Creative",
+      description: "Master visual design principles and graphic design fundamentals",
+      duration: "8 weeks",
+      format: "Online Weekends",
+      path: "/programs/graphic-design"
+    },
+    {
+      title: "Product Management",
+      tag: "Leadership",
+      description: "Learn to manage digital products from conception to launch",
+      duration: "8 weeks",
+      format: "Online Weekends",
+      path: "/programs/product-management"
+    }
+  ],
+  
+  curriculum: {
+    title: "UI/UX Design & Development Curriculum",
+    description: "A comprehensive 8-week program covering all aspects of UI/UX design from fundamentals to implementation",
+    weeks: [
+      {
+        week: 1,
+        title: "Fundamentals of UI/UX Design",
+        topics: [
+          "UI vs UX: Understanding the differences and relationships",
+          "Design thinking methodology and problem-solving",
+          "Psychology principles in user experience",
+          "Introduction to information architecture",
+          "Overview of the UI/UX design process"
+        ]
+      },
+      {
+        week: 2,
+        title: "User Research & Analysis",
+        topics: [
+          "User research methods and techniques",
+          "Creating personas and empathy maps",
+          "User journey mapping and scenario creation",
+          "Competitive analysis and benchmarking",
+          "Translating research into design requirements"
+        ]
+      },
+      {
+        week: 3,
+        title: "Visual Design Principles",
+        topics: [
+          "Color theory and psychology in digital interfaces",
+          "Typography for digital products",
+          "Layout principles and grid systems",
+          "Visual hierarchy and content organization",
+          "Iconography and imagery in UI design"
+        ]
+      },
+      {
+        week: 4,
+        title: "Wireframing & Prototyping",
+        topics: [
+          "Sketching and low-fidelity wireframing",
+          "Digital wireframing with design tools",
+          "Creating interactive mockups and prototypes",
+          "User flows and navigation patterns",
+          "Design critique and iteration processes"
+        ]
+      },
+      {
+        week: 5,
+        title: "UI Design with Industry Tools",
+        topics: [
+          "Mastering Figma for collaborative design",
+          "Working with components and design systems",
+          "Advanced prototyping techniques",
+          "Design handoff and developer collaboration",
+          "Version control and design management"
+        ]
+      },
+      {
+        week: 6,
+        title: "Frontend Implementation",
+        topics: [
+          "HTML5 and semantic markup for designers",
+          "CSS fundamentals and layout techniques",
+          "Responsive design implementation",
+          "Basic JavaScript for interactive elements",
+          "CSS frameworks and component libraries"
+        ]
+      },
+      {
+        week: 7,
+        title: "Usability Testing & Optimization",
+        topics: [
+          "Usability testing methodologies",
+          "Remote vs. in-person testing techniques",
+          "Analyzing test results and identifying issues",
+          "A/B testing and experimentation",
+          "Iterative design based on user feedback"
+        ]
+      },
+      {
+        week: 8,
+        title: "Advanced UI/UX Topics & Portfolio",
+        topics: [
+          "Accessibility standards and inclusive design",
+          "Designing for different platforms (mobile, web, desktop)",
+          "Animation and microinteractions",
+          "Portfolio development and case study writing",
+          "Career preparation and industry trends"
+        ]
+      }
+    ]
+  }
+};
+
 // Export a list of all programs for easier mapping
 export const allPrograms = Object.values(programsData); 

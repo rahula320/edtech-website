@@ -20,6 +20,7 @@ function Contact() {
     "Machine Learning with Python",
     "Cloud Computing",
     "Web Development",
+    "UI/UX Design & Development",
     "Embedded Systems",
     "Internet of Things (IoT)",
     "AutoCAD",
