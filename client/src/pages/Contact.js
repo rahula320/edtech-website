@@ -57,13 +57,12 @@ function Contact() {
 
   return (
     <div className="contact">
-      <section className="contact-hero">
-        <div className="hero-overlay"></div>
-        <div className="hero-content">
+      <div className="contact-hero-white">
+        <div className="hero-content-centered">
           <h1>Contact Us</h1>
           <p>Have questions or need assistance? We're here to help!</p>
         </div>
-      </section>
+      </div>
 
       <section className="contact-content">
         <div className="container">
