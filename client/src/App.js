@@ -14,6 +14,7 @@ import CampusAmbassadorForm from './pages/CampusAmbassadorForm';
 import ProgramDetail from './pages/ProgramDetail';
 import Terms from './pages/Terms';
 import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 import './App.css';
 import { programsData } from './data/programsData';
 
@@ -35,7 +36,7 @@ function App() {
           <Route path="/programs/:programId" element={<ProgramDetail programsData={programsData} />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
