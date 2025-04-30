@@ -564,6 +564,11 @@ function Home() {
       <div className="geometric-shape-4"></div>
       <div className="geometric-shape-5"></div>
 
+      {/* Internship Delegate Badge */}
+      <Link to="/internships" className="internship-badge">
+        <i className="fas fa-user-graduate"></i> Internship Delegate Openings
+      </Link>
+
       {/* Mobile Menu Toggle Button */}
       <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
         <div className={`hamburger ${mobileMenuOpen ? 'active' : ''}`}>
