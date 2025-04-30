@@ -23,7 +23,7 @@ function Careers() {
             </div>
             <div className="internship-details">
               <h3>Internship Delegate Program</h3>
-              <p>Lead, learn, and level up with industry experts from Accenture, TCS, Barclays, and EPAM. Earn up to ₹10,000 based on performance, work with top mentors, and get certified.</p>
+              <p className="text-center">Lead, learn, and level up with industry experts from top tech and financial companies. Be the face of ACMYX at your college, similar to a campus ambassador role. Earn up to ₹10,000 based on performance, work with top mentors, and get certified.</p>
               <a 
                 href="https://forms.gle/h7vX3fN54bFS9zfS8" 
                 target="_blank" 
