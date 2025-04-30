@@ -2646,8 +2646,8 @@ export const programsData = {
     description: "Master tools and practices for continuous integration, delivery, and deployment with emphasis on automation",
     duration: "8 weeks",
     format: "Online Weekends",
-    level: "Intermediate to Advanced",
-    heroImage: "https://images.unsplash.com/photo-1607743386760-88f10eb85a79?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    level: "Beginner to Advanced",
+    heroImage: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     
     overview: "Our DevOps program teaches you how to bridge development and operations through automation, collaboration, and efficient workflows. You'll learn to implement continuous integration and deployment pipelines, infrastructure as code, and monitoring solutions that enable organizations to deliver software faster and more reliably. Through hands-on projects with industry-standard tools, you'll develop the skills needed to transform traditional development processes and drive DevOps culture.",
     

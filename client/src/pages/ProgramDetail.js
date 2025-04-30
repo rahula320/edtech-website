@@ -159,16 +159,25 @@ function ProgramDetail({ programsData }) {
             <p>{program.description}</p>
             <div className="program-meta-info">
               <div className="meta-item">
-                <i className={program.durationIcon}></i>
-                <span>{program.duration}</span>
+                <i className={program.durationIcon || "fas fa-clock"}></i>
+                <div className="meta-content">
+                  <span className="meta-label">Duration</span>
+                  <span className="meta-value">{program.duration}</span>
+                </div>
               </div>
               <div className="meta-item">
-                <i className={program.formatIcon}></i>
-                <span>{program.format}</span>
+                <i className={program.formatIcon || "fas fa-laptop-house"}></i>
+                <div className="meta-content">
+                  <span className="meta-label">Format</span>
+                  <span className="meta-value">{program.format}</span>
+                </div>
               </div>
               <div className="meta-item">
-                <i className={program.levelIcon}></i>
-                <span>{program.level}</span>
+                <i className={program.levelIcon || "fas fa-signal"}></i>
+                <div className="meta-content">
+                  <span className="meta-label">Level</span>
+                  <span className="meta-value">{program.level}</span>
+                </div>
               </div>
             </div>
             <div className="program-hero-cta">
@@ -178,7 +187,12 @@ function ProgramDetail({ programsData }) {
               >
                 Enroll Now
               </button>
-              <button className="cta-button secondary">Download Brochure</button>
+              <button 
+                className="cta-button secondary"
+                onClick={() => setSelectedTab('curriculum')}
+              >
+                View Curriculum
+              </button>
             </div>
           </div>
           <div className="program-hero-image">
@@ -211,12 +225,20 @@ function ProgramDetail({ programsData }) {
                 <i className="fas fa-question-circle"></i> FAQs
               </button>
             </div>
-            <button 
-              className="nav-enroll-button"
-              onClick={() => handleEnrollNow()}
-            >
-              <i className="fas fa-graduation-cap"></i> Enroll Now
-            </button>
+            <div className="nav-buttons">
+              <button 
+                className="nav-curriculum-button"
+                onClick={() => setSelectedTab('curriculum')}
+              >
+                <i className="fas fa-book"></i> View Curriculum
+              </button>
+              <button 
+                className="nav-enroll-button"
+                onClick={() => handleEnrollNow()}
+              >
+                <i className="fas fa-graduation-cap"></i> Enroll Now
+              </button>
+            </div>
           </div>
         </div>
       </section>

@@ -560,14 +560,6 @@ function Careers() {
         </div>
       </section>
       
-      <section className="careers-cta">
-        <div className="container">
-          <h2>Don't See a Role That Fits?</h2>
-          <p>We're always looking for talented individuals to join our team. Send us your resume and tell us how you can contribute.</p>
-          <button className="cta-button">Submit Your Resume</button>
-        </div>
-      </section>
-      
       {/* Mentor Form Modal */}
       {showMentorForm && (
         <div className="form-modal-overlay">
