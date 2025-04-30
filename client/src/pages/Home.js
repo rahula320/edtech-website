@@ -565,7 +565,7 @@ function Home() {
       <div className="geometric-shape-5"></div>
 
       {/* Internship Delegate Badge */}
-      <Link to="/internships" className="internship-badge">
+      <Link to="/careers#internship-delegate" className="internship-badge">
         <i className="fas fa-user-graduate"></i> Internship Delegate Openings
       </Link>
 

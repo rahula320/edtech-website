@@ -13,7 +13,7 @@ function Careers() {
 
       <section className="careers-options">
         <div className="container">
-          <div className="internship-feature">
+          <div id="internship-delegate" className="internship-feature">
             <div className="internship-image">
               <img 
                 src="/images/internship-delegate-poster.png" 
