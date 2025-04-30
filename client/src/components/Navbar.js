@@ -101,7 +101,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-brand">
         <Link to="/">
-          <img src="/images/logo wo bg white.png" alt="ACMYX Logo" className="navbar-logo" />
+          <img src="/images/logo wo bg white.png?v=2" alt="ACMYX Logo" className="navbar-logo" />
         </Link>
       </div>
       
