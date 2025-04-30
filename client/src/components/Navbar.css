@@ -32,7 +32,8 @@
   gap: 2rem;
 }
 
-.navbar-links a {
+.navbar-links a,
+.navbar-links .dropdown-toggle {
   color: white;
   text-decoration: none;
   font-weight: 500;
@@ -42,7 +43,8 @@
   transition: color 0.3s ease;
 }
 
-.navbar-links a::after {
+.navbar-links a::after,
+.navbar-links .dropdown-toggle::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -53,12 +55,21 @@
   transition: width 0.3s ease;
 }
 
-.navbar-links a:hover {
+.navbar-links a:hover,
+.navbar-links .dropdown-toggle:hover,
+.navbar-links .dropdown-toggle.active {
   color: rgba(255, 255, 255, 0.8);
 }
 
-.navbar-links a:hover::after {
+.navbar-links a:hover::after,
+.navbar-links .dropdown-toggle:hover::after,
+.navbar-links .dropdown-toggle.active::after {
   width: 100%;
+}
+
+.navbar-links a i {
+  color: white;
+  margin-right: 5px;
 }
 
 /* Mobile Menu Styles */
@@ -78,40 +89,11 @@
   cursor: pointer;
 }
 
+/* Dropdown toggle styles moved to the navbar-links section above */
 .dropdown-toggle {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.2rem;
-  font-size: 0.95rem;
-  color: white;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-  transition: color 0.3s ease;
-  position: relative;
-}
-
-.dropdown-toggle::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: white;
-  transition: width 0.3s ease;
-}
-
-.dropdown-toggle:hover,
-.dropdown-toggle.active {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.dropdown-toggle:hover::after,
-.dropdown-toggle.active::after {
-  width: 100%;
 }
 
 .dropdown-toggle .arrow {
