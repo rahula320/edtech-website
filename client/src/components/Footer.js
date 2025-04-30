@@ -28,7 +28,7 @@ function Footer() {
           <div className="footer-logo-section">
             <div className="footer-logo">
               <ScrollLink to="/">
-                <img src="/images/logo.png" alt="ACMYX Logo" className="footer-logo-img" />
+                <img src="/images/acmyx_logo.png" alt="ACMYX Logo" className="footer-logo-img" />
               </ScrollLink>
             </div>
             <p className="footer-tagline">Empowering careers with industry-aligned tech education and mentorship</p>

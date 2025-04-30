@@ -54,7 +54,7 @@
 }
 
 .footer-logo-img {
-  height: 50px;
+  height: 65px;
   width: auto;
   display: block;
 }
@@ -359,7 +359,7 @@
 /* Responsive adjustments */
 @media (max-width: 991px) {
   .footer-logo-img {
-    height: 45px;
+    height: 55px;
   }
   
   .footer-columns {
@@ -375,7 +375,7 @@
   }
   
   .footer-logo-img {
-    height: 40px;
+    height: 50px;
   }
   
   .footer-bottom {
