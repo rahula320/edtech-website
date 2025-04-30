@@ -402,8 +402,30 @@ function Careers() {
             <p>We're looking for talented individuals to join our mission. New positions opening soon.</p>
           </div>
           
+          <div className="internship-feature">
+            <div className="internship-image">
+              <img 
+                src="/images/internship-delegate-poster.png" 
+                alt="ACMYX Internship Delegate Program" 
+                className="poster-image"
+              />
+            </div>
+            <div className="internship-details">
+              <h3>Internship Delegate Program</h3>
+              <p>Lead, learn, and level up with industry experts from Accenture, TCS, Barclays, and EPAM. Earn up to ₹10,000 based on performance, work with top mentors, and get certified.</p>
+              <a 
+                href="https://forms.gle/h7vX3fN54bFS9zfS8" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="option-apply-button"
+              >
+                Apply Now
+              </a>
+            </div>
+          </div>
+          
           <div className="career-options-container">
-            <div className="career-option-card" style={{ position: 'relative', overflow: 'hidden' }}>
+            <div className="career-option-card coming-soon">
               <div style={{
                 position: 'absolute',
                 top: '0',
@@ -445,7 +467,7 @@ function Careers() {
               <button className="option-apply-button" disabled style={{ opacity: 0.6, cursor: 'not-allowed' }}>Apply Now</button>
             </div>
             
-            <div className="career-option-card" style={{ position: 'relative', overflow: 'hidden' }}>
+            <div className="career-option-card coming-soon">
               <div style={{
                 position: 'absolute',
                 top: '0',
@@ -485,29 +507,6 @@ function Careers() {
               <h3>Business Development</h3>
               <p>Join our business development team and help us grow by connecting with potential clients and partners.</p>
               <button className="option-apply-button" disabled style={{ opacity: 0.6, cursor: 'not-allowed' }}>Apply Now</button>
-            </div>
-            
-            <div className="career-option-card internship-delegate">
-              <div className="option-icon">
-                <i className="fas fa-rocket"></i>
-              </div>
-              <h3>Internship Delegate Program</h3>
-              <p>Lead, learn, and level up with industry experts from Accenture, TCS, Barclays, and EPAM.</p>
-              <a 
-                href="https://forms.gle/h7vX3fN54bFS9zfS8" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="option-apply-button"
-              >
-                Apply Now
-              </a>
-              <div className="program-poster">
-                <img 
-                  src="/images/internship-delegate-program.svg" 
-                  alt="ACMYX Internship Delegate Program" 
-                  className="poster-image"
-                />
-              </div>
             </div>
           </div>
         </div>

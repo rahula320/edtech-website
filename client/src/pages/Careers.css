@@ -998,22 +998,21 @@
 
 .career-options-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1.5fr 1fr;
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Add specific class for internship delegate card */
-.career-option-card.internship-delegate {
+.career-options-main {
   display: flex;
   flex-direction: column;
-  padding-bottom: 1.5rem;
 }
 
-.career-option-card.internship-delegate .program-poster {
-  margin-top: 1.5rem;
-  height: 450px;
+.career-options-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .career-option-card {
@@ -1026,9 +1025,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
   position: relative;
   overflow: hidden;
+  height: 100%;
+}
+
+.career-option-card.coming-soon {
+  cursor: default;
+}
+
+/* Add specific class for internship delegate card */
+.career-option-card.internship-delegate {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.5rem;
+}
+
+.career-option-card.internship-delegate .program-poster {
+  margin-top: 1.5rem;
+  aspect-ratio: 1 / 1;
 }
 
 .career-option-card::before {
@@ -1192,14 +1207,40 @@
 }
 
 /* Responsive adjustments */
+@media (max-width: 992px) {
+  .career-options-container {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+  }
+  
+  .career-options-secondary {
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    gap: 2rem;
+  }
+  
+  .career-option-card.internship-delegate .program-poster {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 @media (max-width: 768px) {
   .career-options-container {
     grid-template-columns: 1fr;
     max-width: 500px;
   }
   
+  .career-options-secondary {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
   .career-option-card.internship-delegate .program-poster {
-    height: 400px;
+    max-width: 100%;
   }
   
   .form-modal {
@@ -1218,7 +1259,7 @@
   }
   
   .career-option-card.internship-delegate .program-poster {
-    height: 350px;
+    aspect-ratio: 1 / 1;
   }
   
   .form-modal-header {
@@ -1872,10 +1913,12 @@
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #3B2178;
+  height: auto;
+  aspect-ratio: 1 / 1;
 }
 
 .program-poster:hover {
@@ -1886,6 +1929,123 @@
 .poster-image {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.internship-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+}
+
+.internship-image {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3B2178;
+  overflow: hidden;
+}
+
+.internship-image img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   display: block;
+}
+
+.internship-details {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.internship-details h3 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #1a2b49;
+}
+
+.internship-details p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: #4a5568;
+}
+
+.career-options-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.career-option-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.career-option-card.coming-soon {
+  cursor: default;
+}
+
+@media (max-width: 992px) {
+  .internship-feature {
+    grid-template-columns: 1fr;
+  }
+  
+  .internship-image {
+    min-height: 400px;
+  }
+  
+  .career-options-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .career-options-container {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+  
+  .internship-details {
+    padding: 2rem;
+  }
+  
+  .internship-details h3 {
+    font-size: 1.5rem;
+  }
+  
+  .internship-image {
+    min-height: 350px;
+  }
+  
+  .form-modal {
+    max-width: 90%;
+  }
+  
+  .form-modal-content {
+    padding: 1.5rem;
+  }
 } 
