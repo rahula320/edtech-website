@@ -337,18 +337,8 @@ export const programsData = {
     ],
     
     curriculum: {
-      title: "Data Science & Analytics Curriculum (Entry Level)",
-      description: "A beginner-friendly 8-week program introducing the basics of data science, analytics, and hands-on projects.",
-      weeks: [
-        { week: 1, title: "Introduction to Data Science & Analytics", topics: ["What is data science?", "Applications in business and industry", "Overview of the data science process"] },
-        { week: 2, title: "Python Basics for Data Science", topics: ["Python setup", "Variables, data types, and operators", "Simple scripts"] },
-        { week: 3, title: "Data Collection & Cleaning", topics: ["Importing data", "Handling missing values", "Basic data cleaning techniques"] },
-        { week: 4, title: "Exploratory Data Analysis", topics: ["Descriptive statistics", "Simple data visualizations", "Identifying trends"] },
-        { week: 5, title: "Introduction to Data Visualization", topics: ["Plotting with Matplotlib", "Bar, line, and scatter plots", "Interpreting graphs"] },
-        { week: 6, title: "Basic Statistics for Data Science", topics: ["Mean, median, mode", "Standard deviation", "Simple probability concepts"] },
-        { week: 7, title: "Introduction to Machine Learning", topics: ["What is machine learning?", "Simple classification and regression", "Model evaluation basics"] },
-        { week: 8, title: "Mini Project: Simple Data Analysis", topics: ["Project planning", "Implementation", "Presentation"] }
-      ]
+      title: "Data Science & Analytics Curriculum",
+      description: "A beginner-friendly 8-week program introducing the basics of data science, analytics, and hands-on projects."
     }
   },
   
@@ -517,19 +507,110 @@ export const programsData = {
     ],
     
     curriculum: {
-      title: "Artificial Intelligence Curriculum (Entry Level)",
-      description: "A beginner-friendly 8-week program introducing the basics of AI, machine learning, and practical applications.",
-      weeks: [
-        { week: 1, title: "Introduction to Artificial Intelligence", topics: ["What is AI?", "History and applications", "AI in daily life"] },
-        { week: 2, title: "Python for AI", topics: ["Python basics", "Simple AI scripts", "Using libraries like NumPy"] },
-        { week: 3, title: "Data for AI", topics: ["Collecting and preparing data", "Simple data exploration", "Data visualization"] },
-        { week: 4, title: "Introduction to Machine Learning", topics: ["Supervised vs. unsupervised learning", "Simple classification tasks", "Model evaluation basics"] },
-        { week: 5, title: "Neural Networks Basics", topics: ["What is a neural network?", "Simple neural network demo", "Applications"] },
-        { week: 6, title: "AI in Computer Vision", topics: ["Image classification basics", "Simple image processing", "Hands-on with sample images"] },
-        { week: 7, title: "AI in Natural Language Processing", topics: ["Text data basics", "Simple sentiment analysis", "Hands-on with sample text"] },
-        { week: 8, title: "Mini Project: Build a Simple AI Application", topics: ["Project planning", "Implementation", "Presentation"] }
-      ]
-    }
+      title: "Artificial Intelligence Curriculum",
+      description: "A beginner-friendly 8-week program introducing the basics of AI, machine learning, and practical applications."
+    },
+    
+    curriculumIntro: "Our curriculum offers a comprehensive journey through artificial intelligence, covering both theoretical foundations and practical applications. Each module is designed to build your skills progressively while providing hands-on experience with real-world AI projects.",
+    
+    modules: [
+      {
+        title: "Foundations of Artificial Intelligence",
+        duration: "1 week",
+        description: "Understand the core concepts, history, and applications of artificial intelligence",
+        topics: [
+          "History and evolution of AI",
+          "Types of AI: narrow vs. general AI",
+          "Intelligent agents and problem-solving",
+          "Knowledge representation",
+          "Ethical considerations and responsible AI"
+        ]
+      },
+      {
+        title: "Python and Programming for AI",
+        duration: "1 week",
+        description: "Master the essential programming skills required for AI development",
+        topics: [
+          "Python fundamentals for AI development",
+          "Data structures and algorithms for AI",
+          "Scientific computing with NumPy and SciPy",
+          "Data manipulation with Pandas",
+          "Introduction to AI development environments"
+        ]
+      },
+      {
+        title: "Machine Learning for AI",
+        duration: "1 week",
+        description: "Explore how machine learning forms the backbone of modern AI systems",
+        topics: [
+          "Supervised learning algorithms for AI applications",
+          "Unsupervised learning and clustering",
+          "Reinforcement learning basics",
+          "Feature engineering for AI models",
+          "Model evaluation and validation techniques"
+        ]
+      },
+      {
+        title: "Neural Networks and Deep Learning",
+        duration: "1 week",
+        description: "Dive into the architecture and implementation of neural networks",
+        topics: [
+          "Neural network architecture and components",
+          "Deep learning frameworks: TensorFlow and PyTorch",
+          "Training deep neural networks",
+          "Transfer learning and pre-trained models",
+          "Optimization techniques for neural networks"
+        ]
+      },
+      {
+        title: "Computer Vision",
+        duration: "1 week",
+        description: "Learn how AI systems process and understand visual information",
+        topics: [
+          "Image processing fundamentals",
+          "Convolutional Neural Networks (CNNs)",
+          "Object detection and recognition",
+          "Image segmentation techniques",
+          "Advanced computer vision applications"
+        ]
+      },
+      {
+        title: "Natural Language Processing",
+        duration: "1 week",
+        description: "Discover how AI can understand, interpret, and generate human language",
+        topics: [
+          "Text processing and feature extraction",
+          "Word embeddings and language models",
+          "Recurrent Neural Networks for sequence data",
+          "Transformer models and attention mechanisms",
+          "Building conversational AI and chatbots"
+        ]
+      },
+      {
+        title: "Advanced AI Techniques",
+        duration: "1 week",
+        description: "Explore cutting-edge methods that power modern AI systems",
+        topics: [
+          "Generative AI and GANs",
+          "Large Language Models (LLMs)",
+          "Multimodal AI systems",
+          "Explainable AI and model interpretability",
+          "AI for decision making and planning"
+        ]
+      },
+      {
+        title: "AI Deployment and Applications",
+        duration: "1 week",
+        description: "Apply your AI knowledge to real-world problems and learn deployment strategies",
+        topics: [
+          "AI system design and architecture",
+          "Deploying AI models to production",
+          "MLOps for AI systems",
+          "Building AI-powered applications",
+          "Capstone project: End-to-end AI solution"
+        ]
+      }
+    ]
   },
   
   "machine-learning": {
@@ -800,18 +881,8 @@ export const programsData = {
     ],
     
     curriculum: {
-      title: "Machine Learning with Python Curriculum (Entry Level)",
-      description: "A beginner-friendly 8-week program introducing the basics of machine learning, Python, and practical applications.",
-      weeks: [
-        { week: 1, title: "Introduction to Machine Learning", topics: ["What is machine learning?", "Types of machine learning", "Applications in real life"] },
-        { week: 2, title: "Python Basics for ML", topics: ["Python setup", "Variables, data types, and operators", "Simple scripts"] },
-        { week: 3, title: "Data Preparation & Cleaning", topics: ["Importing data", "Handling missing values", "Basic data cleaning techniques"] },
-        { week: 4, title: "Exploratory Data Analysis", topics: ["Descriptive statistics", "Simple data visualizations", "Identifying trends"] },
-        { week: 5, title: "Supervised Learning Basics", topics: ["Simple classification", "Simple regression", "Model evaluation basics"] },
-        { week: 6, title: "Unsupervised Learning Basics", topics: ["Clustering basics", "Simple clustering demo", "Applications"] },
-        { week: 7, title: "Model Deployment Basics", topics: ["Saving/loading models", "Simple deployment demo", "Sharing results"] },
-        { week: 8, title: "Mini Project: Build a Simple ML Model", topics: ["Project planning", "Implementation", "Presentation"] }
-      ]
+      title: "Machine Learning with Python Curriculum",
+      description: "A beginner-friendly 8-week program introducing the basics of machine learning, Python, and practical applications."
     }
   },
   
@@ -1086,18 +1157,8 @@ export const programsData = {
     ],
     
     curriculum: {
-      title: "Cloud Computing Curriculum (Entry Level)",
-      description: "A beginner-friendly 8-week program introducing the basics of cloud computing, platforms, and simple deployments.",
-      weeks: [
-        { week: 1, title: "Introduction to Cloud Computing", topics: ["What is cloud computing?", "Cloud service models", "Benefits and use cases"] },
-        { week: 2, title: "Cloud Platforms Overview", topics: ["AWS, Azure, GCP basics", "Setting up a free account", "Navigating the console"] },
-        { week: 3, title: "Virtual Machines & Storage", topics: ["Launching a VM", "Basic storage options", "Uploading/downloading files"] },
-        { week: 4, title: "Networking Basics in the Cloud", topics: ["IP addresses", "Security groups", "Simple networking setup"] },
-        { week: 5, title: "Deploying a Simple Web App", topics: ["Uploading a static website", "Basic web hosting", "Accessing your site"] },
-        { week: 6, title: "Cloud Databases Basics", topics: ["Creating a simple database", "Connecting to a database", "Storing/retrieving data"] },
-        { week: 7, title: "Cloud Security Basics", topics: ["User accounts", "Permissions", "Simple security best practices"] },
-        { week: 8, title: "Mini Project: Deploy a Simple Cloud Solution", topics: ["Project planning", "Implementation", "Presentation"] }
-      ]
+      title: "Cloud Computing Curriculum",
+      description: "A beginner-friendly 8-week program introducing the basics of cloud computing, platforms, and simple deployments."
     }
   },
   
@@ -1369,18 +1430,8 @@ export const programsData = {
     ],
     
     curriculum: {
-      title: "Web Development Curriculum (Entry Level)",
-      description: "A beginner-friendly 8-week program introducing the basics of web development, HTML, CSS, JavaScript, and simple projects.",
-      weeks: [
-        { week: 1, title: "Introduction to Web Development", topics: ["What is web development?", "Types of websites", "Overview of the web stack"] },
-        { week: 2, title: "HTML Basics", topics: ["HTML structure", "Common tags", "Building a simple page"] },
-        { week: 3, title: "CSS Basics", topics: ["Styling with CSS", "Selectors and properties", "Layouts and colors"] },
-        { week: 4, title: "JavaScript Basics", topics: ["Variables and data types", "Functions", "Simple interactivity"] },
-        { week: 5, title: "Responsive Design Basics", topics: ["Media queries", "Mobile-friendly layouts", "Testing responsiveness"] },
-        { week: 6, title: "Simple Web Project", topics: ["Building a personal homepage", "Adding images and links", "Styling your site"] },
-        { week: 7, title: "Intro to Forms & User Input", topics: ["Creating forms", "Handling user input", "Form validation basics"] },
-        { week: 8, title: "Mini Project: Build a Simple Website", topics: ["Project planning", "Implementation", "Presentation"] }
-      ]
+      title: "Web Development Curriculum",
+      description: "A beginner-friendly 8-week program covering HTML, CSS, JavaScript, and simple web application development."
     }
   },
   
@@ -1652,18 +1703,8 @@ export const programsData = {
     ],
     
     curriculum: {
-      title: "Embedded Systems Curriculum (Entry Level)",
-      description: "A beginner-friendly 8-week program introducing the fundamentals of embedded systems, microcontrollers, and hands-on projects.",
-      weeks: [
-        { week: 1, title: "Introduction to Embedded Systems & Microcontrollers", topics: ["What is an embedded system?", "Microcontroller vs. Microprocessor", "Popular microcontroller families", "Development boards overview"] },
-        { week: 2, title: "Basics of C Programming for Embedded", topics: ["C language basics", "Variables, data types, and operators", "Control structures", "Simple embedded C programs"] },
-        { week: 3, title: "Digital & Analog I/O, Sensors, and Actuators", topics: ["Digital input/output", "Analog input/output", "Interfacing LEDs, switches, and sensors", "Actuator basics"] },
-        { week: 4, title: "Timers, Interrupts, and Communication Protocols", topics: ["Timers and counters", "Interrupt basics", "UART, I2C, SPI communication"] },
-        { week: 5, title: "Simple Embedded Projects", topics: ["LED blinking project", "Button-controlled output", "Sensor-based automation"] },
-        { week: 6, title: "Debugging & Troubleshooting Basics", topics: ["Debugging tools", "Common errors and fixes", "Testing embedded code"] },
-        { week: 7, title: "Introduction to RTOS Concepts", topics: ["What is an RTOS?", "Basic multitasking concepts", "Simple RTOS demo"] },
-        { week: 8, title: "Mini Project: Build a Simple Embedded Application", topics: ["Project planning", "Implementation", "Testing and demonstration"] }
-      ]
+      title: "Embedded Systems Curriculum",
+      description: "A beginner-friendly 8-week program introducing the fundamentals of embedded systems, microcontrollers, and simple projects."
     }
   },
   
@@ -1935,18 +1976,8 @@ export const programsData = {
     ],
     
     curriculum: {
-      title: "Internet of Things (IoT) Curriculum (Entry Level)",
-      description: "A beginner-friendly 8-week program covering IoT concepts, hardware, connectivity, and hands-on projects.",
-      weeks: [
-        { week: 1, title: "What is IoT? Concepts & Applications", topics: ["Definition of IoT", "IoT use cases", "Industry applications"] },
-        { week: 2, title: "IoT Hardware Platforms", topics: ["Overview of Arduino, ESP32, Raspberry Pi", "Setting up development boards", "Basic programming"] },
-        { week: 3, title: "Sensors & Actuators in IoT", topics: ["Types of sensors", "Actuator basics", "Interfacing sensors and actuators"] },
-        { week: 4, title: "Communication Protocols", topics: ["Wi-Fi basics", "Bluetooth basics", "MQTT introduction", "Simple device-to-device communication"] },
-        { week: 5, title: "Cloud Platforms for IoT", topics: ["Intro to AWS IoT, Thingspeak, etc.", "Sending data to the cloud", "Basic dashboards"] },
-        { week: 6, title: "Data Collection & Visualization", topics: ["Collecting sensor data", "Visualizing data online", "Simple analytics"] },
-        { week: 7, title: "IoT Security Basics", topics: ["Why security matters in IoT", "Simple security practices", "Common vulnerabilities"] },
-        { week: 8, title: "Mini Project: Build a Simple IoT System", topics: ["Project planning", "Implementation", "Testing and demonstration"] }
-      ]
+      title: "Internet of Things (IoT) Curriculum",
+      description: "A beginner-friendly 8-week program covering IoT concepts, hardware, connectivity, and hands-on projects."
     },
     
     faqs: [
@@ -2261,18 +2292,8 @@ export const programsData = {
     ],
     
     curriculum: {
-      title: "AutoCAD Designing Curriculum (Entry Level)",
-      description: "A beginner-friendly 8-week program introducing the basics of AutoCAD, 2D drafting, and simple 3D modeling.",
-      weeks: [
-        { week: 1, title: "Introduction to AutoCAD & User Interface", topics: ["AutoCAD overview", "Navigating the interface", "Basic settings"] },
-        { week: 2, title: "Basic Drawing Tools & Commands", topics: ["Line, circle, rectangle, and other basic shapes", "Drawing precision", "Coordinate entry"] },
-        { week: 3, title: "Editing & Modifying Drawings", topics: ["Move, copy, rotate, scale", "Trim, extend, offset", "Undo/redo"] },
-        { week: 4, title: "Layers, Properties, and Object Organization", topics: ["Creating and managing layers", "Object properties", "Grouping and organizing objects"] },
-        { week: 5, title: "Dimensioning, Text, and Annotations", topics: ["Adding dimensions", "Text and labels", "Annotations and leaders"] },
-        { week: 6, title: "Introduction to 2D Drafting Projects", topics: ["Simple 2D project workflow", "Drawing templates", "Printing and plotting"] },
-        { week: 7, title: "Introduction to 3D Modeling Concepts", topics: ["3D workspace basics", "Creating simple 3D shapes", "Viewing and navigating in 3D"] },
-        { week: 8, title: "Mini Project: Create a Simple 2D/3D Design", topics: ["Project planning", "Implementation", "Presentation"] }
-      ]
+      title: "AutoCAD Designing Curriculum",
+      description: "A beginner-friendly 8-week program introducing the basics of AutoCAD, 2D drafting, and simple 3D modeling."
     }
   },
   
@@ -2545,97 +2566,7 @@ export const programsData = {
     
     curriculum: {
       title: "Cybersecurity Curriculum",
-      description: "An intensive 8-week program covering cybersecurity from fundamentals to advanced topics",
-      weeks: [
-        {
-          week: 1,
-          title: "Cybersecurity Fundamentals",
-          topics: [
-            "Cybersecurity concepts and terminology",
-            "Threat landscape and attack vectors",
-            "Security frameworks and models (NIST, ISO 27001)",
-            "Risk assessment methodologies",
-            "Security controls and their implementation"
-          ]
-        },
-        {
-          week: 2,
-          title: "Network Security",
-          topics: [
-            "Network architecture and security design",
-            "Firewalls and intrusion prevention systems",
-            "VPNs and secure remote access",
-            "Network monitoring and traffic analysis",
-            "Wireless network security"
-          ]
-        },
-        {
-          week: 3,
-          title: "System Security",
-          topics: [
-            "Operating system hardening techniques",
-            "Access control mechanisms",
-            "Endpoint protection solutions",
-            "Patch management strategies",
-            "Virtualization and container security"
-          ]
-        },
-        {
-          week: 4,
-          title: "Application Security",
-          topics: [
-            "Secure software development lifecycle",
-            "Common vulnerabilities (OWASP Top 10)",
-            "Web application security testing",
-            "API security considerations",
-            "Code review and static analysis"
-          ]
-        },
-        {
-          week: 5,
-          title: "Ethical Hacking & Penetration Testing",
-          topics: [
-            "Reconnaissance and information gathering",
-            "Vulnerability scanning and assessment",
-            "Exploitation techniques and tools",
-            "Privilege escalation and persistence",
-            "Reporting and remediation recommendations"
-          ]
-        },
-        {
-          week: 6,
-          title: "Cryptography & Data Protection",
-          topics: [
-            "Cryptographic algorithms and protocols",
-            "Public key infrastructure (PKI)",
-            "Secure communications and TLS/SSL",
-            "Data loss prevention strategies",
-            "Privacy regulations and compliance (GDPR, CCPA)"
-          ]
-        },
-        {
-          week: 7,
-          title: "Incident Response & Digital Forensics",
-          topics: [
-            "Security monitoring and event management",
-            "Incident response procedures and playbooks",
-            "Threat hunting methodologies",
-            "Digital evidence collection and preservation",
-            "Malware analysis techniques"
-          ]
-        },
-        {
-          week: 8,
-          title: "Security Operations & Management",
-          topics: [
-            "Security operations center (SOC) functions",
-            "Security awareness and training programs",
-            "Security metrics and reporting",
-            "Vulnerability management lifecycle",
-            "Business continuity and disaster recovery"
-          ]
-        }
-      ]
+      description: "An intensive 8-week program covering cybersecurity from fundamentals to advanced topics"
     }
   },
   
@@ -2908,97 +2839,7 @@ export const programsData = {
     
     curriculum: {
       title: "DevOps Curriculum",
-      description: "A comprehensive 8-week program covering DevOps practices and tools",
-      weeks: [
-        {
-          week: 1,
-          title: "DevOps Fundamentals",
-          topics: [
-            "DevOps philosophy and benefits",
-            "Development and operations collaboration",
-            "Continuous integration and continuous delivery concepts",
-            "Automation principles and approaches",
-            "DevOps toolchain overview"
-          ]
-        },
-        {
-          week: 2,
-          title: "Version Control & Git Workflows",
-          topics: [
-            "Advanced Git commands and workflows",
-            "Branching strategies (GitFlow, GitHub Flow)",
-            "Pull requests and code review processes",
-            "Managing dependencies and submodules",
-            "Git hooks and automation"
-          ]
-        },
-        {
-          week: 3,
-          title: "Continuous Integration",
-          topics: [
-            "CI server setup (Jenkins, GitLab CI, GitHub Actions)",
-            "Build automation and dependency management",
-            "Automated testing strategies",
-            "Code quality checks and analysis",
-            "Artifact management and repositories"
-          ]
-        },
-        {
-          week: 4,
-          title: "Infrastructure as Code",
-          topics: [
-            "Infrastructure as Code principles",
-            "Terraform for cloud resource provisioning",
-            "Configuration management with Ansible",
-            "Cloud-specific IaC tools and templates",
-            "Testing and validating infrastructure code"
-          ]
-        },
-        {
-          week: 5,
-          title: "Containerization with Docker",
-          topics: [
-            "Docker architecture and components",
-            "Creating efficient Dockerfiles",
-            "Multi-container applications with Docker Compose",
-            "Container registries and image management",
-            "Docker security best practices"
-          ]
-        },
-        {
-          week: 6,
-          title: "Container Orchestration with Kubernetes",
-          topics: [
-            "Kubernetes architecture and components",
-            "Deploying applications on Kubernetes",
-            "Service discovery and load balancing",
-            "Kubernetes configuration and secrets management",
-            "Persistent storage in Kubernetes"
-          ]
-        },
-        {
-          week: 7,
-          title: "Monitoring & Observability",
-          topics: [
-            "Monitoring strategies and best practices",
-            "Metrics collection and visualization (Prometheus, Grafana)",
-            "Centralized logging (ELK stack, Loki)",
-            "Distributed tracing (Jaeger, Zipkin)",
-            "Alerting and incident response automation"
-          ]
-        },
-        {
-          week: 8,
-          title: "DevSecOps & Site Reliability Engineering",
-          topics: [
-            "Security in the CI/CD pipeline",
-            "Infrastructure and container security scanning",
-            "Secrets management and secure configurations",
-            "SRE principles and practices",
-            "Chaos engineering and resilience testing"
-          ]
-        }
-      ]
+      description: "A comprehensive 8-week program covering DevOps practices and tools"
     }
   },
   
@@ -3275,97 +3116,7 @@ export const programsData = {
     
     curriculum: {
       title: "Android Development Curriculum",
-      description: "A comprehensive 8-week program covering Android app development",
-      weeks: [
-        {
-          week: 1,
-          title: "Android Development Fundamentals",
-          topics: [
-            "Android Studio installation and setup",
-            "Android SDK and emulator",
-            "Basic Android app structure and project setup",
-            "Android lifecycle and activity management",
-            "Android UI design principles"
-          ]
-        },
-        {
-          week: 2,
-          title: "Kotlin Programming",
-          topics: [
-            "Kotlin syntax and fundamentals",
-            "Variables, constants, and data types",
-            "Control flow and functions",
-            "Classes, structures, and protocols",
-            "Error handling and optionals"
-          ]
-        },
-        {
-          week: 3,
-          title: "UI/UX Design",
-          topics: [
-            "Android UI design principles",
-            "Material Design guidelines",
-            "Creating layouts with XML and ConstraintLayout",
-            "Using Android Studio's layout editor",
-            "Designing responsive layouts"
-          ]
-        },
-        {
-          week: 4,
-          title: "Data Storage",
-          topics: [
-            "SQLite for local data storage",
-            "Room database for object-oriented data",
-            "Firebase Realtime Database for real-time data",
-            "SharedPreferences for simple data",
-            "ContentProvider for secure data access"
-          ]
-        },
-        {
-          week: 5,
-          title: "Networking",
-          topics: [
-            "Retrofit for RESTful API integration",
-            "OkHttp for efficient HTTP requests",
-            "Volley for image loading and caching",
-            "AsyncTask and Threading in Android",
-            "Networking best practices"
-          ]
-        },
-        {
-          week: 6,
-          title: "Background Services and Notifications",
-          topics: [
-            "Service and IntentService for background tasks",
-            "BroadcastReceiver for system events",
-            "Notification channels and notifications",
-            "WorkManager for background jobs",
-            "Foreground services"
-          ]
-        },
-        {
-          week: 7,
-          title: "Advanced Android Features",
-          topics: [
-            "Android Jetpack components (ViewModel, LiveData, Room, Navigation)",
-            "Data binding and MVVM architecture",
-            "Dependency injection with Dagger 2",
-            "Room database advanced features",
-            "Android architecture components"
-          ]
-        },
-        {
-          week: 8,
-          title: "Android App Development Project",
-          topics: [
-            "Project planning and requirements gathering",
-            "UI/UX design and prototyping",
-            "Backend integration and API development",
-            "Testing and debugging",
-            "Publishing to Google Play Store"
-          ]
-        }
-      ]
+      description: "A comprehensive 8-week program covering Android app development"
     }
   },
   
@@ -3642,97 +3393,7 @@ export const programsData = {
     
     curriculum: {
       title: "iOS Development Curriculum",
-      description: "A comprehensive 8-week program covering iOS app development",
-      weeks: [
-        {
-          week: 1,
-          title: "Swift Programming Fundamentals",
-          topics: [
-            "Swift syntax and fundamentals",
-            "Variables, constants, and data types",
-            "Control flow and functions",
-            "Classes, structures, and protocols",
-            "Error handling and optionals"
-          ]
-        },
-        {
-          week: 2,
-          title: "iOS App Fundamentals",
-          topics: [
-            "iOS app architecture",
-            "Xcode IDE and Interface Builder",
-            "App lifecycle and delegates",
-            "View controllers and navigation",
-            "Creating your first iOS application"
-          ]
-        },
-        {
-          week: 3,
-          title: "User Interface Design",
-          topics: [
-            "UIKit framework fundamentals",
-            "Auto Layout and adaptive interfaces",
-            "Table and collection views",
-            "Custom UI components",
-            "Introduction to SwiftUI"
-          ]
-        },
-        {
-          week: 4,
-          title: "Data Persistence",
-          topics: [
-            "UserDefaults for simple storage",
-            "File system operations",
-            "Core Data for object persistence",
-            "Realm database integration",
-            "iCloud synchronization"
-          ]
-        },
-        {
-          week: 5,
-          title: "Networking and Web Services",
-          topics: [
-            "URLSession for networking",
-            "Working with REST APIs",
-            "JSON parsing and serialization",
-            "Authentication and authorization",
-            "Image downloading and caching"
-          ]
-        },
-        {
-          week: 6,
-          title: "Advanced iOS Features",
-          topics: [
-            "Push notifications",
-            "Background processing",
-            "Core Location and MapKit",
-            "Camera and photo library access",
-            "Animations and transitions"
-          ]
-        },
-        {
-          week: 7,
-          title: "iOS App Architecture",
-          topics: [
-            "MVC, MVVM, and VIPER patterns",
-            "Protocol-oriented programming",
-            "Dependency injection",
-            "Reactive programming with Combine",
-            "Managing app state"
-          ]
-        },
-        {
-          week: 8,
-          title: "Testing and Deployment",
-          topics: [
-            "Unit testing with XCTest",
-            "UI testing and automation",
-            "Performance optimization",
-            "App Store preparation and submission",
-            "App analytics and monitoring"
-          ]
-        }
-      ]
+      description: "A comprehensive 8-week program covering iOS app development"
     }
   }
 };
@@ -4077,97 +3738,7 @@ programsData["ui-ux-design"] = {
   
   curriculum: {
     title: "UI/UX Design & Development Curriculum",
-    description: "A comprehensive 8-week program covering all aspects of UI/UX design from fundamentals to implementation",
-    weeks: [
-      {
-        week: 1,
-        title: "Fundamentals of UI/UX Design",
-        topics: [
-          "UI vs UX: Understanding the differences and relationships",
-          "Design thinking methodology and problem-solving",
-          "Psychology principles in user experience",
-          "Introduction to information architecture",
-          "Overview of the UI/UX design process"
-        ]
-      },
-      {
-        week: 2,
-        title: "User Research & Analysis",
-        topics: [
-          "User research methods and techniques",
-          "Creating personas and empathy maps",
-          "User journey mapping and scenario creation",
-          "Competitive analysis and benchmarking",
-          "Translating research into design requirements"
-        ]
-      },
-      {
-        week: 3,
-        title: "Visual Design Principles",
-        topics: [
-          "Color theory and psychology in digital interfaces",
-          "Typography for digital products",
-          "Layout principles and grid systems",
-          "Visual hierarchy and content organization",
-          "Iconography and imagery in UI design"
-        ]
-      },
-      {
-        week: 4,
-        title: "Wireframing & Prototyping",
-        topics: [
-          "Sketching and low-fidelity wireframing",
-          "Digital wireframing with design tools",
-          "Creating interactive mockups and prototypes",
-          "User flows and navigation patterns",
-          "Design critique and iteration processes"
-        ]
-      },
-      {
-        week: 5,
-        title: "UI Design with Industry Tools",
-        topics: [
-          "Mastering Figma for collaborative design",
-          "Working with components and design systems",
-          "Advanced prototyping techniques",
-          "Design handoff and developer collaboration",
-          "Version control and design management"
-        ]
-      },
-      {
-        week: 6,
-        title: "Frontend Implementation",
-        topics: [
-          "HTML5 and semantic markup for designers",
-          "CSS fundamentals and layout techniques",
-          "Responsive design implementation",
-          "Basic JavaScript for interactive elements",
-          "CSS frameworks and component libraries"
-        ]
-      },
-      {
-        week: 7,
-        title: "Usability Testing & Optimization",
-        topics: [
-          "Usability testing methodologies",
-          "Remote vs. in-person testing techniques",
-          "Analyzing test results and identifying issues",
-          "A/B testing and experimentation",
-          "Iterative design based on user feedback"
-        ]
-      },
-      {
-        week: 8,
-        title: "Advanced UI/UX Topics & Portfolio",
-        topics: [
-          "Accessibility standards and inclusive design",
-          "Designing for different platforms (mobile, web, desktop)",
-          "Animation and microinteractions",
-          "Portfolio development and case study writing",
-          "Career preparation and industry trends"
-        ]
-      }
-    ]
+    description: "A comprehensive 8-week program covering all aspects of UI/UX design from fundamentals to implementation"
   }
 };
 

@@ -225,30 +225,33 @@
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* Program Navigation */
+/* Program Navigation - Thin Ribbon */
 .program-nav {
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 3rem;
-  position: sticky;
+  margin-bottom: 2rem;
   top: 60px;
+  position: sticky;
+  padding: 0.3rem 0;
   background-color: white;
-  z-index: 99;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+  z-index: 10;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .program-nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 40px; /* Fixed height for thin ribbon */
 }
 
 .program-tabs {
   display: flex;
   gap: 0.5rem;
+  height: 100%;
 }
 
 .tab-button {
-  padding: 1.25rem 1.5rem;
+  padding: 0.3rem 0.8rem;
   background: none;
   border: none;
   color: var(--text-light);
@@ -256,10 +259,11 @@
   cursor: pointer;
   position: relative;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  height: 100%;
 }
 
 .nav-enroll-button {
@@ -267,14 +271,31 @@
   color: white;
   border: none;
   border-radius: 6px;
-  padding: 0.75rem 1.5rem;
+  padding: 0.3rem 0.8rem;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  height: 28px; /* Adjusted height */
+}
+
+.nav-curriculum-button {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+  padding: 0.3rem 0.8rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 28px; /* Adjusted height */
 }
 
 .nav-enroll-button:hover {
@@ -313,6 +334,7 @@
 /* Tab Content */
 .program-content {
   padding-bottom: 4rem;
+  margin-top: 1rem;
 }
 
 .tab-content {
@@ -468,17 +490,21 @@
 
 /* Curriculum Tab */
 .modules-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
-  margin-top: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .module-card {
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
 }
 
 .module-header {
@@ -1256,6 +1282,10 @@
   
   .pricing-card.selected {
     transform: none;
+  }
+
+  .modules-container {
+    grid-template-columns: 1fr;
   }
 }
 

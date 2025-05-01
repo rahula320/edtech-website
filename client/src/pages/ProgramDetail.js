@@ -16,20 +16,8 @@ function ProgramDetail({ programsData }) {
     if (programsData && programsData[programId]) {
       const currentProgram = { ...programsData[programId] };
       
-      // If program has modules but no curriculum, create a curriculum structure
-      if (currentProgram.modules && Array.isArray(currentProgram.modules) && 
-          (!currentProgram.curriculum || !currentProgram.curriculum.weeks)) {
-        
-        currentProgram.curriculum = {
-          title: currentProgram.title + ' Curriculum',
-          description: currentProgram.curriculumIntro || 'Program curriculum',
-          weeks: currentProgram.modules.map((module, index) => ({
-            week: index + 1,
-            title: module.title,
-            topics: module.topics || []
-          }))
-        };
-      }
+      // Remove the automatic creation of weeks structure from modules
+      // We'll only use modules directly
       
       // Create standardized FAQs for all programs
       const standardFaqs = [
@@ -227,17 +215,11 @@ function ProgramDetail({ programsData }) {
             </div>
             <div className="nav-buttons">
               <button 
-                className="nav-curriculum-button"
-                onClick={() => setSelectedTab('curriculum')}
+                className="nav-enroll-button"
+                onClick={() => handleEnrollNow()}
               >
-                <i className="fas fa-book"></i> View Curriculum
+                <i className="fas fa-graduation-cap"></i> Enroll Now
               </button>
-            <button 
-              className="nav-enroll-button"
-              onClick={() => handleEnrollNow()}
-            >
-              <i className="fas fa-graduation-cap"></i> Enroll Now
-            </button>
             </div>
           </div>
         </div>
@@ -309,31 +291,7 @@ function ProgramDetail({ programsData }) {
             {program.curriculumIntro && <p className="curriculum-intro">{program.curriculumIntro}</p>}
             
             <div className="modules-container">
-              {/* Render weeks from curriculum object if it exists */}
-              {program.curriculum?.weeks && Array.isArray(program.curriculum.weeks) && program.curriculum.weeks.map((week, index) => (
-                <div key={index} className="module-card">
-                  <div className="module-header">
-                    <h3>
-                      <span className="module-number">Week {week.week}</span>
-                      {week.title}
-                    </h3>
-                  </div>
-                  <div className="module-content">
-                    {week.topics && week.topics.length > 0 && (
-                      <ul className="module-topics">
-                        {week.topics.map((topic, i) => (
-                          <li key={i}>
-                            <i className="fas fa-angle-right"></i>
-                            <span>{topic}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              ))}
-              
-              {/* Render modules array if it exists */}
+              {/* Only render modules array, don't render curriculum weeks */}
               {program.modules && Array.isArray(program.modules) && program.modules.map((module, index) => (
                 <div key={index} className="module-card">
                   <div className="module-header">
@@ -357,8 +315,7 @@ function ProgramDetail({ programsData }) {
                 </div>
               ))}
               
-              {(!program.curriculum?.weeks || !Array.isArray(program.curriculum.weeks)) && 
-               (!program.modules || !Array.isArray(program.modules)) && (
+              {(!program.modules || !Array.isArray(program.modules)) && (
                 <div className="no-curriculum-message">
                   <p>Curriculum details will be available soon.</p>
                 </div>
@@ -638,18 +595,26 @@ function ProgramDetail({ programsData }) {
         <div className="container">
           <h2>Related Programs</h2>
           <div className="programs-grid">
-            {program.relatedPrograms && program.relatedPrograms.map((relProgram, index) => (
-              <div className="program-card" key={index}>
-                <div className="program-tag">{relProgram.tag}</div>
-                <h3>{relProgram.title}</h3>
-                <div className="program-meta">
-                  <span><i className={relProgram.durationIcon}></i> {relProgram.duration}</span>
-                  <span><i className={relProgram.formatIcon}></i> {relProgram.format}</span>
+            {program.relatedPrograms && program.relatedPrograms
+              .filter(relProgram => {
+                // Extract program ID from the path
+                const programPath = relProgram.path;
+                const programId = programPath.split('/').pop();
+                // Check if this program exists in programsData
+                return programsData && programsData[programId];
+              })
+              .map((relProgram, index) => (
+                <div className="program-card" key={index}>
+                  <div className="program-tag">{relProgram.tag}</div>
+                  <h3>{relProgram.title}</h3>
+                  <div className="program-meta">
+                    <span><i className={relProgram.durationIcon || "fas fa-clock"}></i> {relProgram.duration}</span>
+                    <span><i className={relProgram.formatIcon || "fas fa-laptop-house"}></i> {relProgram.format}</span>
+                  </div>
+                  <p>{relProgram.description}</p>
+                  <Link to={relProgram.path} className="program-button">View Program</Link>
                 </div>
-                <p>{relProgram.description}</p>
-                <Link to={relProgram.path} className="program-button">View Program</Link>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </section>
