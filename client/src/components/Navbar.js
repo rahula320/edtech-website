@@ -90,14 +90,6 @@ function Navbar() {
     }
   ];
 
-  // Program featured item
-  const featuredProgram = {
-    title: "Course + Internship Program",
-    icon: "fas fa-user-graduate",
-    path: "/internships",
-    description: "Learn skills and build real projects with MNC mentors"
-  };
-
   return (
     <nav className="navbar">
       <div className="navbar-brand">
@@ -139,19 +131,6 @@ function Navbar() {
                     </ul>
                   </div>
                 ))}
-              </div>
-              
-              <div className="featured-program">
-                <h4>Featured Program</h4>
-                <Link to={featuredProgram.path} className="featured-program-link">
-                  <div className="featured-program-icon">
-                    <i className={featuredProgram.icon}></i>
-                  </div>
-                  <div className="featured-program-info">
-                    <h5>{featuredProgram.title}</h5>
-                    <p>{featuredProgram.description}</p>
-                  </div>
-                </Link>
               </div>
             </div>
           </div>
@@ -202,18 +181,6 @@ function Navbar() {
                       ))}
                     </div>
                   ))}
-                  <div className="mobile-featured">
-                    <h5 className="mobile-category-title">
-                      <i className="fas fa-star"></i> Featured
-                    </h5>
-                    <Link 
-                      to={featuredProgram.path} 
-                      onClick={toggleMobileMenu}
-                      className="mobile-program-link featured"
-                    >
-                      <i className={featuredProgram.icon}></i> {featuredProgram.title}
-                    </Link>
-                  </div>
                 </div>
               )}
             </div>

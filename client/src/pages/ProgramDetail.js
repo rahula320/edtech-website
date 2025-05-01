@@ -232,12 +232,12 @@ function ProgramDetail({ programsData }) {
               >
                 <i className="fas fa-book"></i> View Curriculum
               </button>
-              <button 
-                className="nav-enroll-button"
-                onClick={() => handleEnrollNow()}
-              >
-                <i className="fas fa-graduation-cap"></i> Enroll Now
-              </button>
+            <button 
+              className="nav-enroll-button"
+              onClick={() => handleEnrollNow()}
+            >
+              <i className="fas fa-graduation-cap"></i> Enroll Now
+            </button>
             </div>
           </div>
         </div>
