@@ -90,6 +90,7 @@ export const programsData = {
         title: "Foundations of Data Science",
         duration: "1 week",
         description: "Start with the essential concepts and tools that form the foundation of data science",
+        icon: "fas fa-rocket", // Represents launching into data science
         topics: [
           "Introduction to data science and its business applications",
           "Setting up your data science environment with Python",
@@ -102,6 +103,7 @@ export const programsData = {
         title: "Data Cleaning and Preprocessing",
         duration: "1 week",
         description: "Learn techniques to prepare raw data for analysis and modeling",
+        icon: "fas fa-broom", // Represents cleaning data
         topics: [
           "Handling missing values and outliers",
           "Data transformation and normalization",
@@ -114,6 +116,7 @@ export const programsData = {
         title: "Exploratory Data Analysis and Visualization",
         duration: "1 week",
         description: "Discover patterns and relationships in data through visualization techniques",
+        icon: "fas fa-chart-line", // Represents data visualization
         topics: [
           "Statistical summarization of data",
           "Data visualization with Matplotlib and Seaborn",
@@ -126,6 +129,7 @@ export const programsData = {
         title: "Statistical Methods for Data Analysis",
         duration: "1 week",
         description: "Apply statistical concepts to derive meaningful insights from data",
+        icon: "fas fa-calculator", // Represents statistical calculations
         topics: [
           "Probability distributions and random variables",
           "Hypothesis testing and confidence intervals",
@@ -138,6 +142,7 @@ export const programsData = {
         title: "Introduction to Machine Learning",
         duration: "1 week",
         description: "Understand the basics of machine learning and build your first predictive models",
+        icon: "fas fa-brain", // Represents machine learning intelligence
         topics: [
           "Supervised vs. unsupervised learning",
           "Classification algorithms: logistic regression, decision trees, random forests",
@@ -150,6 +155,7 @@ export const programsData = {
         title: "Advanced Machine Learning",
         duration: "1 week",
         description: "Explore advanced algorithms and techniques for complex data problems",
+        icon: "fas fa-cogs", // Represents advanced algorithms and complex processing
         topics: [
           "Ensemble methods: bagging, boosting, and stacking",
           "Clustering algorithms: K-means, hierarchical clustering, DBSCAN",
@@ -162,6 +168,7 @@ export const programsData = {
         title: "Big Data and Cloud Computing",
         duration: "1 week",
         description: "Scale your data analysis skills to handle large datasets using cloud platforms",
+        icon: "fas fa-cloud", // Represents cloud computing
         topics: [
           "Introduction to big data technologies (Hadoop, Spark)",
           "Working with cloud platforms (AWS, GCP, Azure)",
@@ -174,6 +181,7 @@ export const programsData = {
         title: "Capstone Project and Career Preparation",
         duration: "1 week",
         description: "Apply all learned concepts in a comprehensive project and prepare for your data science career",
+        icon: "fas fa-graduation-cap", // Represents graduation and career preparation
         topics: [
           "End-to-end data science project implementation",
           "Technical documentation and presentation",
@@ -518,6 +526,7 @@ export const programsData = {
         title: "Foundations of Artificial Intelligence",
         duration: "1 week",
         description: "Understand the core concepts, history, and applications of artificial intelligence",
+        icon: "fas fa-lightbulb", // Represents the foundational ideas and enlightenment of AI
         topics: [
           "History and evolution of AI",
           "Types of AI: narrow vs. general AI",
@@ -530,6 +539,7 @@ export const programsData = {
         title: "Python and Programming for AI",
         duration: "1 week",
         description: "Master the essential programming skills required for AI development",
+        icon: "fab fa-python", // Python programming language logo
         topics: [
           "Python fundamentals for AI development",
           "Data structures and algorithms for AI",
@@ -542,6 +552,7 @@ export const programsData = {
         title: "Machine Learning for AI",
         duration: "1 week",
         description: "Explore how machine learning forms the backbone of modern AI systems",
+        icon: "fas fa-robot", // Represents machine learning and automation
         topics: [
           "Supervised learning algorithms for AI applications",
           "Unsupervised learning and clustering",
@@ -554,6 +565,7 @@ export const programsData = {
         title: "Neural Networks and Deep Learning",
         duration: "1 week",
         description: "Dive into the architecture and implementation of neural networks",
+        icon: "fas fa-project-diagram", // Represents neural network connections
         topics: [
           "Neural network architecture and components",
           "Deep learning frameworks: TensorFlow and PyTorch",
@@ -566,6 +578,7 @@ export const programsData = {
         title: "Computer Vision",
         duration: "1 week",
         description: "Learn how AI systems process and understand visual information",
+        icon: "fas fa-eye", // Represents computer vision and seeing
         topics: [
           "Image processing fundamentals",
           "Convolutional Neural Networks (CNNs)",
@@ -578,6 +591,7 @@ export const programsData = {
         title: "Natural Language Processing",
         duration: "1 week",
         description: "Discover how AI can understand, interpret, and generate human language",
+        icon: "fas fa-comments", // Represents language and communication
         topics: [
           "Text processing and feature extraction",
           "Word embeddings and language models",
@@ -590,6 +604,7 @@ export const programsData = {
         title: "Advanced AI Techniques",
         duration: "1 week",
         description: "Explore cutting-edge methods that power modern AI systems",
+        icon: "fas fa-magic", // Represents advanced and cutting-edge AI techniques
         topics: [
           "Generative AI and GANs",
           "Large Language Models (LLMs)",
@@ -602,6 +617,7 @@ export const programsData = {
         title: "AI Deployment and Applications",
         duration: "1 week",
         description: "Apply your AI knowledge to real-world problems and learn deployment strategies",
+        icon: "fas fa-rocket", // Represents deployment and launching AI solutions
         topics: [
           "AI system design and architecture",
           "Deploying AI models to production",
@@ -704,6 +720,7 @@ export const programsData = {
         title: "Python for Machine Learning",
         duration: "1 week",
         description: "Establish a solid foundation in Python programming for machine learning applications",
+        icon: "fab fa-python", // Python programming language
         topics: [
           "Python fundamentals for data science",
           "NumPy, Pandas, and data manipulation",
@@ -716,6 +733,7 @@ export const programsData = {
         title: "Data Preprocessing & Feature Engineering",
         duration: "1 week",
         description: "Learn essential techniques for preparing data for machine learning models",
+        icon: "fas fa-filter", // Represents data filtering and preprocessing
         topics: [
           "Data cleaning and handling missing values",
           "Feature scaling and normalization",
@@ -728,6 +746,7 @@ export const programsData = {
         title: "Supervised Learning: Regression",
         duration: "1 week",
         description: "Master regression algorithms for predicting continuous variables",
+        icon: "fas fa-chart-line", // Represents regression lines and trends
         topics: [
           "Linear regression and its variations",
           "Polynomial regression",
@@ -740,6 +759,7 @@ export const programsData = {
         title: "Supervised Learning: Classification",
         duration: "1 week",
         description: "Explore algorithms for categorizing data into discrete classes",
+        icon: "fas fa-sitemap", // Represents classification trees and decision boundaries
         topics: [
           "Logistic regression",
           "Decision trees and random forests",
@@ -751,49 +771,53 @@ export const programsData = {
       {
         title: "Unsupervised Learning",
         duration: "1 week",
-        description: "Discover patterns and structures in unlabeled data",
+        description: "Discover patterns in data without labeled examples",
+        icon: "fas fa-search", // Represents discovering hidden patterns
         topics: [
-          "Clustering algorithms (K-means, DBSCAN, hierarchical)",
-          "Association rule learning",
+          "K-means clustering and variations",
+          "Hierarchical clustering",
+          "DBSCAN and density-based clustering",
           "Principal Component Analysis (PCA)",
-          "t-SNE for visualization",
-          "Anomaly detection techniques"
+          "t-SNE and UMAP for visualization"
         ]
       },
       {
-        title: "Neural Networks & Deep Learning Basics",
+        title: "Advanced Machine Learning",
         duration: "1 week",
-        description: "Begin your journey into neural networks and deep learning",
+        description: "Implement sophisticated algorithms and ensemble methods",
+        icon: "fas fa-cogs", // Represents complex algorithms and ensemble methods
         topics: [
-          "Neural network fundamentals",
-          "TensorFlow and Keras introduction",
-          "Building and training neural networks",
-          "Convolutional neural networks basics",
-          "Recurrent neural networks introduction"
+          "Ensemble methods: bagging, boosting, stacking",
+          "Gradient boosting machines (XGBoost, LightGBM)",
+          "Feature importance and model interpretation",
+          "Hyperparameter optimization techniques",
+          "Cross-validation and model selection"
         ]
       },
       {
-        title: "Ensemble Methods & Advanced Techniques",
+        title: "Neural Networks & Deep Learning",
         duration: "1 week",
-        description: "Improve performance by combining multiple models and exploring advanced approaches",
+        description: "Build and train neural networks for complex pattern recognition",
+        icon: "fas fa-brain", // Represents neural networks and deep learning
         topics: [
-          "Bagging and boosting techniques",
-          "XGBoost, LightGBM, and CatBoost",
-          "Stacking and blending models",
-          "Time series forecasting",
-          "Handling imbalanced datasets"
+          "Fundamentals of neural networks",
+          "Backpropagation and gradient descent",
+          "Deep learning frameworks (TensorFlow, Keras)",
+          "Convolutional and recurrent neural networks",
+          "Transfer learning and pre-trained models"
         ]
       },
       {
-        title: "Model Deployment & Capstone Project",
+        title: "Model Deployment & MLOps",
         duration: "1 week",
-        description: "Apply your skills to deploy machine learning solutions and complete a comprehensive project",
+        description: "Learn to deploy machine learning models and manage ML workflows",
+        icon: "fas fa-cloud-upload-alt", // Represents deployment to cloud
         topics: [
-          "Model serialization and deployment",
-          "Flask API for serving ML models",
-          "Docker containers for ML applications",
-          "End-to-end machine learning project development",
-          "Building a machine learning portfolio"
+          "Model serialization and persistence",
+          "API development for ML models",
+          "Cloud deployment strategies",
+          "Model monitoring and maintenance",
+          "CI/CD for machine learning projects"
         ]
       }
     ],
@@ -977,6 +1001,7 @@ export const programsData = {
         title: "Cloud Computing Fundamentals",
         duration: "1 week",
         description: "Establish a solid foundation in cloud concepts, models, and services",
+        icon: "fas fa-cloud", // Represents cloud computing fundamentals
         topics: [
           "Cloud computing models (IaaS, PaaS, SaaS)",
           "Cloud deployment models (public, private, hybrid)",
@@ -989,6 +1014,7 @@ export const programsData = {
         title: "Amazon Web Services (AWS) Essentials",
         duration: "1 week",
         description: "Explore core AWS services and their implementation",
+        icon: "fab fa-aws", // AWS logo
         topics: [
           "EC2, VPC, and networking on AWS",
           "Storage solutions (S3, EBS, EFS)",
@@ -1001,6 +1027,7 @@ export const programsData = {
         title: "Microsoft Azure Fundamentals",
         duration: "1 week",
         description: "Learn the essential services and capabilities of Azure",
+        icon: "fab fa-microsoft", // Microsoft logo for Azure
         topics: [
           "Azure virtual machines and App Service",
           "Azure networking and Virtual Networks",
@@ -1013,6 +1040,7 @@ export const programsData = {
         title: "Google Cloud Platform Basics",
         duration: "1 week",
         description: "Discover GCP services and their unique advantages",
+        icon: "fab fa-google", // Google logo for GCP
         topics: [
           "Compute Engine and Kubernetes Engine",
           "Cloud Storage and networking",
@@ -1025,6 +1053,7 @@ export const programsData = {
         title: "Cloud DevOps and Automation",
         duration: "1 week",
         description: "Implement DevOps practices in cloud environments",
+        icon: "fas fa-tools", // Represents DevOps tools and automation
         topics: [
           "Infrastructure as Code with Terraform",
           "CI/CD pipelines for cloud deployments",
@@ -1037,6 +1066,7 @@ export const programsData = {
         title: "Cloud Security and Compliance",
         duration: "1 week",
         description: "Master security practices for protecting cloud resources",
+        icon: "fas fa-shield-alt", // Represents security and protection
         topics: [
           "Security architecture for cloud systems",
           "Identity and access management best practices",
@@ -1049,6 +1079,7 @@ export const programsData = {
         title: "Cloud Solutions Architecture",
         duration: "1 week",
         description: "Design comprehensive cloud solutions for various scenarios",
+        icon: "fas fa-sitemap", // Represents architecture and system design
         topics: [
           "High availability and disaster recovery",
           "Microservices architecture",
@@ -1061,6 +1092,7 @@ export const programsData = {
         title: "Cloud Migration and Capstone Project",
         duration: "1 week",
         description: "Apply your knowledge to real-world migration scenarios and complete a comprehensive project",
+        icon: "fas fa-exchange-alt", // Represents migration and transition
         topics: [
           "Migration strategies and methodologies",
           "Assessment and planning for cloud migration",
@@ -1253,6 +1285,7 @@ export const programsData = {
         title: "HTML & CSS Fundamentals",
         duration: "1 week",
         description: "Master the building blocks of web development and create responsive layouts",
+        icon: "fab fa-html5", // HTML5 logo
         topics: [
           "HTML5 semantic elements and document structure",
           "CSS3 styling, selectors, and box model",
@@ -1265,6 +1298,7 @@ export const programsData = {
         title: "JavaScript Essentials",
         duration: "1 week",
         description: "Learn the core concepts of JavaScript programming for dynamic web applications",
+        icon: "fab fa-js-square", // JavaScript logo
         topics: [
           "JavaScript syntax, variables, and data types",
           "DOM manipulation and event handling",
@@ -1277,6 +1311,7 @@ export const programsData = {
         title: "Front-End Frameworks: React",
         duration: "1 week",
         description: "Build interactive user interfaces with React, one of the most popular front-end frameworks",
+        icon: "fab fa-react", // React logo
         topics: [
           "React fundamentals and component architecture",
           "State management and lifecycle methods",
@@ -1289,6 +1324,7 @@ export const programsData = {
         title: "Back-End Development with Node.js",
         duration: "1 week",
         description: "Create server-side applications using JavaScript and Node.js",
+        icon: "fab fa-node-js", // Node.js logo
         topics: [
           "Node.js fundamentals and npm ecosystem",
           "Express.js framework for web applications",
@@ -1301,6 +1337,7 @@ export const programsData = {
         title: "Database Integration",
         duration: "1 week",
         description: "Learn to work with databases in web applications",
+        icon: "fas fa-database", // Database icon
         topics: [
           "Database design principles",
           "SQL databases with MySQL/PostgreSQL",
@@ -1313,6 +1350,7 @@ export const programsData = {
         title: "Authentication & Security",
         duration: "1 week",
         description: "Implement user authentication and security best practices",
+        icon: "fas fa-lock", // Security lock icon
         topics: [
           "User authentication strategies",
           "JWT and session-based authentication",
@@ -1325,6 +1363,7 @@ export const programsData = {
         title: "Advanced Front-End Techniques",
         duration: "1 week",
         description: "Enhance user experiences with advanced front-end features",
+        icon: "fas fa-magic", // Represents advanced features and enhancement
         topics: [
           "State management in complex applications",
           "Performance optimization techniques",
@@ -1337,6 +1376,7 @@ export const programsData = {
         title: "Deployment & DevOps",
         duration: "1 week",
         description: "Deploy and manage web applications in production environments",
+        icon: "fas fa-rocket", // Represents deployment and launch
         topics: [
           "Web application deployment strategies",
           "Cloud hosting platforms (AWS, Heroku, Netlify)",
@@ -1526,6 +1566,7 @@ export const programsData = {
         title: "Introduction to Embedded Systems",
         duration: "1 week",
         description: "Understand the fundamentals of embedded systems and their applications",
+        icon: "fas fa-microchip", // Represents microcontrollers and embedded chips
         topics: [
           "Embedded systems architecture and components",
           "Types of microcontrollers and their applications",
@@ -1538,6 +1579,7 @@ export const programsData = {
         title: "Embedded C Programming",
         duration: "1 week",
         description: "Master the C programming language for microcontrollers",
+        icon: "fas fa-code", // Represents programming
         topics: [
           "C programming essentials for embedded systems",
           "Memory management in constrained environments",
@@ -1550,6 +1592,7 @@ export const programsData = {
         title: "Microcontroller Peripherals",
         duration: "1 week",
         description: "Learn to use various on-chip peripherals in microcontrollers",
+        icon: "fas fa-cogs", // Represents hardware peripherals and components
         topics: [
           "GPIO configuration and usage",
           "Timer modules and applications",
@@ -1562,6 +1605,7 @@ export const programsData = {
         title: "Communication Protocols",
         duration: "1 week",
         description: "Implement various protocols for device communication",
+        icon: "fas fa-exchange-alt", // Represents communication and data exchange
         topics: [
           "UART/USART serial communication",
           "SPI protocol for high-speed device interfacing",
@@ -1574,6 +1618,7 @@ export const programsData = {
         title: "Sensor Integration",
         duration: "1 week",
         description: "Connect and program various sensors with embedded systems",
+        icon: "fas fa-satellite-dish", // Represents sensors and sensing
         topics: [
           "Temperature and humidity sensors",
           "Accelerometers and gyroscopes",
@@ -1586,6 +1631,7 @@ export const programsData = {
         title: "Real-Time Operating Systems",
         duration: "1 week",
         description: "Implement RTOS for complex embedded applications",
+        icon: "fas fa-clock", // Represents real-time operations
         topics: [
           "RTOS concepts and benefits",
           "Task scheduling and management",
@@ -1598,6 +1644,7 @@ export const programsData = {
         title: "Power Management",
         duration: "1 week",
         description: "Design energy-efficient embedded systems",
+        icon: "fas fa-battery-half", // Represents power and energy management
         topics: [
           "Low-power operating modes",
           "Battery technologies and charging circuits",
@@ -1610,6 +1657,7 @@ export const programsData = {
         title: "System Integration and Project",
         duration: "1 week",
         description: "Apply your knowledge to design and build a complete embedded system",
+        icon: "fas fa-project-diagram", // Represents system integration and complete projects
         topics: [
           "System design methodologies",
           "PCB design fundamentals",
@@ -1799,6 +1847,7 @@ export const programsData = {
         title: "Introduction to IoT",
         duration: "1 week",
         description: "Understand the fundamentals of IoT and its applications across industries",
+        icon: "fas fa-globe-americas", // Represents global connectivity and IoT
         topics: [
           "IoT architecture and components",
           "IoT applications and use cases",
@@ -1811,6 +1860,7 @@ export const programsData = {
         title: "IoT Hardware Platforms",
         duration: "1 week",
         description: "Learn to work with popular hardware platforms for IoT development",
+        icon: "fas fa-microchip", // Represents hardware platforms and microcontrollers
         topics: [
           "Arduino ecosystem for IoT prototyping",
           "ESP32/ESP8266 for Wi-Fi-enabled IoT devices",
@@ -1823,6 +1873,7 @@ export const programsData = {
         title: "IoT Communication Protocols",
         duration: "1 week",
         description: "Master various communication technologies used in IoT applications",
+        icon: "fas fa-wifi", // Represents wireless communication and connectivity
         topics: [
           "Wi-Fi connectivity for IoT devices",
           "Bluetooth Low Energy (BLE) for short-range communication",
@@ -1835,6 +1886,7 @@ export const programsData = {
         title: "Cloud Platforms for IoT",
         duration: "1 week",
         description: "Connect IoT devices to cloud services for data management and processing",
+        icon: "fas fa-cloud-upload-alt", // Represents cloud connectivity and data upload
         topics: [
           "IoT cloud platforms overview (AWS IoT, Azure IoT, Google Cloud IoT)",
           "Device provisioning and management",
@@ -1847,6 +1899,7 @@ export const programsData = {
         title: "IoT Data Analytics",
         duration: "1 week",
         description: "Apply analytics to extract value from IoT data",
+        icon: "fas fa-chart-line", // Represents data analytics and insights
         topics: [
           "Time-series data analysis",
           "Streaming analytics for real-time insights",
@@ -1859,6 +1912,7 @@ export const programsData = {
         title: "IoT Security and Privacy",
         duration: "1 week",
         description: "Implement security measures to protect IoT systems and data",
+        icon: "fas fa-shield-alt", // Represents security and protection
         topics: [
           "IoT security challenges and threats",
           "Device security and authentication",
@@ -1871,6 +1925,7 @@ export const programsData = {
         title: "IoT Application Development",
         duration: "1 week",
         description: "Create applications that interact with IoT devices and data",
+        icon: "fas fa-mobile-alt", // Represents mobile apps and applications
         topics: [
           "Mobile app development for IoT control",
           "Web dashboards for IoT monitoring",
@@ -1883,6 +1938,7 @@ export const programsData = {
         title: "IoT Project Implementation",
         duration: "1 week",
         description: "Apply your knowledge to build a complete IoT solution",
+        icon: "fas fa-tasks", // Represents project implementation and completion
         topics: [
           "End-to-end IoT project development",
           "System integration and testing",
@@ -2115,6 +2171,7 @@ export const programsData = {
         title: "AutoCAD Fundamentals",
         duration: "1 week",
         description: "Learn the basics of AutoCAD interface and drawing tools",
+        icon: "fas fa-drafting-compass", // Represents CAD and drafting fundamentals
         topics: [
           "AutoCAD interface and navigation",
           "Basic drawing commands and tools",
@@ -2127,6 +2184,7 @@ export const programsData = {
         title: "2D Drawing and Editing",
         duration: "1 week",
         description: "Master essential 2D drafting techniques in AutoCAD",
+        icon: "fas fa-pencil-ruler", // Represents 2D drawing and drafting
         topics: [
           "Advanced drawing and editing commands",
           "Creating and managing layers",
@@ -2139,6 +2197,7 @@ export const programsData = {
         title: "Advanced 2D Techniques",
         duration: "1 week",
         description: "Explore more sophisticated 2D drafting methods",
+        icon: "fas fa-vector-square", // Represents advanced 2D geometry
         topics: [
           "Complex geometry creation",
           "Advanced dimensioning techniques",
@@ -2151,6 +2210,7 @@ export const programsData = {
         title: "Introduction to 3D Modeling",
         duration: "1 week",
         description: "Begin creating three-dimensional objects in AutoCAD",
+        icon: "fas fa-cube", // Represents 3D modeling and objects
         topics: [
           "Understanding 3D coordinate systems",
           "Creating basic 3D solids and surfaces",
@@ -2163,6 +2223,7 @@ export const programsData = {
         title: "Advanced 3D Modeling",
         duration: "1 week",
         description: "Master complex 3D modeling techniques",
+        icon: "fas fa-cubes", // Represents complex 3D assemblies
         topics: [
           "Complex solid modeling operations",
           "Surface modeling techniques",
@@ -2175,6 +2236,7 @@ export const programsData = {
         title: "Rendering and Visualization",
         duration: "1 week",
         description: "Create photorealistic renderings of your 3D models",
+        icon: "fas fa-eye", // Represents visualization and rendering
         topics: [
           "Lighting techniques in AutoCAD",
           "Material creation and application",
@@ -2187,6 +2249,7 @@ export const programsData = {
         title: "AutoCAD for Specific Industries",
         duration: "1 week",
         description: "Apply AutoCAD techniques to specific design disciplines",
+        icon: "fas fa-industry", // Represents industry-specific applications
         topics: [
           "Architectural drawing standards and techniques",
           "Mechanical design and engineering drawings",
@@ -2199,6 +2262,7 @@ export const programsData = {
         title: "Project Documentation and Output",
         duration: "1 week",
         description: "Prepare professional drawing sets and documentation",
+        icon: "fas fa-file-alt", // Represents documentation and output
         topics: [
           "Creating and managing layouts",
           "Setting up title blocks and borders",
@@ -2388,6 +2452,7 @@ export const programsData = {
         title: "Cybersecurity Fundamentals",
         duration: "1 week",
         description: "Establish a solid foundation in cybersecurity principles and frameworks",
+        icon: "fas fa-shield-alt", // Represents cybersecurity and protection
         topics: [
           "Cybersecurity concepts and terminology",
           "Threat landscape and attack vectors",
@@ -2400,6 +2465,7 @@ export const programsData = {
         title: "Network Security",
         duration: "1 week",
         description: "Learn to secure network infrastructure and communications",
+        icon: "fas fa-network-wired", // Represents network security
         topics: [
           "Network architecture and security design",
           "Firewalls and intrusion prevention systems",
@@ -2412,6 +2478,7 @@ export const programsData = {
         title: "System Security",
         duration: "1 week",
         description: "Master the protection of operating systems and endpoints",
+        icon: "fas fa-server", // Represents system and server security
         topics: [
           "Operating system hardening techniques",
           "Access control mechanisms",
@@ -2424,6 +2491,7 @@ export const programsData = {
         title: "Application Security",
         duration: "1 week",
         description: "Discover techniques for securing applications and web services",
+        icon: "fas fa-code", // Represents application and code security
         topics: [
           "Secure software development lifecycle",
           "Common vulnerabilities (OWASP Top 10)",
@@ -2436,6 +2504,7 @@ export const programsData = {
         title: "Ethical Hacking & Penetration Testing",
         duration: "1 week",
         description: "Learn offensive security techniques to identify vulnerabilities",
+        icon: "fas fa-user-secret", // Represents ethical hacking and penetration testing
         topics: [
           "Reconnaissance and information gathering",
           "Vulnerability scanning and assessment",
@@ -2448,6 +2517,7 @@ export const programsData = {
         title: "Cryptography & Data Protection",
         duration: "1 week",
         description: "Understand encryption principles and data protection strategies",
+        icon: "fas fa-key", // Represents cryptography and encryption
         topics: [
           "Cryptographic algorithms and protocols",
           "Public key infrastructure (PKI)",
@@ -2460,6 +2530,7 @@ export const programsData = {
         title: "Incident Response & Digital Forensics",
         duration: "1 week",
         description: "Develop skills to detect, respond to, and investigate security incidents",
+        icon: "fas fa-search", // Represents investigation and forensics
         topics: [
           "Security monitoring and event management",
           "Incident response procedures and playbooks",
@@ -2472,6 +2543,7 @@ export const programsData = {
         title: "Security Operations & Management",
         duration: "1 week",
         description: "Learn to manage security programs and operations effectively",
+        icon: "fas fa-cogs", // Represents security operations and management
         topics: [
           "Security operations center (SOC) functions",
           "Security awareness and training programs",
@@ -2661,6 +2733,7 @@ export const programsData = {
         title: "DevOps Fundamentals",
         duration: "1 week",
         description: "Understand the principles and practices that drive DevOps culture",
+        icon: "fas fa-infinity", // Represents DevOps continuous cycle
         topics: [
           "DevOps philosophy and benefits",
           "Development and operations collaboration",
@@ -2673,6 +2746,7 @@ export const programsData = {
         title: "Version Control & Git Workflows",
         duration: "1 week",
         description: "Master Git for source control and collaborative development",
+        icon: "fab fa-git-alt", // Git version control logo
         topics: [
           "Advanced Git commands and workflows",
           "Branching strategies (GitFlow, GitHub Flow)",
@@ -2685,6 +2759,7 @@ export const programsData = {
         title: "Continuous Integration",
         duration: "1 week",
         description: "Implement automated build and test processes",
+        icon: "fas fa-sync-alt", // Represents continuous integration
         topics: [
           "CI server setup (Jenkins, GitLab CI, GitHub Actions)",
           "Build automation and dependency management",
@@ -2697,6 +2772,7 @@ export const programsData = {
         title: "Infrastructure as Code",
         duration: "1 week",
         description: "Automate infrastructure provisioning and management",
+        icon: "fas fa-code", // Represents infrastructure as code
         topics: [
           "Infrastructure as Code principles",
           "Terraform for cloud resource provisioning",
@@ -2709,6 +2785,7 @@ export const programsData = {
         title: "Containerization with Docker",
         duration: "1 week",
         description: "Master container technology for application packaging and deployment",
+        icon: "fab fa-docker", // Docker logo
         topics: [
           "Docker architecture and components",
           "Creating efficient Dockerfiles",
@@ -2721,6 +2798,7 @@ export const programsData = {
         title: "Container Orchestration with Kubernetes",
         duration: "1 week",
         description: "Deploy and manage containerized applications at scale",
+        icon: "fas fa-dharmachakra", // Kubernetes wheel logo representation
         topics: [
           "Kubernetes architecture and components",
           "Deploying applications on Kubernetes",
@@ -2733,6 +2811,7 @@ export const programsData = {
         title: "Monitoring & Observability",
         duration: "1 week",
         description: "Implement comprehensive monitoring for applications and infrastructure",
+        icon: "fas fa-chart-line", // Represents monitoring and metrics
         topics: [
           "Monitoring strategies and best practices",
           "Metrics collection and visualization (Prometheus, Grafana)",
@@ -2745,6 +2824,7 @@ export const programsData = {
         title: "DevSecOps & Site Reliability Engineering",
         duration: "1 week",
         description: "Integrate security into DevOps workflows and ensure system reliability",
+        icon: "fas fa-shield-alt", // Represents security integration
         topics: [
           "Security in the CI/CD pipeline",
           "Infrastructure and container security scanning",
@@ -2934,6 +3014,7 @@ export const programsData = {
         title: "Android Development Fundamentals",
         duration: "1 week",
         description: "Understand the Android development environment and setup",
+        icon: "fas fa-mobile-alt", // Mobile device icon instead of fab fa-android
         topics: [
           "Android Studio installation and setup",
           "Android SDK and emulator",
@@ -2946,6 +3027,7 @@ export const programsData = {
         title: "Kotlin Programming",
         duration: "1 week",
         description: "Learn the Kotlin programming language and its key features",
+        icon: "fas fa-code", // Programming code icon
         topics: [
           "Kotlin syntax and fundamentals",
           "Variables, constants, and data types",
@@ -2958,6 +3040,7 @@ export const programsData = {
         title: "UI/UX Design",
         duration: "1 week",
         description: "Create visually appealing user interfaces for Android applications",
+        icon: "fas fa-paint-brush", // Design/paint brush icon
         topics: [
           "Android UI design principles",
           "Material Design guidelines",
@@ -2970,6 +3053,7 @@ export const programsData = {
         title: "Data Storage",
         duration: "1 week",
         description: "Implement various data storage solutions for Android apps",
+        icon: "fas fa-database", // Database icon
         topics: [
           "SQLite for local data storage",
           "Room database for object-oriented data",
@@ -2982,6 +3066,7 @@ export const programsData = {
         title: "Networking",
         duration: "1 week",
         description: "Develop network-enabled Android applications",
+        icon: "fas fa-wifi", // Wireless/networking icon
         topics: [
           "Retrofit for RESTful API integration",
           "OkHttp for efficient HTTP requests",
@@ -2994,6 +3079,7 @@ export const programsData = {
         title: "Background Services and Notifications",
         duration: "1 week",
         description: "Implement background processing and notifications in Android apps",
+        icon: "fas fa-bell", // Notification bell icon
         topics: [
           "Service and IntentService for background tasks",
           "BroadcastReceiver for system events",
@@ -3006,6 +3092,7 @@ export const programsData = {
         title: "Advanced Android Features",
         duration: "1 week",
         description: "Implement advanced features and frameworks in Android apps",
+        icon: "fas fa-rocket", // Advanced/rocket icon
         topics: [
           "Android Jetpack components (ViewModel, LiveData, Room, Navigation)",
           "Data binding and MVVM architecture",
@@ -3018,6 +3105,7 @@ export const programsData = {
         title: "Android App Development Project",
         duration: "1 week",
         description: "Apply your skills to develop a complete Android application",
+        icon: "fas fa-project-diagram", // Project/diagram icon
         topics: [
           "Project planning and requirements gathering",
           "UI/UX design and prototyping",
@@ -3211,6 +3299,7 @@ export const programsData = {
         title: "Swift Programming Fundamentals",
         duration: "1 week",
         description: "Learn the Swift programming language and its key features",
+        icon: "fas fa-code", // Programming code icon instead of fab fa-swift
         topics: [
           "Swift syntax and fundamentals",
           "Variables, constants, and data types",
@@ -3223,6 +3312,7 @@ export const programsData = {
         title: "iOS App Fundamentals",
         duration: "1 week",
         description: "Understand the core components of iOS applications",
+        icon: "fas fa-mobile-alt", // Mobile device icon instead of fab fa-apple
         topics: [
           "iOS app architecture",
           "Xcode IDE and Interface Builder",
@@ -3235,6 +3325,7 @@ export const programsData = {
         title: "User Interface Design",
         duration: "1 week",
         description: "Create engaging and responsive user interfaces",
+        icon: "fas fa-paint-brush", // Design/paint brush icon
         topics: [
           "UIKit framework fundamentals",
           "Auto Layout and adaptive interfaces",
@@ -3247,6 +3338,7 @@ export const programsData = {
         title: "Data Persistence",
         duration: "1 week",
         description: "Implement various data storage solutions for iOS apps",
+        icon: "fas fa-database", // Database icon
         topics: [
           "UserDefaults for simple storage",
           "File system operations",
@@ -3259,6 +3351,7 @@ export const programsData = {
         title: "Networking and Web Services",
         duration: "1 week",
         description: "Connect your iOS apps to web services and APIs",
+        icon: "fas fa-wifi", // Wireless/networking icon
         topics: [
           "URLSession for networking",
           "Working with REST APIs",
@@ -3271,6 +3364,7 @@ export const programsData = {
         title: "Advanced iOS Features",
         duration: "1 week",
         description: "Implement advanced features and frameworks",
+        icon: "fas fa-star", // Star icon for advanced features
         topics: [
           "Push notifications",
           "Background processing",
@@ -3283,6 +3377,7 @@ export const programsData = {
         title: "iOS App Architecture",
         duration: "1 week",
         description: "Apply robust architecture patterns to iOS applications",
+        icon: "fas fa-sitemap", // Architecture/sitemap icon
         topics: [
           "MVC, MVVM, and VIPER patterns",
           "Protocol-oriented programming",
@@ -3295,6 +3390,7 @@ export const programsData = {
         title: "Testing and Deployment",
         duration: "1 week",
         description: "Test your apps and prepare them for App Store submission",
+        icon: "fas fa-check-circle", // Testing/validation icon instead of fas fa-check-double
         topics: [
           "Unit testing with XCTest",
           "UI testing and automation",
@@ -3490,6 +3586,7 @@ programsData["ui-ux-design"] = {
       title: "Fundamentals of UI/UX Design",
       duration: "1 week",
       description: "Learn the core principles that form the foundation of effective digital design",
+      icon: "fas fa-lightbulb", // Ideas/fundamentals icon instead of fas fa-pencil-ruler
       topics: [
         "UI vs UX: Understanding the differences and relationships",
         "Design thinking methodology and problem-solving",
@@ -3502,6 +3599,7 @@ programsData["ui-ux-design"] = {
       title: "User Research & Analysis",
       duration: "1 week",
       description: "Discover how to gather and analyze user data to inform design decisions",
+      icon: "fas fa-users", // Users/research icon
       topics: [
         "User research methods and techniques",
         "Creating personas and empathy maps",
@@ -3514,6 +3612,7 @@ programsData["ui-ux-design"] = {
       title: "Visual Design Principles",
       duration: "1 week",
       description: "Master the visual aspects of interface design for aesthetically pleasing results",
+      icon: "fas fa-palette", // Design palette icon
       topics: [
         "Color theory and psychology in digital interfaces",
         "Typography for digital products",
@@ -3526,6 +3625,7 @@ programsData["ui-ux-design"] = {
       title: "Wireframing & Prototyping",
       duration: "1 week",
       description: "Transform concepts into testable prototypes through various fidelity levels",
+      icon: "fas fa-edit", // Wireframing/editing icon instead of fas fa-drafting-compass
       topics: [
         "Sketching and low-fidelity wireframing",
         "Digital wireframing with design tools",
@@ -3538,6 +3638,7 @@ programsData["ui-ux-design"] = {
       title: "UI Design with Industry Tools",
       duration: "1 week",
       description: "Gain proficiency in professional design software used in the industry",
+      icon: "fas fa-tools", // Design tools icon
       topics: [
         "Mastering Figma for collaborative design",
         "Working with components and design systems",
@@ -3550,6 +3651,7 @@ programsData["ui-ux-design"] = {
       title: "Frontend Implementation",
       duration: "1 week",
       description: "Learn how to implement designs using web technologies",
+      icon: "fas fa-code", // Code implementation icon
       topics: [
         "HTML5 and semantic markup for designers",
         "CSS fundamentals and layout techniques",
@@ -3562,6 +3664,7 @@ programsData["ui-ux-design"] = {
       title: "Usability Testing & Optimization",
       duration: "1 week",
       description: "Validate designs through testing and improve based on user feedback",
+      icon: "fas fa-search", // Testing/search icon
       topics: [
         "Usability testing methodologies",
         "Remote vs. in-person testing techniques",
@@ -3574,6 +3677,7 @@ programsData["ui-ux-design"] = {
       title: "Advanced UI/UX Topics & Portfolio",
       duration: "1 week",
       description: "Explore specialized areas and build a professional portfolio",
+      icon: "fas fa-graduation-cap", // Portfolio/graduation icon
       topics: [
         "Accessibility standards and inclusive design",
         "Designing for different platforms (mobile, web, desktop)",

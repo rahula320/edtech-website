@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { generateCourseBrochure } from '../utils/pdfGenerator';
 import './ProgramDetail.css';
 
 function ProgramDetail({ programsData }) {
@@ -126,6 +127,12 @@ function ProgramDetail({ programsData }) {
     }
   };
 
+  const handleDownloadBrochure = () => {
+    if (program) {
+      generateCourseBrochure(program);
+    }
+  };
+
   if (!program) {
     return (
       <div className="program-not-found">
@@ -177,9 +184,9 @@ function ProgramDetail({ programsData }) {
               </button>
               <button 
                 className="cta-button secondary"
-                onClick={() => setSelectedTab('curriculum')}
+                onClick={handleDownloadBrochure}
               >
-                View Curriculum
+                <i className="fas fa-download"></i> Download Brochure
               </button>
             </div>
           </div>
@@ -219,6 +226,12 @@ function ProgramDetail({ programsData }) {
                 onClick={() => handleEnrollNow()}
               >
                 <i className="fas fa-graduation-cap"></i> Enroll Now
+              </button>
+              <button 
+                className="nav-curriculum-button"
+                onClick={handleDownloadBrochure}
+              >
+                <i className="fas fa-download"></i> Download Brochure
               </button>
             </div>
           </div>
@@ -291,16 +304,31 @@ function ProgramDetail({ programsData }) {
             {program.curriculumIntro && <p className="curriculum-intro">{program.curriculumIntro}</p>}
             
             <div className="modules-container">
-              {/* Only render modules array, don't render curriculum weeks */}
               {program.modules && Array.isArray(program.modules) && program.modules.map((module, index) => (
                 <div key={index} className="module-card">
                   <div className="module-header">
-                    <h3>
-                      <span className="module-number">Module {index + 1}</span>
-                      {module.title}
-                    </h3>
+                    {module.icon && (
+                      <div className="module-icon">
+                        <i className={module.icon}></i>
+                      </div>
+                    )}
+                    <div className="module-title-section">
+                      <h3>
+                        <span className="module-number">Module {index + 1}</span>
+                        {module.title}
+                      </h3>
+                      {module.duration && (
+                        <span className="module-duration">
+                          <i className="fas fa-clock"></i>
+                          {module.duration}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="module-content">
+                    {module.description && (
+                      <p className="module-description">{module.description}</p>
+                    )}
                     {module.topics && module.topics.length > 0 && (
                       <ul className="module-topics">
                         {module.topics.map((topic, i) => (
