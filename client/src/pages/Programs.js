@@ -165,20 +165,6 @@ const Programs = () => {
                   </div>
                   <div className="program-content">
                     <h3>{program.title}</h3>
-                    <div className="program-meta">
-                      <div className="meta-item duration">
-                        <i className="fas fa-hourglass-half"></i>
-                        <span>{program.duration}</span>
-                      </div>
-                      <div className="meta-item format">
-                        <i className="fas fa-laptop-house"></i>
-                        <span>{program.format}</span>
-                      </div>
-                      <div className="meta-item level">
-                        <i className="fas fa-chart-line"></i>
-                        <span>{program.level}</span>
-                      </div>
-                    </div>
                     <div className="program-description">
                       {program.description}
                     </div>
