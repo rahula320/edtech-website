@@ -1,0 +1,97 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://acmyx.com/#organization",
+      "name": "ACMYX",
+      "alternateName": ["ACMYX Education", "ACMYX Platform", "ACMYX Learning"],
+      "url": "https://acmyx.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://acmyx.com/images/logo.png",
+        "width": "300",
+        "height": "100"
+      },
+      "description": "ACMYX is a leading education platform specializing in professional development, internships, and training programs in technology fields including Data Science, AI, Web Development, and Cloud Computing.",
+      "foundingDate": "2020",
+      "industry": "Education Technology",
+      "keywords": ["ACMYX", "education", "internships", "training", "data science", "AI", "web development", "cloud computing"],
+      "brand": {
+        "@type": "Brand",
+        "name": "ACMYX",
+        "logo": "https://acmyx.com/images/logo.png"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "15th Cross, 15th Main Road, HSR Layout",
+        "addressLocality": "Bangalore",
+        "addressRegion": "Karnataka",
+        "postalCode": "560102",
+        "addressCountry": "IN"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+91-XXXXXXXXXX",
+          "contactType": "customer service",
+          "email": "acmyxteams@gmail.com",
+          "availableLanguage": ["English", "Hindi"]
+        }
+      ],
+      "sameAs": [
+        "https://acmyx.com",
+        "https://www.linkedin.com/company/acmyx",
+        "https://twitter.com/acmyx",
+        "https://www.facebook.com/acmyx"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "ACMYX Education Programs",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Course",
+              "name": "Data Science Internship Program",
+              "provider": "ACMYX"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Course",
+              "name": "AI & Machine Learning Training",
+              "provider": "ACMYX"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Course",
+              "name": "Web Development Bootcamp",
+              "provider": "ACMYX"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://acmyx.com/#website",
+      "url": "https://acmyx.com",
+      "name": "ACMYX - Education Platform",
+      "description": "Official website of ACMYX education platform offering internships and training programs",
+      "inLanguage": "en-US",
+      "isPartOf": {
+        "@id": "https://acmyx.com/#organization"
+      },
+      "about": {
+        "@id": "https://acmyx.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://acmyx.com/#organization"
+      }
+    }
+  ]
+} 
