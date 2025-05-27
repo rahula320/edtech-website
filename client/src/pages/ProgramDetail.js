@@ -10,6 +10,7 @@ function ProgramDetail({ programsData }) {
   const pricingRef = useRef(null);
   const [activeFaq, setActiveFaq] = useState(null);
   const [showAllFaqs, setShowAllFaqs] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     // In a real app, this would fetch data from an API
@@ -127,9 +128,14 @@ function ProgramDetail({ programsData }) {
     }
   };
 
-  const handleDownloadBrochure = () => {
-    if (program) {
-      generateCourseBrochure(program);
+  const handleDownloadBrochure = async () => {
+    setIsDownloading(true);
+    try {
+      await generateCourseBrochure(program);
+    } catch (error) {
+      console.error('Error downloading brochure:', error);
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -145,6 +151,16 @@ function ProgramDetail({ programsData }) {
 
   return (
     <div className="program-detail-page">
+      {isDownloading && (
+        <div className="download-overlay">
+          <div className="download-content">
+            <div className="download-spinner"></div>
+            <h3>Preparing Your Brochure</h3>
+            <p>Please wait while we generate your course brochure...</p>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="program-hero">
         <div className="program-hero-content container">
