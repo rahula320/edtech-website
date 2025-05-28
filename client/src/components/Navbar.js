@@ -1,12 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
+import OfferAd from './OfferAd';
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [programsDropdownOpen, setProgramsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const timeoutRef = useRef(null);
+  const location = useLocation();
+
+  // Close dropdown when route changes (page loads)
+  useEffect(() => {
+    setProgramsDropdownOpen(false);
+  }, [location.pathname]);
 
   // Handle hover events for desktop dropdown
   const handleMouseEnter = () => {
@@ -93,13 +100,13 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/">
+        <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <img src="/images/logo.png" alt="ACMYX Logo" className="navbar-logo" />
         </Link>
       </div>
       
       <div className="navbar-links">
-        <Link to="/"><i className="fas fa-home"></i> Home</Link>
+        <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}><i className="fas fa-home"></i> Home</Link>
         
         <div 
           className="dropdown-container" 
@@ -110,7 +117,14 @@ function Navbar() {
           <Link
             to="/programs"
             className={`dropdown-toggle ${programsDropdownOpen ? 'active' : ''}`}
-            onClick={() => setProgramsDropdownOpen(false)}
+            onClick={(e) => {
+              if (location.pathname.startsWith('/programs')) {
+                e.preventDefault();
+                setProgramsDropdownOpen((open) => !open);
+              } else {
+                setProgramsDropdownOpen(false);
+              }
+            }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
@@ -120,6 +134,9 @@ function Navbar() {
           
           <div className={`mega-dropdown ${programsDropdownOpen ? 'open' : ''}`}>
             <div className="mega-dropdown-content">
+              <div className="offer-strip-container">
+                <OfferAd className="strip" scrollToPricing={true} />
+              </div>
               <div className="mega-dropdown-grid">
                 {programCategories.map((category, idx) => (
                   <div className="dropdown-category" key={idx}>
@@ -132,7 +149,13 @@ function Navbar() {
                           <Link 
                             to={program.path} 
                             className="program-link"
-                            onClick={() => setProgramsDropdownOpen(false)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setProgramsDropdownOpen(false);
+                              if (timeoutRef.current) {
+                                clearTimeout(timeoutRef.current);
+                              }
+                            }}
                           >
                             <i className={program.icon}></i> {program.name}
                             <span className="hover-indicator"></span>
@@ -175,6 +198,9 @@ function Navbar() {
               
               {programsDropdownOpen && (
                 <div className="mobile-dropdown-menu">
+                  <div className="offer-strip-container">
+                    <OfferAd className="strip" scrollToPricing={true} />
+                  </div>
                   {programCategories.map((category, idx) => (
                     <div className="mobile-category" key={idx}>
                       <h5 className="mobile-category-title">

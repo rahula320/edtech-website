@@ -518,6 +518,14 @@ function ProgramDetail({ programsData }) {
               >
                 Enroll Now
               </button>
+              {/* Coupon Code Display */}
+              <div className="coupon-display">
+                <div className="coupon-icon">🎟️</div>
+                <div className="coupon-text">
+                  <span className="coupon-label">Use Coupon Code:</span>
+                  <span className="coupon-code-highlight">ACMYX300</span>
+                </div>
+              </div>
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
@@ -560,6 +568,14 @@ function ProgramDetail({ programsData }) {
               >
                 Enroll Now
               </button>
+              {/* Coupon Code Display */}
+              <div className="coupon-display">
+                <div className="coupon-icon">🎟️</div>
+                <div className="coupon-text">
+                  <span className="coupon-label">Use Coupon Code:</span>
+                  <span className="coupon-code-highlight">ACMYX300</span>
+                </div>
+              </div>
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Guided with mentor feedback)</span>
@@ -605,9 +621,17 @@ function ProgramDetail({ programsData }) {
               >
                 Enroll Now
               </button>
+              {/* Coupon Code Display */}
+              <div className="coupon-display">
+                <div className="coupon-icon">🎟️</div>
+                <div className="coupon-text">
+                  <span className="coupon-label">Use Coupon Code:</span>
+                  <span className="coupon-code-highlight">ACMYX300</span>
+                </div>
+              </div>
               <ul className="plan-features">
                 <li>
-                  <span className="feature-text">💡 Real-Time Projects (Industry Capstone Projects)</span>
+                  <span className="feature-text">�� Real-Time Projects (Industry Capstone Projects)</span>
                   <span className="feature-status included"><i className="fas fa-check"></i></span>
                 </li>
                 <li>

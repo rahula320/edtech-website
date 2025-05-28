@@ -3801,4 +3801,19 @@ html body .home .desktop-carousel-override .hero-image {
     font-size: 0.95rem;
   }
 }
+
+.browse-programs.section-spacing {
+  margin-top: 0 !important;
+  padding-top: 1.5rem !important;
+}
+
+.hero-carousel {
+  margin-bottom: 0 !important;
+}
+
+/* Optionally, reduce section-spacing for the first section after hero */
+.browse-programs {
+  margin-top: 0 !important;
+  padding-top: 1.5rem !important;
+}
   

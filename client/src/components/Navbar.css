@@ -156,6 +156,23 @@
   gap: 1rem;
 }
 
+.offer-strip-container {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+
+.offer-strip-container .offer-ad.strip {
+  max-width: 100%;
+  margin: 0;
+  transform: none;
+  animation: none;
+}
+
+.offer-strip-container .offer-ad.strip:hover {
+  transform: scale(1.02);
+}
+
 .mega-dropdown-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -341,6 +358,25 @@
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   animation: mobileMenuFadeIn 0.3s ease;
+}
+
+.mobile-dropdown-menu .offer-strip-container {
+  margin: -1rem -1rem 1rem -1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-dropdown-menu .offer-strip-container .offer-ad.strip {
+  max-width: 100%;
+  margin: 0;
+  transform: none;
+  animation: none;
+  background: linear-gradient(135deg, #ff6b35 0%, #e74c3c 100%);
+}
+
+.mobile-dropdown-menu .offer-strip-container .offer-ad.strip:hover {
+  transform: scale(1.02);
 }
 
 @keyframes mobileMenuFadeIn {
@@ -613,6 +649,25 @@
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   animation: mobileMenuFadeIn 0.3s ease;
+}
+
+.mobile-dropdown-menu .offer-strip-container {
+  margin: -1rem -1rem 1rem -1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-dropdown-menu .offer-strip-container .offer-ad.strip {
+  max-width: 100%;
+  margin: 0;
+  transform: none;
+  animation: none;
+  background: linear-gradient(135deg, #ff6b35 0%, #e74c3c 100%);
+}
+
+.mobile-dropdown-menu .offer-strip-container .offer-ad.strip:hover {
+  transform: scale(1.02);
 }
 
 .mobile-category-title {
