@@ -88,6 +88,7 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
+  padding-bottom: 1rem;
 }
 
 /* Dropdown toggle styles moved to the navbar-links section above */
@@ -126,12 +127,14 @@
   transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
   transform: translateX(-50%) translateY(10px);
   border: 1px solid rgba(255, 255, 255, 0.05);
+  pointer-events: none;
 }
 
 .mega-dropdown.open {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
 }
 
 .mega-dropdown:before {
@@ -637,4 +640,12 @@
 .mobile-program-link:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: white !important;
+}
+
+/* Ensure the dropdown stays open when hovering over it */
+.dropdown-container:hover .mega-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
 } 

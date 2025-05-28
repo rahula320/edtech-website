@@ -19,7 +19,7 @@ function Navbar() {
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setProgramsDropdownOpen(false);
-    }, 300); // Small delay to prevent accidental closes
+    }, 500); // Increased delay to 500ms for better user experience
   };
 
   // Toggle for mobile menu
@@ -129,7 +129,11 @@ function Navbar() {
                     <ul className="category-programs">
                       {category.programs.map((program, progIdx) => (
                         <li key={progIdx}>
-                          <Link to={program.path} className="program-link">
+                          <Link 
+                            to={program.path} 
+                            className="program-link"
+                            onClick={() => setProgramsDropdownOpen(false)}
+                          >
                             <i className={program.icon}></i> {program.name}
                             <span className="hover-indicator"></span>
                           </Link>
@@ -203,4 +207,4 @@ function Navbar() {
   );
 }
 
-export default Navbar; 
+export default Navbar;
