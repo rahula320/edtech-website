@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Programs.css';
 import { allPrograms } from '../data/programsData';
+import OfferAd from '../components/OfferAd';
 
 // Make sure we have properly formatted objects in the array
 const formattedPrograms = Object.entries(allPrograms).map(([key, program]) => {
@@ -84,6 +85,11 @@ const Programs = () => {
 
   return (
     <div className="programs-page">
+      {/* Floating Offer Strip */}
+      <div className="floating-offer-badge">
+        <OfferAd className="strip" scrollToPricing={false} />
+      </div>
+
       {/* Main Programs Section */}
       <section className="programs-main">
         <div className="container">

@@ -107,9 +107,16 @@ function Navbar() {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className={`dropdown-toggle ${programsDropdownOpen ? 'active' : ''}`}>
+          <Link
+            to="/programs"
+            className={`dropdown-toggle ${programsDropdownOpen ? 'active' : ''}`}
+            onClick={() => setProgramsDropdownOpen(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+          >
             <i className="fas fa-laptop-code"></i> Programs <i className={`fas fa-chevron-down arrow ${programsDropdownOpen ? 'rotated' : ''}`}></i>
-          </div>
+          </Link>
           
           <div className={`mega-dropdown ${programsDropdownOpen ? 'open' : ''}`}>
             <div className="mega-dropdown-content">

@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 import ContactService from '../utils/contactService';
+import OfferAd from '../components/OfferAd';
+import OfferPopup from '../components/OfferPopup';
 
 // Program ID mapping function
 const getProgramId = (title) => {
@@ -574,6 +576,13 @@ function Home() {
   const [activeFaq, setActiveFaq] = useState(null);
   const [showAllFaqs, setShowAllFaqs] = useState(false);
 
+  // State for offer popup
+  const [showOfferPopup, setShowOfferPopup] = useState(true);
+
+  const handleClosePopup = () => {
+    setShowOfferPopup(false);
+  };
+
   return (
     <div className="home">
       {/* Background geometric shapes */}
@@ -583,10 +592,10 @@ function Home() {
       <div className="geometric-shape-4"></div>
       <div className="geometric-shape-5"></div>
 
-      {/* Internship Delegate Badge */}
-      <Link to="/careers#internship-delegate" className="internship-badge">
-        <i className="fas fa-user-graduate"></i> Internship Delegate Openings
-      </Link>
+      {/* Offer Badge - Floating promotional offer */}
+      <div className="floating-offer-badge">
+        <OfferAd className="strip" scrollToPricing={true} />
+      </div>
 
       {/* Mobile Menu Toggle Button */}
       <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
@@ -970,6 +979,16 @@ function Home() {
               >
                 Enroll Now
               </button>
+              
+              {/* Coupon Code Display */}
+              <div className="coupon-display">
+                <div className="coupon-icon">🎟️</div>
+                <div className="coupon-text">
+                  <span className="coupon-label">Use Coupon Code:</span>
+                  <span className="coupon-code-highlight">ACMYX300</span>
+                </div>
+              </div>
+              
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
@@ -1012,6 +1031,16 @@ function Home() {
               >
                 Enroll Now
               </button>
+              
+              {/* Coupon Code Display */}
+              <div className="coupon-display">
+                <div className="coupon-icon">🎟️</div>
+                <div className="coupon-text">
+                  <span className="coupon-label">Use Coupon Code:</span>
+                  <span className="coupon-code-highlight">ACMYX300</span>
+                </div>
+              </div>
+              
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Guided with mentor feedback)</span>
@@ -1057,6 +1086,16 @@ function Home() {
               >
                 Enroll Now
               </button>
+              
+              {/* Coupon Code Display */}
+              <div className="coupon-display">
+                <div className="coupon-icon">🎟️</div>
+                <div className="coupon-text">
+                  <span className="coupon-label">Use Coupon Code:</span>
+                  <span className="coupon-code-highlight">ACMYX300</span>
+                </div>
+              </div>
+              
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Industry Capstone Projects)</span>
@@ -1375,6 +1414,9 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Offer Popup */}
+      {showOfferPopup && <OfferPopup onClose={handleClosePopup} />}
     </div>
   );
 }

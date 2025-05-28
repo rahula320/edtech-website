@@ -282,17 +282,28 @@
 }
 
 .benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
   gap: 2.5rem;
 }
 
 .benefit-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1 1 250px;
+  min-width: 250px;
+  max-width: 350px;
   text-align: center;
   padding: 2.5rem 1.5rem;
   border-radius: var(--card-radius);
   background-color: var(--background-light);
   transition: var(--transition-standard);
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .benefit-card:hover {
@@ -301,8 +312,8 @@
 }
 
 .benefit-icon {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   background: var(--primary-gradient);
   display: flex;
@@ -310,7 +321,21 @@
   justify-content: center;
   margin: 0 auto 1.5rem;
   color: white;
+  box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08);
+  transition: box-shadow 0.3s;
+  flex-shrink: 0;
+}
+
+.benefit-icon i {
   font-size: 2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefit-card:hover .benefit-icon {
+  box-shadow: 0 8px 24px rgba(44, 62, 80, 0.15);
 }
 
 .benefit-card h3 {
@@ -563,6 +588,18 @@
   .stat-item:nth-child(2n)::after {
     display: none;
   }
+
+  .benefits-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+  }
+  
+  .benefit-card {
+    max-width: 350px;
+    width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -575,7 +612,17 @@
   }
 
   .benefits-grid {
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+  }
+  
+  .benefit-card {
+    flex: 1 1 calc(50% - 2rem);
+    min-width: 250px;
+    max-width: 350px;
   }
 
   .cta-content h2 {
@@ -605,7 +652,21 @@
   }
 
   .benefits-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .benefit-card {
+    width: 100%;
+    max-width: 350px;
+  }
+  
+  .benefit-icon {
+    margin: 0 auto 1.5rem;
+    width: 85px;
+    height: 85px;
   }
 
   .cta-content h2 {

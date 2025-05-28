@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { generateCourseBrochure } from '../utils/pdfGenerator';
+import OfferAd from '../components/OfferAd';
 import './ProgramDetail.css';
 
 function ProgramDetail({ programsData }) {
@@ -151,6 +152,11 @@ function ProgramDetail({ programsData }) {
 
   return (
     <div className="program-detail-page">
+      {/* Floating Offer Strip */}
+      <div className="floating-offer-badge">
+        <OfferAd className="strip" scrollToPricing={true} />
+      </div>
+
       {isDownloading && (
         <div className="download-overlay">
           <div className="download-content">

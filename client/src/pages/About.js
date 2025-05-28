@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './About.css';
+import OfferAd from '../components/OfferAd';
 
 function About() {
   return (
@@ -109,6 +110,13 @@ function About() {
               </ul>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Offer Ad Component - After programs information */}
+      <section className="offer-section section-spacing">
+        <div className="responsive-container">
+          <OfferAd />
         </div>
       </section>
 

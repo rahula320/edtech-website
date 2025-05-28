@@ -133,16 +133,20 @@ function Internships() {
               textAlign: 'center'
             }}>
               <div style={{
-                width: '80px',
-                height: '80px',
+                width: '90px',
+                height: '90px',
                 borderRadius: '50%',
-                background: '#ebf8ff',
+                background: 'linear-gradient(135deg, #3182ce, #4f46e5)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 1.5rem'
+                margin: '0 auto 1.5rem',
+                color: 'white',
+                fontSize: '2.7rem',
+                boxShadow: '0 4px 16px rgba(44, 62, 80, 0.08)',
+                flexShrink: 0
               }}>
-                <i className="fas fa-graduation-cap" style={{ fontSize: '2.5rem', color: '#3182ce' }}></i>
+                <i className="fas fa-graduation-cap" style={{ fontSize: '2rem', color: 'white' }}></i>
               </div>
               <h3 style={{ marginBottom: '1rem', color: '#1a2b49' }}>One Single Enrollment</h3>
               <p style={{ color: '#4a5568' }}>
@@ -161,16 +165,20 @@ function Internships() {
               textAlign: 'center'
             }}>
               <div style={{
-                width: '80px',
-                height: '80px',
+                width: '90px',
+                height: '90px',
                 borderRadius: '50%',
-                background: '#ebf8ff',
+                background: 'linear-gradient(135deg, #3182ce, #4f46e5)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 1.5rem'
+                margin: '0 auto 1.5rem',
+                color: 'white',
+                fontSize: '2.7rem',
+                boxShadow: '0 4px 16px rgba(44, 62, 80, 0.08)',
+                flexShrink: 0
               }}>
-                <i className="fas fa-project-diagram" style={{ fontSize: '2.5rem', color: '#3182ce' }}></i>
+                <i className="fas fa-project-diagram" style={{ fontSize: '2rem', color: 'white' }}></i>
               </div>
               <h3 style={{ marginBottom: '1rem', color: '#1a2b49' }}>Seamless Transition</h3>
               <p style={{ color: '#4a5568' }}>
@@ -189,16 +197,20 @@ function Internships() {
               textAlign: 'center'
             }}>
               <div style={{
-                width: '80px',
-                height: '80px',
+                width: '90px',
+                height: '90px',
                 borderRadius: '50%',
-                background: '#ebf8ff',
+                background: 'linear-gradient(135deg, #3182ce, #4f46e5)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 1.5rem'
+                margin: '0 auto 1.5rem',
+                color: 'white',
+                fontSize: '2.7rem',
+                boxShadow: '0 4px 16px rgba(44, 62, 80, 0.08)',
+                flexShrink: 0
               }}>
-                <i className="fas fa-certificate" style={{ fontSize: '2.5rem', color: '#3182ce' }}></i>
+                <i className="fas fa-certificate" style={{ fontSize: '2rem', color: 'white' }}></i>
               </div>
               <h3 style={{ marginBottom: '1rem', color: '#1a2b49' }}>Complete Package</h3>
               <p style={{ color: '#4a5568' }}>
@@ -282,159 +294,6 @@ function Internships() {
                   </div>
                 </li>
               </ol>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Certificates & Recognition */}
-      <section className="certificates-section section-spacing">
-        <div className="container">
-          <h2>Certificates & Recognition</h2>
-          
-          <div className="overview-content" style={{ marginTop: '2rem' }}>
-            <div className="overview-text">
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'center',
-                marginBottom: '2.5rem',
-                background: 'white',
-                padding: '2rem',
-                borderRadius: '8px',
-                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)'
-              }}>
-                <img 
-                  src="https://edu-versity.in/wp-content/uploads/2024/03/edubannerlogo.jpg" 
-                  alt="Wipro DICE ID Certification" 
-                  style={{ 
-                    width: '400px', 
-                    height: 'auto',
-                    borderRadius: '4px'
-                  }} 
-                />
-              </div>
-              
-              <h3 style={{ 
-                marginBottom: '1.5rem', 
-                color: '#1a2b49',
-                fontSize: '1.5rem'
-              }}>Industry-Recognized Credentials</h3>
-              
-              <div className="certificate-types" style={{ 
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '1.5rem',
-                marginBottom: '2rem'
-              }}>
-                <div className="certificate-item" style={{ 
-                  padding: '1.2rem', 
-                  background: 'white', 
-                  borderRadius: '8px',
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.8rem' }}>
-                    <i className="fas fa-certificate" style={{ color: '#3182ce', fontSize: '1.2rem', marginTop: '0.2rem' }}></i>
-                    <div>
-                      <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem' }}>Training Completion Certificate</h4>
-                      <p style={{ margin: 0, color: '#4a5568', fontSize: '0.95rem' }}>Validates successful completion of the 2-month course phase</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="certificate-item" style={{ 
-                  padding: '1.2rem', 
-                  background: 'white', 
-                  borderRadius: '8px',
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.8rem' }}>
-                    <i className="fas fa-certificate" style={{ color: '#3182ce', fontSize: '1.2rem', marginTop: '0.2rem' }}></i>
-                    <div>
-                      <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem' }}>Internship Completion Certificate</h4>
-                      <p style={{ margin: 0, color: '#4a5568', fontSize: '0.95rem' }}>Documents your industry project work during the 4-week internship</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="certificate-item" style={{ 
-                  padding: '1.2rem', 
-                  background: 'white', 
-                  borderRadius: '8px',
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.8rem' }}>
-                    <i className="fas fa-award" style={{ color: '#f6ad55', fontSize: '1.2rem', marginTop: '0.2rem' }}></i>
-                    <div>
-                      <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem' }}>Outstanding Performance Certificate</h4>
-                      <p style={{ margin: 0, color: '#4a5568', fontSize: '0.95rem' }}>Awarded to top performers based on project quality and mentor feedback</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div style={{ 
-                padding: '1.5rem', 
-                background: '#f8fafc',
-                borderRadius: '8px',
-                border: '1px solid #e2e8f0',
-                marginBottom: '2rem'
-              }}>
-                <h4 style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  margin: '0 0 1rem 0',
-                  color: '#2d3748',
-                  fontSize: '1.2rem'
-                }}>
-                  <i className="fas fa-money-bill-wave" style={{ color: '#3182ce', marginRight: '10px' }}></i>
-                  Stipends for Outstanding Performers
-                </h4>
-                <p style={{ margin: '0 0 1rem 0', fontSize: '0.95rem' }}>
-                  Outstanding students may receive stipends ranging from ₹18,000 to ₹25,000, based entirely on performance.
-                </p>
-                <p style={{ 
-                  margin: 0,
-                  fontSize: '0.9rem',
-                  fontStyle: 'italic',
-                  color: '#4a5568' 
-                }}>
-                  <strong>Note:</strong> Stipends are awarded only to exceptional performers and are not guaranteed to all participants.
-                </p>
-              </div>
-            </div>
-            
-            <div className="overview-stats" style={{ 
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem'
-            }}>
-              <div className="stat-card" style={{ 
-                textAlign: 'center',
-                padding: '1.5rem',
-                background: 'linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%)',
-                borderRadius: '8px'
-              }}>
-                <span className="stat-number">3</span>
-                <span className="stat-label">Certificates</span>
-              </div>
-              <div className="stat-card" style={{ 
-                textAlign: 'center',
-                padding: '1.5rem',
-                background: 'linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%)',
-                borderRadius: '8px'
-              }}>
-                <span className="stat-number">WIPRO</span>
-                <span className="stat-label">DICE ID Certified</span>
-              </div>
-              <div className="stat-card" style={{ 
-                textAlign: 'center',
-                padding: '1.5rem',
-                background: 'linear-gradient(135deg, #fff5f7 0%, #fed7e2 100%)',
-                borderRadius: '8px'
-              }}>
-                <span className="stat-number">₹18-25K</span>
-                <span className="stat-label">Potential Stipend</span>
-              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Contact.css';
 import ContactService from '../utils/contactService';
+import OfferAd from '../components/OfferAd';
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -230,6 +231,13 @@ function Contact() {
               </form>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Offer Ad Component - After contact form */}
+      <section className="offer-section section-spacing">
+        <div className="container">
+          <OfferAd className="compact" />
         </div>
       </section>
 

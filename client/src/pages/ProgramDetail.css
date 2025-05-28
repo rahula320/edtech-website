@@ -1574,4 +1574,64 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Floating Offer Badge */
+.floating-offer-badge {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 1000;
+  transform: rotate(2deg);
+  animation: floatOffer 4s ease-in-out infinite;
+}
+
+.floating-offer-badge .offer-ad {
+  box-shadow: 0 6px 20px rgba(44, 123, 229, 0.4);
+  border: none;
+}
+
+.floating-offer-badge .offer-ad.strip {
+  background: linear-gradient(135deg, #ff6b35 0%, #e74c3c 100%);
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+  animation: pulseStrip 3s infinite;
+}
+
+.floating-offer-badge .offer-ad.strip:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.6);
+}
+
+@keyframes floatOffer {
+  0%, 100% {
+    transform: rotate(2deg) translateY(0px);
+  }
+  50% {
+    transform: rotate(2deg) translateY(-8px);
+  }
+}
+
+@keyframes pulseStrip {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+  }
+  50% {
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-offer-badge {
+    top: 85px;
+    right: 15px;
+    transform: rotate(1deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-offer-badge {
+    top: 75px;
+    right: 10px;
+    transform: rotate(1deg);
+  }
 } 
