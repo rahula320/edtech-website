@@ -193,17 +193,23 @@ function Navbar() {
           </button>
           
           <div className="navbar-mobile-links">
-            <Link to="/" onClick={toggleMobileMenu}><i className="fas fa-home"></i> Home</Link>
+            <Link to="/" onClick={toggleMobileMenu} className="enhanced-mobile-main-link"><i className="fas fa-home"></i> Home</Link>
             
             <div className="mobile-dropdown">
-              <button className="mobile-dropdown-toggle" onClick={toggleProgramsDropdown}>
+              <button
+                className={`mobile-dropdown-toggle enhanced-mobile-main-link`}
+                onClick={() => setProgramsDropdownOpen(open => !open)}
+                aria-expanded={programsDropdownOpen}
+                aria-controls="programs-mobile-dropdown-menu"
+                type="button"
+              >
                 <i className="fas fa-laptop-code"></i> Programs {programsDropdownOpen ? 
                   <i className="fas fa-chevron-up"></i> : 
                   <i className="fas fa-chevron-down"></i>}
               </button>
               
               {programsDropdownOpen && (
-                <div className="mobile-dropdown-menu">
+                <div className="mobile-dropdown-menu" id="programs-mobile-dropdown-menu">
                   <div className="offer-strip-container">
                     <OfferAd className="strip" scrollToPricing={true} />
                   </div>
@@ -215,15 +221,25 @@ function Navbar() {
                       {category.programs.map((program, progIdx) => (
                         <button
                           key={progIdx}
-                          className="mobile-program-link"
+                          className="mobile-program-link enhanced-mobile-program-link"
                           onClick={() => {
                             setProgramsDropdownOpen(false);
                             setMobileMenuOpen(false);
-                            navigate(program.path);
+                            setTimeout(() => navigate(program.path), 0);
                           }}
-                          style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', padding: 0 }}
+                          tabIndex={0}
+                          aria-label={`Go to ${program.name} course page`}
+                          role="button"
+                          type="button"
+                          onKeyDown={e => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              setProgramsDropdownOpen(false);
+                              setMobileMenuOpen(false);
+                              setTimeout(() => navigate(program.path), 0);
+                            }
+                          }}
                         >
-                          <i className={program.icon}></i> {program.name}
+                          <i className={program.icon} style={{ marginRight: 10, color: '#fff', fontSize: '1.1rem' }}></i> {program.name}
                         </button>
                       ))}
                     </div>
@@ -232,10 +248,10 @@ function Navbar() {
               )}
             </div>
             
-            <Link to="/about" onClick={toggleMobileMenu}><i className="fas fa-info-circle"></i> About</Link>
-            <Link to="/careers" onClick={toggleMobileMenu}><i className="fas fa-briefcase"></i> Careers</Link>
-            <Link to="/faq" onClick={toggleMobileMenu}><i className="fas fa-question-circle"></i> FAQ</Link>
-            <Link to="/internships" onClick={toggleMobileMenu}><i className="fas fa-user-graduate"></i> Internships</Link>
+            <Link to="/about" onClick={toggleMobileMenu} className="enhanced-mobile-main-link"><i className="fas fa-info-circle"></i> About</Link>
+            <Link to="/careers" onClick={toggleMobileMenu} className="enhanced-mobile-main-link"><i className="fas fa-briefcase"></i> Careers</Link>
+            <Link to="/faq" onClick={toggleMobileMenu} className="enhanced-mobile-main-link"><i className="fas fa-question-circle"></i> FAQ</Link>
+            <Link to="/internships" onClick={toggleMobileMenu} className="enhanced-mobile-main-link"><i className="fas fa-user-graduate"></i> Internships</Link>
           </div>
         </div>
       )}
