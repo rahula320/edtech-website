@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import OfferAd from './OfferAd';
 
@@ -9,6 +9,7 @@ function Navbar() {
   const dropdownRef = useRef(null);
   const timeoutRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Close dropdown when route changes (page loads)
   useEffect(() => {
@@ -176,13 +177,18 @@ function Navbar() {
         <Link to="/internships"><i className="fas fa-user-graduate"></i> Internships</Link>
       </div>
       
-      <button className="menu-button" onClick={toggleMobileMenu}>
-        <i className="fas fa-bars"></i>
+      <button className="menu-button" onClick={toggleMobileMenu} aria-label="Open menu">
+        <i className="fas fa-ellipsis-v"></i>
       </button>
       
       {mobileMenuOpen && (
-        <div className={`navbar-mobile ${mobileMenuOpen ? 'active' : ''}`}>
-          <button className="navbar-mobile-close" onClick={toggleMobileMenu}>
+        <div className={`navbar-mobile ${mobileMenuOpen ? 'active' : ''}`} style={{
+          background: 'rgba(20, 30, 40, 0.75)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          transition: 'background 0.3s cubic-bezier(0.4,0,0.2,1)'
+        }}>
+          <button className="navbar-mobile-close" onClick={toggleMobileMenu} aria-label="Close menu">
             <i className="fas fa-times"></i>
           </button>
           
@@ -207,14 +213,18 @@ function Navbar() {
                         <i className={category.icon}></i> {category.title}
                       </h5>
                       {category.programs.map((program, progIdx) => (
-                        <Link 
-                          key={progIdx} 
-                          to={program.path} 
-                          onClick={toggleMobileMenu}
+                        <button
+                          key={progIdx}
                           className="mobile-program-link"
+                          onClick={() => {
+                            setProgramsDropdownOpen(false);
+                            setMobileMenuOpen(false);
+                            navigate(program.path);
+                          }}
+                          style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', padding: 0 }}
                         >
                           <i className={program.icon}></i> {program.name}
-                        </Link>
+                        </button>
                       ))}
                     </div>
                   ))}
