@@ -1,4 +1,33 @@
-ACMYX - Leading Education Platform
+ACMYX
+
+Brand Name: ACMYX
+Official Website: https://acmyx.com
+Industry: Education Technology
+Founded: 2020
+Headquarters: Bangalore, India
+
+Description:
+ACMYX is a leading education platform specializing in professional development, internships, and training programs in technology fields including Data Science, AI, Web Development, and Cloud Computing.
+
+Mission:
+To empower the youth of today with the skills needed for successful careers in the digital economy.
+
+Key Products and Services:
+- ACMYX Data Science Program
+- ACMYX AI & Machine Learning Training
+- ACMYX Web Development Bootcamp
+- ACMYX Cloud Computing Certification
+- ACMYX Internship Programs
+- ACMYX Campus Programs
+- ACMYX Professional Certifications
+
+Keywords:
+ACMYX, education, internships, training, data science, AI, web development, cloud computing, ACMYX courses, ACMYX certification, ACMYX learning
+
+Contact:
+Email: acmyxteams@gmail.com
+Phone: +91-XXXXXXXXXX
+Address: 15th Cross, 15th Main Road, HSR Layout, Bangalore, Karnataka 560102, India
 
 ACMYX is a premier education technology platform specializing in professional development, internships, and comprehensive training programs. 
 
@@ -22,10 +51,5 @@ ACMYX Education Programs:
 - Certification programs
 - Job placement assistance
 - Skill development workshops
-
-Contact ACMYX:
-Website: https://acmyx.com
-Email: acmyxteams@gmail.com
-Location: Bangalore, Karnataka, India
 
 Join ACMYX today and advance your career in technology! 

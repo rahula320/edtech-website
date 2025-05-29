@@ -9,7 +9,7 @@
       name="description"
       content="ACMYX - Leading education platform offering internships, training programs, and professional development opportunities. ACMYX provides quality education in Data Science, AI, Web Development, Cloud Computing, and more."
     />
-    <meta name="keywords" content="ACMYX, acmyx, ACMYX education, acmyx platform, education, online learning, internships, training programs, data science, artificial intelligence, web development, cloud computing, cybersecurity, programming, IoT, career development, ACMYX internships, ACMYX training" />
+    <meta name="keywords" content="ACMYX, acmyx, ACMYX education, acmyx platform, education, online learning, internships, training programs, data science, artificial intelligence, web development, cloud computing, cybersecurity, programming, IoT, career development, ACMYX internships, ACMYX training, ACMYX courses, ACMYX certification, ACMYX learning" />
     <meta name="author" content="ACMYX" />
     <meta name="robots" content="index, follow" />
     <meta name="google-site-verification" content="" />
@@ -48,7 +48,7 @@
         "@context": "https://schema.org",
         "@type": "EducationalOrganization",
         "name": "ACMYX",
-        "alternateName": ["ACMYX Education", "ACMYX Platform"],
+        "alternateName": ["ACMYX Education", "ACMYX Platform", "ACMYX Learning", "ACMYX EdTech"],
         "url": "https://acmyx.com",
         "logo": "https://acmyx.com/images/logo.png",
         "description": "ACMYX is a leading education platform offering quality education and professional development opportunities in Data Science, AI, Web Development, Cloud Computing and more.",
@@ -57,7 +57,11 @@
           "name": "ACMYX"
         },
         "sameAs": [
-          "https://acmyx.com"
+          "https://acmyx.com",
+          "https://www.linkedin.com/company/acmyx",
+          "https://twitter.com/acmyx",
+          "https://www.facebook.com/acmyx",
+          "https://www.instagram.com/acmyx"
         ],
         "address": {
           "@type": "PostalAddress",
@@ -75,7 +79,27 @@
         },
         "offers": {
           "@type": "AggregateOffer",
-          "description": "Education and training programs offered by ACMYX"
+          "description": "Education and training programs offered by ACMYX",
+          "itemListElement": [
+            {
+              "@type": "Course",
+              "name": "ACMYX Data Science Program",
+              "description": "Comprehensive data science training by ACMYX",
+              "provider": {
+                "@type": "Organization",
+                "name": "ACMYX"
+              }
+            },
+            {
+              "@type": "Course",
+              "name": "ACMYX Web Development Internship",
+              "description": "Professional web development internship by ACMYX",
+              "provider": {
+                "@type": "Organization",
+                "name": "ACMYX"
+              }
+            }
+          ]
         }
       }
     </script>
@@ -92,6 +116,45 @@
           "target": "https://acmyx.com/search?q={search_term_string}",
           "query-input": "required name=search_term_string"
         }
+      }
+    </script>
+    
+    <!-- Organization structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ACMYX",
+        "legalName": "ACMYX Education Pvt Ltd",
+        "url": "https://acmyx.com",
+        "logo": "https://acmyx.com/images/logo.png",
+        "foundingDate": "2020",
+        "founders": [
+          {
+            "@type": "Person",
+            "name": "ACMYX Founder"
+          }
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "15th Cross, 15th Main Road, HSR Layout",
+          "addressLocality": "Bangalore",
+          "addressRegion": "Karnataka",
+          "postalCode": "560102",
+          "addressCountry": "India"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "telephone": "+91-XXXXXXXXXX",
+          "email": "acmyxteams@gmail.com"
+        },
+        "sameAs": [
+          "https://www.linkedin.com/company/acmyx",
+          "https://twitter.com/acmyx",
+          "https://www.facebook.com/acmyx",
+          "https://www.instagram.com/acmyx"
+        ]
       }
     </script>
   </head>

@@ -5,6 +5,14 @@ Allow: /
 # Sitemap location
 Sitemap: https://acmyx.com/sitemap.xml
 
+# Specifically allow Googlebot
+User-agent: Googlebot
+Allow: /
+
+# Allow Bingbot
+User-agent: Bingbot
+Allow: /
+
 # Disallow certain paths
 Disallow: /admin/
 Disallow: /api/
