@@ -102,7 +102,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-brand">
         <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <img src="/images/logo.png" alt="ACMYX Logo" className="navbar-logo" />
+          <img src="/images/WhiteLogo_TransparentBg.png" alt="ACMYX Logo" className="navbar-logo" />
         </Link>
       </div>
       

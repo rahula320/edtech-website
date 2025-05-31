@@ -22,10 +22,15 @@
 }
 
 .navbar-logo {
-  height: 45px;
+  height: 40px;
   width: auto;
   display: block;
   object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.05);
 }
 
 .navbar-links {

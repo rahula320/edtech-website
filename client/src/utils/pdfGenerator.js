@@ -46,7 +46,7 @@ export const generateCourseBrochure = async (program) => {
           ">
             <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100%;">
               <div>
-                <img src="/images/logo.png" alt="ACMYX Logo" style="height: 80px; width: auto; margin-bottom: 15px; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="/images/WhiteLogo_TransparentBg.png" alt="ACMYX Logo" style="height: 80px; width: auto; margin-bottom: 15px; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div style="display: none;">
                   <h1 style="font-size: 36px; margin: 0; font-weight: bold; color: white; margin-bottom: 10px;">ACMYX</h1>
                 </div>
@@ -344,7 +344,7 @@ export const generateCourseBrochure = async (program) => {
             right: 30px;
             z-index: 10;
           ">
-            <img src="/images/blue_logo.png" alt="ACMYX Logo" style="height: 25px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <img src="/images/DarkLogo_TransparentBg.png" alt="ACMYX Logo" style="height: 25px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div style="display: none; font-size: 12px; font-weight: bold; color: #051c32;">ACMYX</div>
           </div>
 
@@ -599,7 +599,7 @@ export const generateCourseBrochure = async (program) => {
             right: 30px;
             z-index: 10;
           ">
-            <img src="/images/blue_logo.png" alt="ACMYX Logo" style="height: 25px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <img src="/images/DarkLogo_TransparentBg.png" alt="ACMYX Logo" style="height: 25px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div style="display: none; font-size: 12px; font-weight: bold; color: #051c32;">ACMYX</div>
           </div>
 
@@ -795,7 +795,7 @@ export const generateCourseBrochure = async (program) => {
             right: 30px;
             z-index: 10;
           ">
-            <img src="/images/blue_logo.png" alt="ACMYX Logo" style="height: 25px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <img src="/images/DarkLogo_TransparentBg.png" alt="ACMYX Logo" style="height: 25px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div style="display: none; font-size: 12px; font-weight: bold; color: #051c32;">ACMYX</div>
           </div>
 
@@ -991,7 +991,7 @@ export const generateCourseBrochure = async (program) => {
             right: 30px;
             z-index: 10;
           ">
-            <img src="/images/blue_logo.png" alt="ACMYX Logo" style="height: 25px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <img src="/images/DarkLogo_TransparentBg.png" alt="ACMYX Logo" style="height: 25px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div style="display: none; font-size: 12px; font-weight: bold; color: #051c32;">ACMYX</div>
           </div>
 
@@ -1197,7 +1197,7 @@ export const generateCourseBrochure = async (program) => {
             ">
               <!-- Logo Section -->
               <div style="display: flex; align-items: center;">
-                <img src="/images/logo.png" alt="ACMYX Logo" style="height: 40px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="/images/WhiteLogo_TransparentBg.png" alt="ACMYX Logo" style="height: 40px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div style="display: none; font-weight: bold; font-size: 24px; color: white;">ACMYX</div>
               </div>
               
