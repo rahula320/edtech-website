@@ -64,7 +64,7 @@
             "@type": "Offer",
             "itemOffered": {
               "@type": "Course",
-              "name": "ACMYX Data Science Internship Program",
+              "name": "ACMYX Data Science Program",
               "description": "Comprehensive data science training by ACMYX",
               "provider": {
                 "@type": "Organization",
@@ -83,6 +83,33 @@
                   "availability": "https://schema.org/InStock",
                   "validFrom": "2024-01-01",
                   "url": "https://acmyx.com/data-science"
+                }
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Course",
+              "name": "ACMYX Web Development Internship",
+              "description": "Professional web development internship by ACMYX",
+              "provider": {
+                "@type": "Organization",
+                "name": "ACMYX"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "online",
+                "inLanguage": "en-US",
+                "startDate": "2024-01-01",
+                "endDate": "2024-12-31",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "4999",
+                  "priceCurrency": "INR",
+                  "availability": "https://schema.org/InStock",
+                  "validFrom": "2024-01-01",
+                  "url": "https://acmyx.com/web-development"
                 }
               }
             }
@@ -110,33 +137,6 @@
                   "availability": "https://schema.org/InStock",
                   "validFrom": "2024-01-01",
                   "url": "https://acmyx.com/ai-ml"
-                }
-              }
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Course",
-              "name": "ACMYX Web Development Bootcamp",
-              "description": "Intensive web development program by ACMYX",
-              "provider": {
-                "@type": "Organization",
-                "name": "ACMYX"
-              },
-              "hasCourseInstance": {
-                "@type": "CourseInstance",
-                "courseMode": "online",
-                "inLanguage": "en-US",
-                "startDate": "2024-01-01",
-                "endDate": "2024-12-31",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "4999",
-                  "priceCurrency": "INR",
-                  "availability": "https://schema.org/InStock",
-                  "validFrom": "2024-01-01",
-                  "url": "https://acmyx.com/web-development"
                 }
               }
             }
