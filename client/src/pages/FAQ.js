@@ -265,6 +265,65 @@ function FAQ() {
           </div>
         </div>
       </section>
+      {/* Structured Data for Google Rich Results */}
+      <script type="application/ld+json">
+        {`
+        {
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": "ACMYX Data Science Program",
+          "description": "Comprehensive data science training by ACMYX.",
+          "provider": {
+            "@type": "Organization",
+            "name": "ACMYX"
+          },
+          "hasCourseInstance": {
+            "@type": "CourseInstance",
+            "courseMode": "online",
+            "inLanguage": "en-US",
+            "startDate": "2024-01-01",
+            "endDate": "2024-12-31",
+            "offers": {
+              "@type": "Offer",
+              "price": "4999",
+              "priceCurrency": "INR",
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2024-01-01",
+              "url": "https://acmyx.com/data-science"
+            }
+          }
+        }
+        `}
+      </script>
+      <script type="application/ld+json">
+        {`
+        {
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": "ACMYX Web Development Internship",
+          "description": "Professional web development internship by ACMYX.",
+          "provider": {
+            "@type": "Organization",
+            "name": "ACMYX"
+          },
+          "hasCourseInstance": {
+            "@type": "CourseInstance",
+            "courseMode": "online",
+            "inLanguage": "en-US",
+            "startDate": "2024-01-01",
+            "endDate": "2024-12-31",
+            "offers": {
+              "@type": "Offer",
+              "price": "4999",
+              "priceCurrency": "INR",
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2024-01-01",
+              "url": "https://acmyx.com/web-development"
+            }
+          }
+        }
+        `}
+      </script>
     </div>
   );
 }
