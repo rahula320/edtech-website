@@ -421,22 +421,6 @@ export const generateCourseBrochure = async (program) => {
               </div>
             ` : ''}
 
-            ${program.curriculumIntro ? `
-              <div style="
-                background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-                border-radius: 12px;
-                padding: 20px;
-                margin-bottom: 30px;
-                border-left: 6px solid #f59e0b;
-              ">
-                <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                  <i class="fas fa-info-circle" style="color: #f59e0b; font-size: 18px; margin-right: 10px;"></i>
-                  <h3 style="font-size: 16px; color: #051c32; margin: 0; font-weight: bold;">Program Introduction</h3>
-                </div>
-                <p style="font-size: 12px; color: #4b5563; line-height: 1.6; margin: 0;">${program.curriculumIntro}</p>
-              </div>
-            ` : ''}
-
             <!-- Week by Week Progress Bar -->
             <div style="margin-bottom: 15px;">
               <div style="display: flex; align-items: center; margin-bottom: 10px;">

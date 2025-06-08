@@ -225,7 +225,7 @@ section {
 .hero-carousel {
   position: relative;
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   width: 100%;
 }
 
@@ -289,7 +289,7 @@ section {
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 5rem 2rem;
+  padding: 3rem 2rem;
   gap: 2rem;
   align-items: center;
   min-height: 500px;
@@ -505,7 +505,7 @@ section {
     width: 100%;
     overflow: hidden;
     position: relative;
-    margin-bottom: 1rem;
+    margin-bottom: 0;
   }
   
   .carousel-container {
@@ -526,7 +526,7 @@ section {
   }
   
   .hero-content {
-    padding: 2.5rem 1.5rem;
+    padding: 2rem 1.5rem;
     margin: 0;
     width: 100%;
     box-sizing: border-box;
@@ -3015,7 +3015,7 @@ html body .home .desktop-carousel-override .hero-image {
 .hero-carousel {
   position: relative;
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   width: 100%;
 }
 

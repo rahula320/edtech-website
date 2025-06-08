@@ -188,6 +188,11 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .cta-button.primary {
@@ -196,6 +201,8 @@
 }
 
 .cta-button.primary:hover {
+  background-color: var(--primary-dark);
+  color: white;
   transform: translateY(-3px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
@@ -207,7 +214,8 @@
 }
 
 .cta-button.secondary:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
   transform: translateY(-3px);
 }
 
@@ -227,13 +235,13 @@
 
 /* Program Navigation - Thin Ribbon */
 .program-nav {
-  margin-top: 1rem;
+  margin-top: 0;
   margin-bottom: 2rem;
-  top: 60px;
+  top: 80px;
   position: sticky;
-  padding: 1rem 0;
-  background-color: white;
-  z-index: 10;
+  padding: 0.75rem 0;
+  background-color: #ffffff;
+  z-index: 9;
   border-bottom: 1px solid var(--border-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
@@ -242,17 +250,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 40px; /* Fixed height for thin ribbon */
+  height: 32px;
 }
 
 .program-tabs {
   display: flex;
-  gap: 0.5rem;
+  gap: 1.5rem;
   height: 100%;
 }
 
 .tab-button {
-  padding: 0.3rem 0.8rem;
+  padding: 0.35rem 0.8rem;
   background: none;
   border: none;
   color: var(--text-light);
@@ -260,10 +268,10 @@
   cursor: pointer;
   position: relative;
   transition: all 0.3s ease;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   height: 100%;
 }
 
@@ -280,7 +288,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  height: 28px; /* Adjusted height */
+  height: 28px;
 }
 
 .nav-curriculum-button {
@@ -296,7 +304,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  height: 28px; /* Adjusted height */
+  height: 28px;
 }
 
 .nav-enroll-button:hover {
@@ -334,8 +342,8 @@
 
 /* Tab Content */
 .program-content {
+  padding-top: 2rem;
   padding-bottom: 4rem;
-  margin-top: 1rem;
 }
 
 .tab-content {
@@ -518,14 +526,14 @@
   border-bottom: 1px solid var(--border-color);
   gap: 1rem;
   position: relative;
-  padding-right: 5rem; /* Add space for the right-positioned icon */
+  padding-right: 5rem;
 }
 
 .module-icon {
   width: 70px;
   height: 70px;
   background: linear-gradient(135deg, var(--primary-color), #4f46e5);
-  border-radius: 50%; /* Make it fully circular */
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -536,7 +544,7 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  border: 3px solid white; /* Add white border for better contrast */
+  border: 3px solid white;
   transition: all 0.3s ease;
 }
 
@@ -555,8 +563,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  max-width: calc(100% - 5rem); /* Ensure text doesn't overlap with icon */
-  justify-content: center; /* Center the content vertically */
+  max-width: calc(100% - 5rem);
+  justify-content: center;
 }
 
 .module-header h3 {
@@ -567,7 +575,7 @@
   align-items: center;
   gap: 0.75rem;
   line-height: 1.3;
-  flex-wrap: wrap; /* Allow wrapping if needed */
+  flex-wrap: wrap;
 }
 
 .module-number {
@@ -578,10 +586,10 @@
   font-size: 0.85rem;
   font-weight: 600;
   white-space: nowrap;
-  flex-shrink: 0; /* Prevent shrinking */
+  flex-shrink: 0;
   display: inline-block;
   line-height: 1;
-  margin: 0; /* Remove margin to prevent misalignment */
+  margin: 0;
 }
 
 .module-duration {
@@ -591,7 +599,7 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 500;
-  margin-top: 0.25rem; /* Add small top margin for better spacing */
+  margin-top: 0.25rem;
 }
 
 .module-duration i {
@@ -1306,17 +1314,28 @@
     width: 100%;
   }
   
+  .program-nav {
+    top: 72px;
+    padding: 0.5rem 0;
+  }
+  
   .program-nav-container {
     flex-direction: column;
     align-items: stretch;
-    gap: 1rem;
-    padding-bottom: 0.75rem;
+    gap: 0.75rem;
+    height: auto;
   }
   
   .program-tabs {
     justify-content: flex-start;
     overflow-x: auto;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
+    gap: 1rem;
+  }
+  
+  .tab-button {
+    padding: 0.5rem 0.8rem;
+    white-space: nowrap;
   }
   
   .nav-buttons {
@@ -1330,11 +1349,6 @@
     width: 100%;
     justify-content: center;
     margin-bottom: 0.5rem;
-  }
-  
-  .tab-button {
-    padding: 1rem;
-    white-space: nowrap;
   }
   
   .pricing-cards,
@@ -1351,6 +1365,16 @@
 
   .modules-container {
     grid-template-columns: 1fr;
+  }
+
+  .program-hero-cta {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .cta-button {
+    width: 100%;
+    min-width: unset;
   }
 }
 
