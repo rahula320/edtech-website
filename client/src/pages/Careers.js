@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import unstopLogo from '../assets/unstop-logo.svg';
 import './Careers.css';
 
 function Careers() {
@@ -11,23 +13,38 @@ function Careers() {
         </div>
       </div>
 
-      <section className="careers-options">
-        <div className="container">
-          <div id="internship-delegate" className="internship-feature">
-            <div className="internship-image">
-              <img 
-                src="/images/internship-delegate-poster.png" 
-                alt="ACMYX Internship Delegate Program" 
-                className="poster-image"
-              />
+      <div className="career-options">
+        <div className="career-option">
+          <div className="option-content">
+            <div className="role-badge">Open Position</div>
+            <h3>Business Development Associate / Intern</h3>
+            <p>
+              Join our dynamic team as a Business Development Associate/Intern and help drive our growth initiatives. 
+              This role offers an exciting opportunity to work on strategic business development projects and gain hands-on 
+              experience in the tech industry.
+            </p>
+            <div className="option-details">
+              <div className="detail-item">
+                <span className="detail-value">3-6 months</span>
+                <span className="detail-label">Duration</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-value">Remote</span>
+                <span className="detail-label">Location</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-value">Students & Graduates</span>
+                <span className="detail-label">Open to</span>
+              </div>
             </div>
-            <div className="internship-details">
-              <h3>Internship Delegate Program</h3>
-              <p className="text-center">Lead, learn, and level up with industry experts from top tech and financial companies. Be the face of ACMYX at your college. Earn up to ₹10,000 based on performance, work with top mentors, and get certified.</p>
+            <div className="text-center">
+              <div className="unstop-logo">
+                <img src={unstopLogo} alt="Unstop" />
+              </div>
               <a 
-                href="https://forms.gle/h7vX3fN54bFS9zfS8" 
+                href="https://unstop.com/jobs/business-development-associate-acmyx-1496971" 
                 target="_blank" 
-                rel="noopener noreferrer" 
+                rel="noopener noreferrer"
                 className="option-apply-button"
               >
                 Apply Now
@@ -35,9 +52,9 @@ function Careers() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <section className="careers-why-join">
+      <section className="why-work-with-us">
         <div className="container">
           <h2>Why Work With Us</h2>
           <div className="benefits-grid">

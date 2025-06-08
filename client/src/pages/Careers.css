@@ -1984,68 +1984,15 @@
   display: block;
 }
 
-.internship-feature {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  margin-bottom: 3rem;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(5, 28, 50, 0.1);
-  overflow: hidden;
-  max-width: 1200px;
-  margin: 0 auto 3rem;
-  position: relative;
-}
-
-.internship-image {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #051c32;
-  overflow: hidden;
-}
-
-.internship-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-.internship-details {
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.internship-details h3 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #051c32;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.internship-details p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  color: #4a5568;
-}
-
-.internship-details .text-center {
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 550px;
-}
-
+.internship-feature,
+.internship-image,
+.internship-details,
+.internship-image img,
+.internship-details h3,
+.internship-details p,
+.internship-details .text-center,
 .internship-details .option-apply-button {
-  align-self: center;
-  margin-top: 0.5rem;
+  display: none;
 }
 
 .career-options-container {
@@ -2157,4 +2104,130 @@
 
 .benefits-icon {
   background: linear-gradient(to right, #021221, #051c32);
+}
+
+.career-options {
+  padding: 3rem 0;
+  background: #ffffff;
+}
+
+.career-option {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(5, 28, 50, 0.08);
+  padding: 2.5rem;
+  transition: all 0.3s ease;
+}
+
+.career-option:hover {
+  box-shadow: 0 4px 20px rgba(5, 28, 50, 0.12);
+}
+
+.role-badge {
+  display: inline-block;
+  background: #f8f9fa;
+  color: #051c32;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.option-content h3 {
+  font-size: 1.8rem;
+  color: #051c32;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.option-content p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #4a5568;
+  margin-bottom: 2rem;
+}
+
+.option-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.detail-value {
+  font-size: 1.1rem;
+  color: #051c32;
+  font-weight: 500;
+}
+
+.detail-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.unstop-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.unstop-logo img {
+  height: 32px;
+  width: auto;
+}
+
+.unstop-logo span {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #051c32;
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+}
+
+.option-apply-button {
+  display: inline-block;
+  background: #051c32;
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid #051c32;
+}
+
+.option-apply-button:hover {
+  background: transparent;
+  color: #051c32;
+}
+
+@media (max-width: 768px) {
+  .career-option {
+    padding: 1.5rem;
+  }
+
+  .option-details {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .option-content h3 {
+    font-size: 1.5rem;
+  }
 } 
