@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
-import ContactService from '../utils/contactService';
-import OfferAd from '../components/OfferAd';
-import OfferPopup from '../components/OfferPopup';
+import { submitToGoogleSheets } from '../utils/googleSheetsService';
 
 // Program ID mapping function
 const getProgramId = (title) => {
@@ -70,50 +68,13 @@ function Home() {
     e.preventDefault();
     setContactStatus({ type: 'loading', message: 'Sending message...' });
 
-    // Check for network connectivity first
-    if (!navigator.onLine) {
-      setContactStatus({ 
-        type: 'error', 
-        message: 'You appear to be offline. Please check your internet connection and try again.' 
-      });
-      return;
-    }
-
     try {
-      console.log('Submitting contact form data:', contactFormData);
-      const response = await ContactService.submitContactForm(contactFormData);
-      console.log('Contact form submission response:', response);
-
-      if (response.success) {
-        setContactStatus({ type: 'success', message: 'Message sent successfully!' });
-        setContactFormData({ name: '', email: '', phone: '', college: '', domain: '', message: '' });
-      } else {
-        setContactStatus({ 
-          type: 'error', 
-          message: response.message || 'Something went wrong. Please try again later.'
-        });
-      }
+      await submitToGoogleSheets(contactFormData);
+      setContactStatus({ type: 'success', message: 'Message sent successfully! We will get back to you soon.' });
+      setContactFormData({ name: '', email: '', phone: '', college: '', domain: '', message: '' });
     } catch (error) {
       console.error('Error submitting form:', error);
-      
-      // Determine if it's a network error
-      const isNetworkError = error.message && (
-        error.message.includes('Network Error') || 
-        error.message.includes('timeout') ||
-        error.message.includes('abort')
-      );
-      
-      if (isNetworkError) {
-        setContactStatus({ 
-          type: 'error', 
-          message: 'Network error. Please check your connection and try again.'
-        });
-      } else {
-        setContactStatus({ 
-          type: 'error', 
-          message: 'Failed to send message. Please try again later.'
-        });
-      }
+      setContactStatus({ type: 'error', message: 'Failed to send message. Please try again later.' });
     }
   };
   
@@ -576,13 +537,6 @@ function Home() {
   const [activeFaq, setActiveFaq] = useState(null);
   const [showAllFaqs, setShowAllFaqs] = useState(false);
 
-  // State for offer popup
-  const [showOfferPopup, setShowOfferPopup] = useState(true);
-
-  const handleClosePopup = () => {
-    setShowOfferPopup(false);
-  };
-
   return (
     <div className="home">
       {/* Background geometric shapes */}
@@ -591,11 +545,6 @@ function Home() {
       <div className="geometric-shape-3"></div>
       <div className="geometric-shape-4"></div>
       <div className="geometric-shape-5"></div>
-
-      {/* Offer Badge - Floating promotional offer */}
-      <div className="floating-offer-badge">
-        <OfferAd className="strip" scrollToPricing={true} />
-      </div>
 
       {/* Mobile Menu Toggle Button */}
       <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
@@ -979,16 +928,6 @@ function Home() {
               >
                 Enroll Now
               </button>
-              
-              {/* Coupon Code Display */}
-              <div className="coupon-display">
-                <div className="coupon-icon">🎟️</div>
-                <div className="coupon-text">
-                  <span className="coupon-label">Use Coupon Code:</span>
-                  <span className="coupon-code-highlight">ACMYX300</span>
-                </div>
-              </div>
-              
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
@@ -1018,7 +957,6 @@ function Home() {
             </div>
             
             <div className="pricing-card">
-              <div className="plan-tag">Best Value</div>
               <h3>👨‍🏫 Mentor-Led Plan</h3>
               <div className="price">
                 <span className="original-price">₹7,499</span>
@@ -1031,16 +969,6 @@ function Home() {
               >
                 Enroll Now
               </button>
-              
-              {/* Coupon Code Display */}
-              <div className="coupon-display">
-                <div className="coupon-icon">🎟️</div>
-                <div className="coupon-text">
-                  <span className="coupon-label">Use Coupon Code:</span>
-                  <span className="coupon-code-highlight">ACMYX300</span>
-                </div>
-              </div>
-              
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Guided with mentor feedback)</span>
@@ -1074,9 +1002,9 @@ function Home() {
             </div>
             
             <div className="pricing-card">
-              <h3>🎓 Advanced Program</h3>
+              <h3>🎓 Advanced Plan</h3>
               <div className="price">
-                <span className="original-price">₹12,999</span>
+                <span className="original-price">₹9,999</span>
                 <span className="current-price">₹8,999</span>
               </div>
               <div className="duration">Valid for 8 weeks</div>
@@ -1086,16 +1014,6 @@ function Home() {
               >
                 Enroll Now
               </button>
-              
-              {/* Coupon Code Display */}
-              <div className="coupon-display">
-                <div className="coupon-icon">🎟️</div>
-                <div className="coupon-text">
-                  <span className="coupon-label">Use Coupon Code:</span>
-                  <span className="coupon-code-highlight">ACMYX300</span>
-                </div>
-              </div>
-              
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Industry Capstone Projects)</span>
@@ -1414,9 +1332,6 @@ function Home() {
           </div>
         </div>
       </section>
-
-      {/* Offer Popup */}
-      {showOfferPopup && <OfferPopup onClose={handleClosePopup} />}
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import OfferAd from './OfferAd';
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -99,7 +98,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${mobileMenuOpen ? 'mobile-menu-open' : ''}`}>
       <div className="navbar-brand">
         <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <img src="/images/WhiteLogo_TransparentBg.png" alt="ACMYX Logo" className="navbar-logo" />
@@ -135,9 +134,6 @@ function Navbar() {
           
           <div className={`mega-dropdown ${programsDropdownOpen ? 'open' : ''}`}>
             <div className="mega-dropdown-content">
-              <div className="offer-strip-container">
-                <OfferAd className="strip" scrollToPricing={true} />
-              </div>
               <div className="mega-dropdown-grid">
                 {programCategories.map((category, idx) => (
                   <div className="dropdown-category" key={idx}>
@@ -210,9 +206,6 @@ function Navbar() {
               
               {programsDropdownOpen && (
                 <div className="mobile-dropdown-menu" id="programs-mobile-dropdown-menu">
-                  <div className="offer-strip-container">
-                    <OfferAd className="strip" scrollToPricing={true} />
-                  </div>
                   {programCategories.map((category, idx) => (
                     <div className="mobile-category" key={idx}>
                       <h5 className="mobile-category-title">

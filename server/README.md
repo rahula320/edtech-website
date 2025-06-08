@@ -60,18 +60,18 @@ The following models are defined:
 ## API Endpoints
 
 ### Authentication
-- `POST /api/register` - Register a new user
-- `POST /api/login` - Login
-- `GET /api/logout` - Logout
-- `GET /api/user` - Get current user
+- `POST /api/auth/register` - Register a new user
+- `POST /api/auth/login` - Login user
+- `GET /api/auth/verify` - Verify user token
+
+### Programs
+- `GET /api/programs` - Get all programs
+- `GET /api/programs/:id` - Get program by ID
 
 ### Courses
 - `GET /api/courses` - Get all published courses
 - `GET /api/courses/:id` - Get course by ID
 - `POST /api/courses` - Create a new course (instructors only)
-
-### Contact
-- `POST /api/contact` - Submit contact form (logs message to console)
 
 ## Docker Deployment
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { generateCourseBrochure } from '../utils/pdfGenerator';
-import OfferAd from '../components/OfferAd';
 import './ProgramDetail.css';
 
 function ProgramDetail({ programsData }) {
@@ -152,11 +151,6 @@ function ProgramDetail({ programsData }) {
 
   return (
     <div className="program-detail-page">
-      {/* Floating Offer Strip */}
-      <div className="floating-offer-badge">
-        <OfferAd className="strip" scrollToPricing={true} />
-      </div>
-
       {isDownloading && (
         <div className="download-overlay">
           <div className="download-content">
@@ -518,14 +512,6 @@ function ProgramDetail({ programsData }) {
               >
                 Enroll Now
               </button>
-              {/* Coupon Code Display */}
-              <div className="coupon-display">
-                <div className="coupon-icon">🎟️</div>
-                <div className="coupon-text">
-                  <span className="coupon-label">Use Coupon Code:</span>
-                  <span className="coupon-code-highlight">ACMYX300</span>
-                </div>
-              </div>
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Basic level)</span>
@@ -555,7 +541,6 @@ function ProgramDetail({ programsData }) {
             </div>
             
             <div className="pricing-card">
-              <div className="plan-tag">Best Value</div>
               <h3>👨‍🏫 Mentor-Led Plan</h3>
               <div className="price">
                 <span className="original-price">₹7,499</span>
@@ -568,14 +553,6 @@ function ProgramDetail({ programsData }) {
               >
                 Enroll Now
               </button>
-              {/* Coupon Code Display */}
-              <div className="coupon-display">
-                <div className="coupon-icon">🎟️</div>
-                <div className="coupon-text">
-                  <span className="coupon-label">Use Coupon Code:</span>
-                  <span className="coupon-code-highlight">ACMYX300</span>
-                </div>
-              </div>
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">💡 Real-Time Projects (Guided with mentor feedback)</span>
@@ -621,14 +598,6 @@ function ProgramDetail({ programsData }) {
               >
                 Enroll Now
               </button>
-              {/* Coupon Code Display */}
-              <div className="coupon-display">
-                <div className="coupon-icon">🎟️</div>
-                <div className="coupon-text">
-                  <span className="coupon-label">Use Coupon Code:</span>
-                  <span className="coupon-code-highlight">ACMYX300</span>
-                </div>
-              </div>
               <ul className="plan-features">
                 <li>
                   <span className="feature-text">�� Real-Time Projects (Industry Capstone Projects)</span>

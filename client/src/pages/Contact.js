@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Contact.css';
-import ContactService from '../utils/contactService';
-import OfferAd from '../components/OfferAd';
+import { submitToGoogleSheets } from '../utils/googleSheetsService';
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -43,14 +42,9 @@ function Contact() {
     setStatus({ type: 'loading', message: 'Sending message...' });
 
     try {
-      const response = await ContactService.submitContactForm(formData);
-
-      if (response.success) {
-        setStatus({ type: 'success', message: 'Message sent successfully!' });
-        setFormData({ name: '', email: '', phone: '', college: '', domain: '', message: '' });
-      } else {
-        setStatus({ type: 'error', message: response.message || 'Something went wrong' });
-      }
+      await submitToGoogleSheets(formData);
+      setStatus({ type: 'success', message: 'Message sent successfully! We will get back to you soon.' });
+      setFormData({ name: '', email: '', phone: '', college: '', domain: '', message: '' });
     } catch (error) {
       console.error('Error submitting form:', error);
       setStatus({ type: 'error', message: 'Failed to send message. Please try again later.' });
@@ -58,7 +52,7 @@ function Contact() {
   };
 
   return (
-    <div className="contact">
+    <div className="contact-page">
       <div className="contact-hero-white">
         <div className="hero-content-centered">
           <h1>Contact Us</h1>
@@ -233,30 +227,8 @@ function Contact() {
           </div>
         </div>
       </section>
-
-      {/* Offer Ad Component - After contact form */}
-      <section className="offer-section section-spacing">
-        <div className="container">
-          <OfferAd className="compact" />
-        </div>
-      </section>
-
-      <section className="contact-map">
-        <div className="map-container">
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.7500154449926!2d77.6264044744771!3d12.91425798744628!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1491bfdc8ab7%3A0x3d2ce76aee6e26cc!2sHSR%20Layout%2C%20Bengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1695034580590!5m2!1sen!2sin" 
-            width="100%" 
-            height="100%" 
-            style={{ border: 0 }} 
-            allowFullScreen="" 
-            loading="lazy" 
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Our location on map"
-          ></iframe>
-        </div>
-      </section>
     </div>
   );
 }
 
-export default Contact; 
+export default Contact;

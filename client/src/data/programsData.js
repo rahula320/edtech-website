@@ -304,16 +304,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -474,16 +474,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "24,999",
-        currentPrice: "19,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "39,999",
-        currentPrice: "34,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "59,999",
-        currentPrice: "49,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -864,16 +864,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -1145,16 +1145,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -1429,16 +1429,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -1710,16 +1710,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -1991,16 +1991,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -2315,16 +2315,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -2596,16 +2596,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -2877,16 +2877,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -3162,16 +3162,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -3447,16 +3447,16 @@ export const programsData = {
     
     pricing: {
       self: {
-        originalPrice: "19,999",
-        currentPrice: "14,999"
+        originalPrice: "4,999",
+        currentPrice: "3,499"
       },
       mentor: {
-        originalPrice: "29,999",
-        currentPrice: "24,999"
+        originalPrice: "7,499",
+        currentPrice: "4,999"
       },
       advanced: {
-        originalPrice: "49,999",
-        currentPrice: "39,999"
+        originalPrice: "9,999",
+        currentPrice: "8,999"
       }
     },
     
@@ -3800,16 +3800,16 @@ programsData["ui-ux-design"] = {
   
   pricing: {
     self: {
-      originalPrice: "19,999",
-      currentPrice: "14,999"
+      originalPrice: "4,999",
+      currentPrice: "3,499"
     },
     mentor: {
-      originalPrice: "29,999",
-      currentPrice: "24,999"
+      originalPrice: "7,499",
+      currentPrice: "4,999"
     },
     advanced: {
-      originalPrice: "49,999",
-      currentPrice: "39,999"
+      originalPrice: "9,999",
+      currentPrice: "8,999"
     }
   },
   

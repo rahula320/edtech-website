@@ -1,28 +1,15 @@
-const { sequelize, testConnection } = require('../config/db');
-const Contact = require('../models/Contact');
+const { sequelize } = require('../models');
 
 // Function to synchronize models with the database
 const initializeDatabase = async () => {
   try {
-    // Test the connection first
-    const connected = await testConnection();
-    if (!connected) {
-      console.error('Database connection failed. Cannot initialize tables.');
-      process.exit(1);
-    }
-
-    // Sync all models
-    console.log('Synchronizing database models...');
+    // Sync all models with database
     await sequelize.sync({ alter: true });
-    console.log('Database synchronized successfully.');
-
-    // Log model information
-    console.log('Models initialized:');
-    console.log('- Contacts table created/updated');
-
-    process.exit(0);
+    console.log('Database synchronized successfully');
+    
+    console.log('Database initialization completed');
   } catch (error) {
-    console.error('Database initialization error:', error);
+    console.error('Error initializing database:', error);
     process.exit(1);
   }
 };
