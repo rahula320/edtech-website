@@ -37,6 +37,7 @@ function Terms() {
                   <li><button onClick={() => scrollToSection('charges')}>Charges</button></li>
                   <li><button onClick={() => scrollToSection('unlawful-use')}>Unlawful Use</button></li>
                   <li><button onClick={() => scrollToSection('third-party-links')}>Third Party Links</button></li>
+                  <li><button onClick={() => scrollToSection('cancellation')}>Cancellation</button></li>
                   <li><button onClick={() => scrollToSection('refunds')}>Refunds</button></li>
                   <li><button onClick={() => scrollToSection('force-majeure')}>Force Majeure</button></li>
                   <li><button onClick={() => scrollToSection('governing-law')}>Governing Law</button></li>
@@ -139,10 +140,26 @@ function Terms() {
                 </p>
               </div>
               
-              <div className="terms-section" id="refunds">
-                <h2>Program Participation</h2>
+              <div className="terms-section" id="cancellation">
+                <h2>Cancellation</h2>
                 <p>
-                  We strive to provide high-quality educational services. If you have any concerns about the program or services provided, please contact our support team who will assist you with your queries. We value your feedback and continuously work to improve our offerings.
+                  Once you have enrolled in our programs or services, cancellations are not permitted. By enrolling in our programs, you acknowledge that you have carefully considered your decision and understand that the enrollment is final.
+                </p>
+                <p>
+                  We do not provide any cancellation options after the enrollment process is completed. This policy applies to all our educational programs, courses, and services.
+                </p>
+              </div>
+              
+              <div className="terms-section" id="refunds">
+                <h2>Refunds</h2>
+                <p>
+                  We do not have a refund policy. All payments made for our programs and services are non-refundable. Once payment is processed and enrollment is confirmed, no refunds will be provided under any circumstances.
+                </p>
+                <p>
+                  This no-refund policy applies to all our educational programs, courses, workshops, and any other services we provide. We encourage all potential students to carefully review program details and ensure they are committed to completing the program before making payment.
+                </p>
+                <p>
+                  If you have any concerns about our programs or services, please contact our support team before making payment. We are happy to address any questions or concerns you may have.
                 </p>
               </div>
               
