@@ -72,6 +72,16 @@ function Contact() {
               <div className="contact-details">                
                 <div className="contact-detail-item">
                   <div className="icon-wrapper">
+                    <i className="fas fa-building"></i>
+                  </div>
+                  <div className="detail-content">
+                    <h3>Legal Name</h3>
+                    <p>ACMYX Private Limited</p>
+                  </div>
+                </div>
+                
+                <div className="contact-detail-item">
+                  <div className="icon-wrapper">
                     <i className="fas fa-map-marker-alt"></i>
                   </div>
                   <div className="detail-content">

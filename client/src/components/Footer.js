@@ -94,6 +94,9 @@ function Footer() {
               <ScrollLink to="/terms" className="legal-link">
                 <i className="fas fa-file-contract"></i> Terms & Conditions
               </ScrollLink>
+              <ScrollLink to="/cancellation-refund" className="legal-link">
+                <i className="fas fa-ban"></i> Cancellation & Refund
+              </ScrollLink>
               <ScrollLink to="/contact" className="legal-link">
                 <i className="fas fa-phone-alt"></i> Contact Us
               </ScrollLink>
