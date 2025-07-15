@@ -42,7 +42,7 @@ function Careers() {
                 <img src={unstopLogo} alt="Unstop" />
               </div>
               <a 
-                href="https://unstop.com/jobs/business-development-associate-acmyx-1496971" 
+                href="https://unstop.com/o/VnseUBt?lb=N8NWyKE8&utm_medium=Share&utm_source=shortUrl" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="option-apply-button"
