@@ -16,4 +16,12 @@ Allow: /
 # Disallow certain paths
 Disallow: /admin/
 Disallow: /api/
-Disallow: /private/ 
+Disallow: /private/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /search?
+
+# Crawl delay for better server performance
+Crawl-delay: 1 

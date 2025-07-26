@@ -17,14 +17,10 @@
       "dest": "/api/index.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/client/$1"
-    },
-    {
       "handle": "filesystem"
     },
     {
-      "src": "/.*",
+      "src": "/(.*)",
       "dest": "/client/index.html"
     }
   ],

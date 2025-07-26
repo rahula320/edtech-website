@@ -272,10 +272,11 @@ function FAQ() {
           "@context": "https://schema.org",
           "@type": "Course",
           "name": "ACMYX Data Science Program",
-          "description": "Comprehensive data science training by ACMYX.",
+          "description": "Comprehensive data science training by ACMYX covering Python, statistics, machine learning, and data visualization.",
           "provider": {
             "@type": "Organization",
-            "name": "ACMYX"
+            "name": "ACMYX",
+            "url": "https://acmyx.com"
           },
           "hasCourseInstance": {
             "@type": "CourseInstance",
@@ -283,13 +284,15 @@ function FAQ() {
             "inLanguage": "en-US",
             "startDate": "2024-01-01",
             "endDate": "2024-12-31",
+            "courseWorkload": "PT120H",
+            "courseSchedule": "Weekend classes, 4 hours per week",
             "offers": {
               "@type": "Offer",
               "price": "4999",
               "priceCurrency": "INR",
               "availability": "https://schema.org/InStock",
               "validFrom": "2024-01-01",
-              "url": "https://acmyx.com/data-science"
+              "url": "https://acmyx.com/programs/data-science"
             }
           }
         }
@@ -301,10 +304,11 @@ function FAQ() {
           "@context": "https://schema.org",
           "@type": "Course",
           "name": "ACMYX Web Development Internship",
-          "description": "Professional web development internship by ACMYX.",
+          "description": "Professional web development internship by ACMYX covering HTML, CSS, JavaScript, React, and full-stack development.",
           "provider": {
             "@type": "Organization",
-            "name": "ACMYX"
+            "name": "ACMYX",
+            "url": "https://acmyx.com"
           },
           "hasCourseInstance": {
             "@type": "CourseInstance",
@@ -312,13 +316,15 @@ function FAQ() {
             "inLanguage": "en-US",
             "startDate": "2024-01-01",
             "endDate": "2024-12-31",
+            "courseWorkload": "PT160H",
+            "courseSchedule": "Weekend classes, 6 hours per week",
             "offers": {
               "@type": "Offer",
               "price": "4999",
               "priceCurrency": "INR",
               "availability": "https://schema.org/InStock",
               "validFrom": "2024-01-01",
-              "url": "https://acmyx.com/web-development"
+              "url": "https://acmyx.com/programs/web-development"
             }
           }
         }

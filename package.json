@@ -10,7 +10,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "init-db": "node server/scripts/init-db.js",
     "vercel-build": "cd client && npm install && npm run build",
-    "build": "cd client && npm install && npm run build"
+    "build": "cd client && npm install && npm run build",
+    "validate-sitemap": "node scripts/validate-sitemap.js",
+    "validate-structured-data": "node scripts/validate-structured-data.js"
   },
   "keywords": [
     "acmyx",

@@ -661,6 +661,45 @@ function ProgramDetail({ programsData }) {
           </div>
         </div>
       </section>
+
+      {/* Course Structured Data for Google Rich Results */}
+      {program && (
+        <script type="application/ld+json">
+          {`
+          {
+            "@context": "https://schema.org",
+            "@type": "Course",
+            "name": "${program.title}",
+            "description": "${program.description}",
+            "provider": {
+              "@type": "Organization",
+              "name": "ACMYX",
+              "url": "https://acmyx.com"
+            },
+            "hasCourseInstance": {
+              "@type": "CourseInstance",
+              "courseMode": "online",
+              "inLanguage": "en-US",
+              "courseWorkload": "PT120H",
+              "courseSchedule": "Weekend classes, 4-6 hours per week",
+              "offers": {
+                "@type": "Offer",
+                "price": "4999",
+                "priceCurrency": "INR",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2024-01-01",
+                "url": "https://acmyx.com/programs/${programId}"
+              }
+            },
+            "coursePrerequisites": "No prior experience required",
+            "educationalLevel": "Beginner to Advanced",
+            "teaches": [
+              ${program.modules ? program.modules.map(module => `"${module.title}"`).join(', ') : '"Technical Skills", "Industry Best Practices"'}
+            ]
+          }
+          `}
+        </script>
+      )}
     </div>
   );
 }
