@@ -14,42 +14,15 @@ function Careers() {
       </div>
 
       <div className="career-options">
-        <div className="career-option">
-          <div className="option-content">
-            <div className="role-badge">Open Position</div>
-            <h3>Business Development Associate / Intern</h3>
-            <p>
-              Join our dynamic team as a Business Development Associate/Intern and help drive our growth initiatives. 
-              This role offers an exciting opportunity to work on strategic business development projects and gain hands-on 
-              experience in the tech industry.
-            </p>
-            <div className="option-details">
-              <div className="detail-item">
-                <span className="detail-value">3-6 months</span>
-                <span className="detail-label">Duration</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-value">Remote</span>
-                <span className="detail-label">Location</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-value">Students & Graduates</span>
-                <span className="detail-label">Open to</span>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="unstop-logo">
-                <img src={unstopLogo} alt="Unstop" />
-              </div>
-              <a 
-                href="https://unstop.com/o/VnseUBt?lb=N8NWyKE8&utm_medium=Share&utm_source=shortUrl" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="option-apply-button"
-              >
-                Apply Now
-              </a>
-            </div>
+        {/* No open positions currently available */}
+        <div className="no-positions">
+          <h3>No Open Positions Currently</h3>
+          <p>We don't have any open positions at the moment, but we're always looking for talented individuals to join our team. Please check back later or reach out to us directly if you're interested in working with us.</p>
+          <div className="contact-info">
+            <p>For general inquiries about career opportunities, please contact us at:</p>
+            <a href="mailto:acmyxteams@gmail.com" className="contact-email">
+              <i className="fas fa-envelope"></i> acmyxteams@gmail.com
+            </a>
           </div>
         </div>
       </div>

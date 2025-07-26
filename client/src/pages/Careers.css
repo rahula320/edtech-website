@@ -2231,3 +2231,102 @@
     font-size: 1.5rem;
   }
 } 
+
+/* No Positions Section */
+.no-positions {
+  background: white;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  border: 2px dashed #e2e8f0;
+  margin: 2rem 0;
+}
+
+.no-positions h3 {
+  font-size: 1.8rem;
+  color: #051c32;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.no-positions p {
+  font-size: 1.1rem;
+  color: #4a5568;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-info {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.contact-info p {
+  font-size: 1rem;
+  color: #4a5568;
+  margin-bottom: 1rem;
+}
+
+.contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #051c32;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border: 1px solid #051c32;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.contact-email:hover {
+  background: #051c32;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.contact-email i {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .no-positions {
+    padding: 2rem 1.5rem;
+    margin: 1rem 0;
+  }
+  
+  .no-positions h3 {
+    font-size: 1.5rem;
+  }
+  
+  .no-positions p {
+    font-size: 1rem;
+  }
+  
+  .contact-info {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .no-positions {
+    padding: 1.5rem 1rem;
+  }
+  
+  .no-positions h3 {
+    font-size: 1.3rem;
+  }
+  
+  .contact-email {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+} 

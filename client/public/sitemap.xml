@@ -138,12 +138,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url>
-    <loc>https://acmyx.com/careers/business-development</loc>
-    <lastmod>2024-12-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
+
   <url>
     <loc>https://acmyx.com/careers/campus-ambassador</loc>
     <lastmod>2024-12-19</lastmod>

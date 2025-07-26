@@ -9,7 +9,7 @@ import About from './pages/About';
 import FAQ from './pages/FAQ';
 import Careers from './pages/Careers';
 import MentorForm from './pages/MentorForm';
-import BdaForm from './pages/BdaForm';
+
 import CampusAmbassadorForm from './pages/CampusAmbassadorForm';
 import ProgramDetail from './pages/ProgramDetail';
 import Terms from './pages/Terms';
@@ -32,7 +32,7 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/careers/mentor" element={<MentorForm />} />
-          <Route path="/careers/business-development" element={<BdaForm />} />
+
           <Route path="/careers/campus-ambassador" element={<CampusAmbassadorForm />} />
           <Route path="/programs/:programId" element={<ProgramDetail programsData={programsData} />} />
           <Route path="/terms" element={<Terms />} />
